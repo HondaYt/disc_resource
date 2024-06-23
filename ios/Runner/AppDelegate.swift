@@ -19,39 +19,39 @@ import UIKit
     let methodChannel = FlutterMethodChannel(
       name: methodChannelName, binaryMessenger: controller.binaryMessenger)
 
-    methodChannel.setMethodCallHandler { [weak self] methodCall, result in
-      switch methodCall.method {
-      case "requestAuth":
-        Task {
-          await MusicAuthorization.request()
-        }
-      case "checkAuthStatus":
-        self?.checkAuthStatus(result: result)
-      default:
-        result(
-          FlutterError(
-            code: "UNAVAILABLE", message: "Method not available: \(methodCall.method)", details: nil
-          ))
-      }
-    }
+    // methodChannel.setMethodCallHandler { [weak self] methodCall, result in
+    //   switch methodCall.method {
+    //   case "requestAuth":
+    //     Task {
+    //       await MusicAuthorization.request()
+    //     }
+    //   case "checkAuthStatus":
+    //     self?.checkAuthStatus(result: result)
+    //   default:
+    //     result(
+    //       FlutterError(
+    //         code: "UNAVAILABLE", message: "Method not available: \(methodCall.method)", details: nil
+    //       ))
+    //   }
+    // }
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-  private func checkAuthStatus(result: @escaping FlutterResult) {
-    let status = MusicAuthorization.currentStatus
-    let statusString: String
-    switch status {
-    case .authorized:
-      statusString = "authorized"
-    case .denied:
-      statusString = "denied"
-    case .notDetermined:
-      statusString = "notDetermined"
-    case .restricted:
-      statusString = "restricted"
-    @unknown default:
-      statusString = "unknown"
-    }
-    result(statusString)
-  }
+  // private func checkAuthStatus(result: @escaping FlutterResult) {
+  //   let status = MusicAuthorization.currentStatus
+  //   let statusString: String
+  //   switch status {
+  //   case .authorized:
+  //     statusString = "authorized"
+  //   case .denied:
+  //     statusString = "denied"
+  //   case .notDetermined:
+  //     statusString = "notDetermined"
+  //   case .restricted:
+  //     statusString = "restricted"
+  //   @unknown default:
+  //     statusString = "unknown"
+  //   }
+  //   result(statusString)
+  // }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,31 +33,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class MyHomePageState extends State<MyHomePage> {
-  String result = "";
-  final MethodChannel _methodChannel =
-      const MethodChannel('com.hondayt.disc.resource');
-
-  Future<void> requestAuth() async {
-    try {
-      await _methodChannel.invokeMethod('requestAuth');
-    } on PlatformException catch (e) {
-      print(e);
-    }
-  }
-
-  Future<void> checkAuthStatus() async {
-    var response = await _methodChannel.invokeMethod('checkAuthStatus');
-    setState(() {
-      result = response;
-    });
-  }
-
-  Future<void> checkAndRequestAuth() async {
-    checkAuthStatus();
-    if (result == "authorized") {
-      print("authorized");
-    } else {
-      await requestAuth();
+  Future<void> requestPermission() async {
+    final PermissionStatus status = await Permission.mediaLibrary.request();
+    Logger().i('status: $status');
+    switch (status) {
+      case PermissionStatus.denied:
+        Logger().w('権限が拒否されました...');
+        break;
+      case PermissionStatus.granted:
+        Logger().w('権限が許可されました！');
+        break;
+      case PermissionStatus.restricted:
+        Logger().w('権限が制限されています(iOS)');
+        break;
+      case PermissionStatus.limited:
+        Logger().w('権限が制限されています(iOS)');
+        break;
+      case PermissionStatus.permanentlyDenied:
+        Logger().w('権限が永久に拒否されます(Android)');
+        break;
+      case PermissionStatus.provisional:
+        Logger().w('権限が許可されています(iOS)');
+        break;
     }
   }
 
@@ -70,10 +69,10 @@ class MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(result),
+            // Text(result),
             ElevatedButton(
               onPressed: () {
-                checkAndRequestAuth();
+                requestPermission();
               },
               child: const Text("Request authorization"),
             ),
