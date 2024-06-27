@@ -1,0 +1,1120 @@
+{
+	"next": "/v1/me/recent/played/tracks?offset=30",
+	"data": [
+		{
+			"id": "1445145789",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1445145789",
+			"attributes": {
+				"albumName": "僕のこと - EP",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2018-12-26",
+				"durationInMillis": 321760,
+				"isrc": "JPPO01806514",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/37/30/a9/3730a9f0-50d3-e4e1-9f4d-620b30380414/18UMGIM80785.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "fdfffe",
+					"textColor1": "242833",
+					"textColor2": "212938",
+					"textColor3": "4f535c",
+					"textColor4": "4d545f"
+				},
+				"composerName": "大森元貴",
+				"url": "https://music.apple.com/jp/album/%E5%83%95%E3%81%AE%E3%81%93%E3%81%A8/1445145788?i=1445145789",
+				"playParams": { "id": "1445145789", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "僕のこと",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/b3/72/df/b372dfdf-caac-a4c3-2b04-1864ed99625d/mzaf_16079960752676957321.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Mrs. GREEN APPLE"
+			}
+		},
+		{
+			"id": "1536395512",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1536395512",
+			"attributes": {
+				"albumName": "チャットモンチー BEST〜2005-2011〜",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 14,
+				"releaseDate": "2009-02-04",
+				"durationInMillis": 204653,
+				"isrc": "JPKS00802761",
+				"artwork": {
+					"width": 1400,
+					"height": 1400,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/60/e0/ae/60e0ae67-4c6a-ae5d-a4b9-9a514326cde0/jacket_KSCL01937B00Z_550.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "40043e",
+					"textColor2": "560240",
+					"textColor3": "663665",
+					"textColor4": "783466"
+				},
+				"composerName": "橋本絵莉子",
+				"url": "https://music.apple.com/jp/album/last-love-letter/1536395498?i=1536395512",
+				"playParams": { "id": "1536395512", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "Last Love Letter",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/13/fc/3d/13fc3d70-897b-00e1-1983-41577ea07b7e/mzaf_8945852209920621535.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "チャットモンチー"
+			}
+		},
+		{
+			"id": "1329462512",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1329462512",
+			"attributes": {
+				"albumName": "余りに駄目な僕を前にして君は",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 7,
+				"releaseDate": "2017-11-18",
+				"durationInMillis": 265928,
+				"isrc": "TCJPG1743071",
+				"artwork": {
+					"width": 1600,
+					"height": 1600,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/28/e8/cb/28e8cb4c-cabb-f851-a44a-336c219ebbb4/4525118072450_cover.png/{w}x{h}bb.jpg",
+					"bgColor": "a1a2d0",
+					"textColor1": "02050a",
+					"textColor2": "091326",
+					"textColor3": "222531",
+					"textColor4": "273048"
+				},
+				"composerName": "中原くん",
+				"url": "https://music.apple.com/jp/album/%E6%97%A5%E8%A8%98/1329462501?i=1329462512",
+				"playParams": { "id": "1329462512", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": false,
+				"name": "日記",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview125/v4/d7/2b/31/d72b310d-9faa-3d75-1692-718b9ed9417c/mzaf_2522423999510459435.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "中原くん"
+			}
+		},
+		{
+			"id": "1619726525",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1619726525",
+			"attributes": {
+				"albumName": "包装",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 3,
+				"releaseDate": "2021-08-18",
+				"durationInMillis": 245630,
+				"isrc": "JPR502203592",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/a8/86/49/a88649ea-5549-20e1-c250-b6ee5443dd61/PA00098869_0_149327_jacket.jpg/{w}x{h}bb.jpg",
+					"bgColor": "85928f",
+					"textColor1": "000604",
+					"textColor2": "1f1d17",
+					"textColor3": "1a221f",
+					"textColor4": "34342f"
+				},
+				"composerName": "小林私",
+				"url": "https://music.apple.com/jp/album/healthy-acoustic-ver/1619726520?i=1619726525",
+				"playParams": { "id": "1619726525", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "HEALTHY(Acoustic Ver.)",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/b8/bb/2b/b8bb2bc1-2409-3817-d1a1-49d689e3c803/mzaf_16122441717926967689.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "小林私"
+			}
+		},
+		{
+			"id": "1536395503",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1536395503",
+			"attributes": {
+				"albumName": "チャットモンチー BEST〜2005-2011〜",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 5,
+				"releaseDate": "2006-11-15",
+				"durationInMillis": 198160,
+				"isrc": "JPKS00601581",
+				"artwork": {
+					"width": 1400,
+					"height": 1400,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/60/e0/ae/60e0ae67-4c6a-ae5d-a4b9-9a514326cde0/jacket_KSCL01937B00Z_550.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "40043e",
+					"textColor2": "560240",
+					"textColor3": "663665",
+					"textColor4": "783466"
+				},
+				"composerName": "橋本絵莉子",
+				"url": "https://music.apple.com/jp/album/%E3%82%B7%E3%83%A3%E3%83%B3%E3%82%B0%E3%83%AA%E3%83%A9/1536395498?i=1536395503",
+				"playParams": { "id": "1536395503", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "シャングリラ",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/c4/de/f9/c4def911-8270-03fb-5040-1690f556b57b/mzaf_14467399233418996021.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "チャットモンチー"
+			}
+		},
+		{
+			"id": "1261935245",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1261935245",
+			"attributes": {
+				"albumName": "幼さを入院させて",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 2,
+				"releaseDate": "2017-08-04",
+				"durationInMillis": 282640,
+				"isrc": "JPWP01771747",
+				"artwork": {
+					"width": 2400,
+					"height": 2400,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/80/d2/84/80d284a0-3eee-b95b-9955-b02bb4f0406a/190295756741.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "030304",
+					"textColor2": "511124",
+					"textColor3": "353536",
+					"textColor4": "744050"
+				},
+				"composerName": "の子",
+				"url": "https://music.apple.com/jp/album/%E3%82%A4%E3%83%9E%E3%83%89%E3%82%AD%E3%81%AE%E5%AD%90/1261935093?i=1261935245",
+				"playParams": { "id": "1261935245", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "イマドキの子",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/fb/3c/a4/fb3ca456-98ea-e4bb-a1b7-91daebe52169/mzaf_10086698642448603267.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "神聖かまってちゃん"
+			}
+		},
+		{
+			"id": "879584480",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/879584480",
+			"attributes": {
+				"albumName": "幕の内ISM",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 7,
+				"releaseDate": "2013-10-27",
+				"durationInMillis": 201840,
+				"isrc": "JPWP01371619",
+				"artwork": {
+					"width": 1800,
+					"height": 1776,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/ca/56/94/ca5694e0-6f99-ee14-ed0a-7c174797a736/825646264056.jpg/{w}x{h}bb.jpg",
+					"bgColor": "4baa51",
+					"textColor1": "020201",
+					"textColor2": "141533",
+					"textColor3": "112411",
+					"textColor4": "1f3339"
+				},
+				"composerName": "成田ハネダ",
+				"url": "https://music.apple.com/jp/album/%E3%81%A8%E3%81%8A%E3%82%8A%E3%82%83%E3%82%93%E3%81%9B/879584415?i=879584480",
+				"playParams": { "id": "879584480", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "とおりゃんせ",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/e0/a4/07/e0a40749-678b-f915-d945-8247f95b6a13/mzaf_4527298718052770251.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "パスピエ"
+			}
+		},
+		{
+			"id": "1580275646",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1580275646",
+			"attributes": {
+				"albumName": "Faster, POP! Kill! Kill! - EP",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2016-12-21",
+				"durationInMillis": 226907,
+				"isrc": "JPE871601970",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/f7/65/70/f7657082-37fd-9c47-92cf-1835e4d1f1e9/LUCK-1003_3000.jpg/{w}x{h}bb.jpg",
+					"bgColor": "edf1d0",
+					"textColor1": "1e1f24",
+					"textColor2": "2d3135",
+					"textColor3": "474946",
+					"textColor4": "535754"
+				},
+				"composerName": "ポップしなないで",
+				"url": "https://music.apple.com/jp/album/%E3%82%A8%E3%83%AC%E6%A8%AB/1580275645?i=1580275646",
+				"playParams": { "id": "1580275646", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "エレ樫",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/58/3f/f2/583ff2ca-a55e-b627-0e56-c6238fe65d76/mzaf_12361579065316000274.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "ポップしなないで"
+			}
+		},
+		{
+			"id": "1528112564",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1528112564",
+			"attributes": {
+				"albumName": "folklore",
+				"genreNames": ["オルタナティブ", "ミュージック"],
+				"trackNumber": 17,
+				"releaseDate": "2020-08-07",
+				"durationInMillis": 211798,
+				"isrc": "USUG12002851",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music115/v4/b5/80/dc/b580dca0-349d-036b-e09b-bd849f6affd8/20UMGIM64216.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "c6c6c6",
+					"textColor1": "000000",
+					"textColor2": "070707",
+					"textColor3": "272727",
+					"textColor4": "2d2d2d"
+				},
+				"composerName": "テイラー・スウィフト & ジャック・アントノフ",
+				"url": "https://music.apple.com/jp/album/the-lakes-bonus-track/1528112358?i=1528112564",
+				"playParams": { "id": "1528112564", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": true,
+				"name": "the lakes (bonus track)",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/da/21/c1/da21c1a7-f6b4-2cb3-f309-b51126b0a95b/mzaf_12710759901984974533.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "テイラー・スウィフト"
+			}
+		},
+		{
+			"id": "1558886254",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1558886254",
+			"attributes": {
+				"albumName": "クリームソーダ - Single",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2020-03-18",
+				"durationInMillis": 210140,
+				"isrc": "JPP302000112",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music114/v4/b5/7b/62/b57b6211-8fd7-5501-0bc4-b581c141aefa/4580529538322.jpg/{w}x{h}bb.jpg",
+					"bgColor": "8bbace",
+					"textColor1": "060200",
+					"textColor2": "1d1a1c",
+					"textColor3": "202729",
+					"textColor4": "333a3f"
+				},
+				"composerName": "カモシタサラ",
+				"url": "https://music.apple.com/jp/album/%E3%82%AF%E3%83%AA%E3%83%BC%E3%83%A0%E3%82%BD%E3%83%BC%E3%83%80/1558886252?i=1558886254",
+				"playParams": { "id": "1558886254", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "クリームソーダ",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview124/v4/e5/d3/18/e5d31857-0978-e766-0d3b-58a5a63e92c3/mzaf_4157059047913134554.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "インナージャーニー"
+			}
+		},
+		{
+			"id": "1705214204",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1705214204",
+			"attributes": {
+				"albumName": "キラキラユー - Single",
+				"genreNames": ["J-Pop", "ミュージック", "ロック"],
+				"trackNumber": 1,
+				"releaseDate": "2023-09-13",
+				"durationInMillis": 188000,
+				"isrc": "TCJPX2330134",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/d1/9c/f2/d19cf240-1e48-76e2-f2f1-3c5242ede3e0/3617221798028_cover.jpg/{w}x{h}bb.jpg",
+					"bgColor": "6fc6d5",
+					"textColor1": "000203",
+					"textColor2": "2b2b2a",
+					"textColor3": "16292d",
+					"textColor4": "384a4c"
+				},
+				"composerName": "NACHI",
+				"url": "https://music.apple.com/jp/album/%E3%82%AD%E3%83%A9%E3%82%AD%E3%83%A9%E3%83%A6%E3%83%BC/1705214195?i=1705214204",
+				"playParams": { "id": "1705214204", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "キラキラユー",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/5a/b5/dc/5ab5dca8-f9fd-4744-4fc6-a82035ff663b/mzaf_1809809284223596315.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "サバシスター"
+			}
+		},
+		{
+			"id": "1725083337",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1725083337",
+			"attributes": {
+				"albumName": "白昼きみとドロン - Single",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-01-24",
+				"durationInMillis": 193880,
+				"isrc": "JPCO02334720",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/0f/fb/ab/0ffbab23-1213-a6d6-ea3c-9b2cd8ad2aed/COKM-44727.jpg/{w}x{h}bb.jpg",
+					"bgColor": "9c384a",
+					"textColor1": "ffffff",
+					"textColor2": "fff2d7",
+					"textColor3": "ebd7da",
+					"textColor4": "ebccba"
+				},
+				"composerName": "ポップしなないで & かわむら",
+				"url": "https://music.apple.com/jp/album/%E7%99%BD%E6%98%BC%E3%81%8D%E3%81%BF%E3%81%A8%E3%83%89%E3%83%AD%E3%83%B3/1725083336?i=1725083337",
+				"playParams": { "id": "1725083337", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "白昼きみとドロン",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/b2/a8/61/b2a861d9-311a-9d70-bd40-09dc820dfa15/mzaf_14921561320733161049.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "ポップしなないで"
+			}
+		},
+		{
+			"id": "438404776",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/438404776",
+			"attributes": {
+				"albumName": "革命",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 11,
+				"releaseDate": "2011-06-08",
+				"durationInMillis": 198093,
+				"isrc": "JPD001100092",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/78/f4/17/78f4175b-b7a7-7a0f-b402-b6705d1f4469/dj.twmbpggf.jpg/{w}x{h}bb.jpg",
+					"bgColor": "e5e0da",
+					"textColor1": "090604",
+					"textColor2": "0c2b32",
+					"textColor3": "35312f",
+					"textColor4": "374f53"
+				},
+				"composerName": "小山田壮平",
+				"url": "https://music.apple.com/jp/album/%E6%8A%95%E3%81%92kiss%E3%82%92%E3%81%82%E3%81%92%E3%82%8B%E3%82%88/438404764?i=438404776",
+				"playParams": { "id": "438404776", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "投げKISSをあげるよ",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/b3/a6/5b/b3a65b7e-fd79-c35f-321a-11d66a7a0e3e/mzaf_3083714177481699482.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "andymori"
+			}
+		},
+		{
+			"id": "1605565290",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1605565290",
+			"attributes": {
+				"albumName": "やさしい怪物 feat. 泣き虫 - Single",
+				"genreNames": ["J-Pop", "ミュージック", "ロック"],
+				"trackNumber": 1,
+				"releaseDate": "2022-02-02",
+				"durationInMillis": 185182,
+				"isrc": "JPTF02200901",
+				"artwork": {
+					"width": 2400,
+					"height": 2400,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/37/9c/98/379c9846-dec5-2697-269f-48febd640524/TFDS-00748WW.jpg/{w}x{h}bb.jpg",
+					"bgColor": "040404",
+					"textColor1": "f5f5f5",
+					"textColor2": "dedede",
+					"textColor3": "c4c4c4",
+					"textColor4": "b2b2b2"
+				},
+				"composerName": "堀胃あげは & 泣き虫",
+				"url": "https://music.apple.com/jp/album/%E3%82%84%E3%81%95%E3%81%97%E3%81%84%E6%80%AA%E7%89%A9-feat-%E6%B3%A3%E3%81%8D%E8%99%AB/1605565289?i=1605565290",
+				"playParams": { "id": "1605565290", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "やさしい怪物 feat. 泣き虫",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/51/01/48/510148b3-c163-6260-376e-ed0882df6185/mzaf_603205544690046168.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "黒子首"
+			}
+		},
+		{
+			"id": "1301722978",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1301722978",
+			"attributes": {
+				"albumName": "週末を待ちくたびれて - EP",
+				"genreNames": [
+					"ロック",
+					"ミュージック",
+					"オルタナティブ",
+					"インディー・ロック"
+				],
+				"trackNumber": 1,
+				"releaseDate": "2017-11-08",
+				"durationInMillis": 154333,
+				"isrc": "JPF551700015",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music124/v4/82/40/75/824075fc-f441-07ee-c5a2-d17e3ce541f4/4538182725047_cov.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "070c0f",
+					"textColor2": "0a0c0c",
+					"textColor3": "383d3f",
+					"textColor4": "3b3c3d"
+				},
+				"composerName": "岩崎優也",
+				"url": "https://music.apple.com/jp/album/%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%BC/1301722675?i=1301722978",
+				"playParams": { "id": "1301722978", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "キルミー",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/0a/7c/cb/0a7ccba6-41d3-4ae5-56c5-f4d094b6d346/mzaf_12286182726293825564.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "SUNNY CAR WASH"
+			}
+		},
+		{
+			"id": "1579793489",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1579793489",
+			"attributes": {
+				"albumName": "風の匂い - EP",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 2,
+				"releaseDate": "2021-09-01",
+				"durationInMillis": 174493,
+				"isrc": "JPA962180146",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music125/v4/16/a1/00/16a100c0-7600-491e-fd1d-86bc6e333c5d/4582169619140.jpg/{w}x{h}bb.jpg",
+					"bgColor": "c7be30",
+					"textColor1": "111927",
+					"textColor2": "0d1e32",
+					"textColor3": "353a29",
+					"textColor4": "323e32"
+				},
+				"composerName": "カモシタサラ",
+				"url": "https://music.apple.com/jp/album/fang/1579793487?i=1579793489",
+				"playParams": { "id": "1579793489", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "Fang",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview115/v4/da/89/7e/da897e4f-a354-969b-2c67-314c21f69dcd/mzaf_16384673097658343203.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "インナージャーニー"
+			}
+		},
+		{
+			"id": "1740295157",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1740295157",
+			"attributes": {
+				"albumName": "POP DELIVERY",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 8,
+				"releaseDate": "2023-05-03",
+				"durationInMillis": 201491,
+				"isrc": "JPWP02400398",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/3d/91/7a/3d917ae2-7213-1dd1-97a0-738297ec4027/5021732278166.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ff978a",
+					"textColor1": "1a0401",
+					"textColor2": "49151b",
+					"textColor3": "48211c",
+					"textColor4": "6e2f31"
+				},
+				"composerName": "Kenmochi Hidefumi",
+				"url": "https://music.apple.com/jp/album/%E5%9B%9B%E5%A4%A9%E7%8E%8B/1740294934?i=1740295157",
+				"playParams": { "id": "1740295157", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": true,
+				"hasLyrics": true,
+				"name": "四天王",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/b3/ba/07/b3ba072c-d8d0-7faa-a473-51c0d129269a/mzaf_1859687043365569272.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "水曜日のカンパネラ"
+			}
+		},
+		{
+			"id": "1739518712",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1739518712",
+			"attributes": {
+				"albumName": "Stormy - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-04-17",
+				"durationInMillis": 204933,
+				"isrc": "JPI102400137",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/0c/04/cd/0c04cd4c-124f-b4bf-51d0-e20c16958672/4540774610723.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ebf3f5",
+					"textColor1": "140800",
+					"textColor2": "33251b",
+					"textColor3": "3f3731",
+					"textColor4": "584e46"
+				},
+				"composerName": "SKY-HI, Takahiro Nishijima, Ryosuke “Dr.R” Sakai & 中村泰輔",
+				"url": "https://music.apple.com/jp/album/stormy/1739518711?i=1739518712",
+				"playParams": { "id": "1739518712", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": true,
+				"name": "Stormy",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/89/c0/e0/89c0e035-6adb-0cf8-020c-9be1243713d1/mzaf_14640403897449602339.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Nissy × SKY-HI"
+			}
+		},
+		{
+			"id": "1737134872",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1737134872",
+			"attributes": {
+				"albumName": "さよーならまたいつか!- Sayonara - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-04-08",
+				"durationInMillis": 201252,
+				"isrc": "JPU902400966",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/2b/d1/33/2bd13372-77d7-63c0-3f10-65f497c9aec3/4547366679601.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "100d04",
+					"textColor2": "042b24",
+					"textColor3": "3f3e36",
+					"textColor4": "36554f"
+				},
+				"composerName": "米津玄師",
+				"url": "https://music.apple.com/jp/album/%E3%81%95%E3%82%88%E3%83%BC%E3%81%AA%E3%82%89%E3%81%BE%E3%81%9F%E3%81%84%E3%81%A4%E3%81%8B-sayonara/1737134871?i=1737134872",
+				"playParams": { "id": "1737134872", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "さよーならまたいつか!- Sayonara",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview211/v4/01/2c/b2/012cb297-87d9-fd7e-7b3e-5ffcbd13d061/mzaf_16800465843239693045.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "米津玄師"
+			}
+		},
+		{
+			"id": "1746455753",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1746455753",
+			"attributes": {
+				"albumName": "The Light - Single",
+				"genreNames": ["エレクトロニック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-05-24",
+				"durationInMillis": 215050,
+				"isrc": "JPPO02402450",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/5f/bf/ee/5fbfee90-e805-7cc4-b1f2-ddabb46e79fe/24UMGIM52622.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "000000",
+					"textColor1": "ffffff",
+					"textColor2": "f8c4cd",
+					"textColor3": "cbcbcb",
+					"textColor4": "c69da4"
+				},
+				"composerName": "中田ヤスタカ",
+				"url": "https://music.apple.com/jp/album/the-light/1746455752?i=1746455753",
+				"playParams": { "id": "1746455753", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "The Light",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/84/7c/ce/847cce1e-cc28-0dc1-e7f1-9c7d10404fcf/mzaf_4519393225260908044.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Perfume"
+			}
+		},
+		{
+			"id": "1735656645",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1735656645",
+			"attributes": {
+				"albumName": "遥か - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-04-02",
+				"durationInMillis": 191047,
+				"isrc": "JPU902400699",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/1f/ad/3a/1fad3a7d-2896-f204-d74a-987d5d1437a4/4547366676013.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "1f2e37",
+					"textColor2": "2a2f35",
+					"textColor3": "4c585f",
+					"textColor4": "54595d"
+				},
+				"composerName": "田中ユウスケ",
+				"url": "https://music.apple.com/jp/album/%E9%81%A5%E3%81%8B/1735656641?i=1735656645",
+				"playParams": { "id": "1735656645", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "遥か",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview112/v4/19/6f/d0/196fd087-b3a9-4aa0-7722-75c7268739c5/mzaf_13769310247357490782.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Aimer"
+			}
+		},
+		{
+			"id": "1743924900",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1743924900",
+			"attributes": {
+				"albumName": "Romantic - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-05-10",
+				"durationInMillis": 250595,
+				"isrc": "JPPO02402263",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/a8/6d/7b/a86d7b6d-b72c-317d-0b4a-98db0435ce19/24UMGIM46607.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "302313",
+					"textColor1": "ebbf58",
+					"textColor2": "e3a43f",
+					"textColor3": "c5a04a",
+					"textColor4": "bf8a36"
+				},
+				"composerName": "Nakajin",
+				"url": "https://music.apple.com/jp/album/romantic/1743924898?i=1743924900",
+				"playParams": { "id": "1743924900", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": true,
+				"hasLyrics": true,
+				"name": "Romantic",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6c/da/ec/6cdaec5c-f594-6973-cb58-cb8044fb4056/mzaf_11428198712753056402.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "SEKAI NO OWARI"
+			}
+		},
+		{
+			"id": "1732275019",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1732275019",
+			"attributes": {
+				"albumName": "SWEET NONFICTION - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-03-14",
+				"durationInMillis": 199693,
+				"isrc": "JPU902400070",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music122/v4/7c/41/d8/7c41d827-0917-4c57-65c5-8ad48d392064/4547366671384.jpg/{w}x{h}bb.jpg",
+					"bgColor": "1b1d1c",
+					"textColor1": "e4e4e6",
+					"textColor2": "e3dbd4",
+					"textColor3": "bcbcbe",
+					"textColor4": "bbb5af"
+				},
+				"composerName": "ALYSA, Jake Kim, MARIA MARCUS & Ricki Ejderkvist",
+				"url": "https://music.apple.com/jp/album/sweet-nonfiction/1732274832?i=1732275019",
+				"playParams": { "id": "1732275019", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "SWEET NONFICTION",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview122/v4/2a/d6/d0/2ad6d084-f8de-9f74-ce5f-ab45d4ad6f58/mzaf_14755619024484553402.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "NiziU"
+			}
+		},
+		{
+			"id": "1726307099",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1726307099",
+			"attributes": {
+				"albumName": "正解 - EP",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-01-24",
+				"durationInMillis": 358667,
+				"isrc": "JPV972400001",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/aa/f1/62/aaf16249-0d92-763a-5a78-65ea3ac568d2/24UMGIM04362.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "ffffff",
+					"textColor1": "670009",
+					"textColor2": "542225",
+					"textColor3": "86333a",
+					"textColor4": "764e51"
+				},
+				"composerName": "野田洋次郎",
+				"url": "https://music.apple.com/jp/album/%E6%AD%A3%E8%A7%A3/1726307096?i=1726307099",
+				"playParams": { "id": "1726307099", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": true,
+				"name": "正解",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/bd/e7/5d/bde75def-a9ac-85b8-0e40-49a00372efcc/mzaf_8833784662794308892.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "RADWIMPS"
+			}
+		},
+		{
+			"id": "1720332181",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1720332181",
+			"attributes": {
+				"albumName": "Bling-Bang-Bang-Born - Single",
+				"genreNames": ["ヒップホップ／ラップ", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-01-07",
+				"durationInMillis": 168136,
+				"isrc": "JPU902305042",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/12/81/dc/1281dc28-48e6-5ff7-642d-6cf4d487d9e0/4547366660890.jpg/{w}x{h}bb.jpg",
+					"bgColor": "dd882d",
+					"textColor1": "000b0a",
+					"textColor2": "151e1a",
+					"textColor3": "2c2411",
+					"textColor4": "3d331d"
+				},
+				"composerName": "DJ松永",
+				"url": "https://music.apple.com/jp/album/bling-bang-bang-born/1720332180?i=1720332181",
+				"playParams": { "id": "1720332181", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "Bling-Bang-Bang-Born",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/ab/ee/99/abee99ed-b939-5d0f-43cb-11dfbdba00b5/mzaf_9186164617284703862.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Creepy Nuts"
+			}
+		},
+		{
+			"id": "1725340739",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1725340739",
+			"attributes": {
+				"albumName": "谺する - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-01-25",
+				"durationInMillis": 300333,
+				"isrc": "JPU902305449",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music116/v4/13/0b/53/130b5334-34c0-9466-afa6-a354aefdc316/4547366665208.jpg/{w}x{h}bb.jpg",
+					"bgColor": "010103",
+					"textColor1": "ffffff",
+					"textColor2": "c9c9c9",
+					"textColor3": "cccccc",
+					"textColor4": "a1a1a1"
+				},
+				"composerName": "菅田 将暉 & タイヘイ",
+				"url": "https://music.apple.com/jp/album/%E8%B0%BA%E3%81%99%E3%82%8B/1725340737?i=1725340739",
+				"playParams": { "id": "1725340739", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "谺する",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/a1/21/6d/a1216d08-8beb-8754-e083-d9b895690d52/mzaf_11068913953470362534.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "菅田 将暉"
+			}
+		},
+		{
+			"id": "1721130445",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1721130445",
+			"attributes": {
+				"albumName": "タイムパラドックス - Single",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-01-07",
+				"durationInMillis": 226558,
+				"isrc": "JPR652300211",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music126/v4/3b/67/cf/3b67cfba-0b55-3bdc-1d5f-e26c9071c2f7/4547366661972.jpg/{w}x{h}bb.jpg",
+					"bgColor": "f9fafc",
+					"textColor1": "0e0707",
+					"textColor2": "001e44",
+					"textColor3": "3d3738",
+					"textColor4": "314a69"
+				},
+				"composerName": "Vaundy",
+				"url": "https://music.apple.com/jp/album/%E3%82%BF%E3%82%A4%E3%83%A0%E3%83%91%E3%83%A9%E3%83%89%E3%83%83%E3%82%AF%E3%82%B9/1721130439?i=1721130445",
+				"playParams": { "id": "1721130445", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "タイムパラドックス",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview116/v4/f1/7a/53/f17a536d-c774-cdfd-0562-3547507af0bc/mzaf_3639540527672845895.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "Vaundy"
+			}
+		},
+		{
+			"id": "1747862082",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1747862082",
+			"attributes": {
+				"albumName": "初KO勝ち - Single",
+				"genreNames": ["ロック", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-05-27",
+				"durationInMillis": 211000,
+				"isrc": "JPPO02401768",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/b5/28/a5/b528a56d-0818-9275-26ac-e7c86bd9fb84/24UMGIM46697.rgb.jpg/{w}x{h}bb.jpg",
+					"bgColor": "af3c55",
+					"textColor1": "faf9f4",
+					"textColor2": "eccee3",
+					"textColor3": "ebd4d4",
+					"textColor4": "e0b1c7"
+				},
+				"composerName": "椎名林檎",
+				"url": "https://music.apple.com/jp/album/%E5%88%9Dko%E5%8B%9D%E3%81%A1/1747862075?i=1747862082",
+				"playParams": { "id": "1747862082", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "初KO勝ち",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/f7/e1/e9/f7e1e945-0dd9-eed8-7b4d-3362372653e4/mzaf_12218961067892241526.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "椎名林檎とのっち"
+			}
+		},
+		{
+			"id": "1738397239",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1738397239",
+			"attributes": {
+				"albumName": "忘レナ唄 - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-04-10",
+				"durationInMillis": 176406,
+				"isrc": "JPTF02403101",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music211/v4/de/e2/ce/dee2ce30-1caf-9be1-5df3-9dd5affa908e/4517331086482.jpg/{w}x{h}bb.jpg",
+					"bgColor": "e2e4f1",
+					"textColor1": "030813",
+					"textColor2": "132945",
+					"textColor3": "30343f",
+					"textColor4": "3d4e67"
+				},
+				"composerName": "はっとり",
+				"url": "https://music.apple.com/jp/album/%E5%BF%98%E3%83%AC%E3%83%8A%E5%94%84/1738396811?i=1738397239",
+				"playParams": { "id": "1738397239", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"isAppleDigitalMaster": false,
+				"hasLyrics": true,
+				"name": "忘レナ唄",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/6c/4b/49/6c4b49ec-5af9-1dfb-64ec-c8637660fbed/mzaf_7331773688107065936.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "マカロニえんぴつ"
+			}
+		},
+		{
+			"id": "1740111914",
+			"type": "songs",
+			"href": "/v1/catalog/jp/songs/1740111914",
+			"attributes": {
+				"albumName": "会いに行くのに - Single",
+				"genreNames": ["J-Pop", "ミュージック"],
+				"trackNumber": 1,
+				"releaseDate": "2024-05-01",
+				"durationInMillis": 315387,
+				"isrc": "JPWP02470233",
+				"artwork": {
+					"width": 3000,
+					"height": 3000,
+					"url": "https://is1-ssl.mzstatic.com/image/thumb/Music221/v4/02/b1/cb/02b1cb45-be0b-3281-22f3-71c491bbc28a/5021732277398.jpg/{w}x{h}bb.jpg",
+					"bgColor": "6c5e31",
+					"textColor1": "fadec1",
+					"textColor2": "f0d801",
+					"textColor3": "ddc5a4",
+					"textColor4": "d5bf0a"
+				},
+				"composerName": "あいみょん",
+				"url": "https://music.apple.com/jp/album/%E4%BC%9A%E3%81%84%E3%81%AB%E8%A1%8C%E3%81%8F%E3%81%AE%E3%81%AB/1740111911?i=1740111914",
+				"playParams": { "id": "1740111914", "kind": "song" },
+				"discNumber": 1,
+				"hasCredits": false,
+				"hasLyrics": true,
+				"isAppleDigitalMaster": false,
+				"name": "会いに行くのに",
+				"previews": [
+					{
+						"url": "https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview221/v4/e1/cd/58/e1cd583d-b316-dcf0-3474-f6cc98e23dfd/mzaf_11357149304777838902.plus.aac.p.m4a"
+					}
+				],
+				"artistName": "あいみょん"
+			}
+		}
+	]
+}

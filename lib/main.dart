@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'music_kit_test.dart';
+import 'signin.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(const SwiperTest());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class SwiperTest extends StatelessWidget {
+  const SwiperTest({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +42,8 @@ class MyHomePageState extends State<MyHomePage> {
     switch (status) {
       case PermissionStatus.granted:
         Logger().w('権限が許可されました');
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const MusicKitTest()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => SignInPage()));
         break;
       case PermissionStatus.permanentlyDenied:
         Logger().w('権限が拒否されました');

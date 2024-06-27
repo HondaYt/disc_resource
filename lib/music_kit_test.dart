@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:music_kit/music_kit.dart';
-import 'fixture.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart';
+import 'swiper_test.dart';
+import 'music_kit_test_old.dart';
 
 void main() {
   runApp(const MusicKitTest());
@@ -17,77 +20,61 @@ class MusicKitTest extends StatefulWidget {
 
 class _MusicKitTestState extends State<MusicKitTest> {
   final _musicKitPlugin = MusicKit();
-  MusicAuthorizationStatus _status =
-      const MusicAuthorizationStatus.notDetermined();
-  String? _developerToken = '';
+  String _developerToken = '';
   String _userToken = '';
-  String _countryCode = '';
-
-  MusicSubscription _musicSubsciption = MusicSubscription();
-  late StreamSubscription<MusicSubscription>
-      _musicSubscriptionStreamSubscription;
-
-  MusicPlayerState? _playerState;
-  late StreamSubscription<MusicPlayerState> _playerStateStreamSubscription;
-
-  MusicPlayerQueue? _playerQueue;
-  late StreamSubscription<MusicPlayerQueue> _playerQueueStreamSubscription;
+  List<dynamic> _recentlyPlayed = [];
+  String _selectedSong = ''; // Added this line
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-
-    _musicSubscriptionStreamSubscription =
-        _musicKitPlugin.onSubscriptionUpdated.listen((event) {
-      setState(() {
-        _musicSubsciption = event;
-      });
-    });
-
-    _playerStateStreamSubscription =
-        _musicKitPlugin.onMusicPlayerStateChanged.listen((event) {
-      setState(() {
-        _playerState = event;
-      });
-    });
-
-    _playerQueueStreamSubscription =
-        _musicKitPlugin.onPlayerQueueChanged.listen((event) {
-      setState(() {
-        _playerQueue = event;
-      });
-    });
   }
 
-  @override
-  void dispose() {
-    _musicSubscriptionStreamSubscription.cancel();
-    _playerStateStreamSubscription.cancel();
-    _playerQueueStreamSubscription.cancel();
-    super.dispose();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    final status = await _musicKitPlugin.authorizationStatus;
-
     final developerToken = await _musicKitPlugin.requestDeveloperToken();
     final userToken = await _musicKitPlugin.requestUserToken(developerToken);
 
-    final countryCode = await _musicKitPlugin.currentCountryCode;
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
-      _status = status;
       _developerToken = developerToken;
       _userToken = userToken;
-      _countryCode = countryCode;
     });
+
+    fetchRecentlyPlayed();
+  }
+
+  Future<void> fetchRecentlyPlayed() async {
+    final url = 'https://api.music.apple.com/v1/me/recent/played/tracks';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $_developerToken',
+        'Music-User-Token': _userToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      setState(() {
+        _recentlyPlayed = json.decode(response.body)['data'];
+      });
+      // Logger().d(response.body);
+    } else {
+      throw Exception('Failed to load recently played');
+    }
+  }
+
+  Future<void> playSong(Map<String, dynamic> song) async {
+    // Changed parameter type
+    try {
+      await _musicKitPlugin.setQueue('songs', item: song);
+      await _musicKitPlugin.play();
+    } catch (e) {
+      // Added error handling
+      print(song);
+      print('Error playing song: $e');
+    }
   }
 
   @override
@@ -95,44 +82,69 @@ class _MusicKitTestState extends State<MusicKitTest> {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('Recently Played Songs'),
+          actions: [
+            IconButton(
+                icon: const Icon(Icons.arrow_forward_ios),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SwiperTest(),
+                    ),
+                  );
+                }),
+            // IconButton(
+            //     icon: const Icon(Icons.music_note),
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => MusicKitTestOld(),
+            //         ),
+            //       );
+            //     }),
+          ],
         ),
-        body: Center(
-          child: Column(
-            children: [
-              Text('DeveloperToken: $_developerToken\n'),
-              Text('UserToken: $_userToken\n'),
-              Text('Status: ${_status.toString()}\n'),
-              Text('CountryCode: $_countryCode\n'),
-              Text('Subscription: ${_musicSubsciption.toString()}\n'),
-              Text('PlayerState: ${_playerState?.playbackStatus.toString()}'),
-              Text('PlayerQueue: ${_playerQueue?.currentEntry?.title}'),
-              TextButton(
-                  onPressed: () async {
-                    _musicKitPlugin
-                        .setShuffleMode(MusicPlayerShuffleMode.songs);
-                    _musicKitPlugin.musicPlayerState
-                        .then((value) => debugPrint(value.shuffleMode.name));
-                  },
-                  child: const Text('Shuffle')),
-              TextButton(
-                  onPressed: () async {
-                    final status =
-                        await _musicKitPlugin.requestAuthorizationStatus();
-                    setState(() {
-                      _status = status;
-                    });
-                  },
-                  child: const Text('Request authorization')),
-              TextButton(
-                  onPressed: () async {
-                    await _musicKitPlugin.setQueue(albumFolklore['type'],
-                        item: albumFolklore);
-                    await _musicKitPlugin.play();
-                  },
-                  child: const Text('Play an Album'))
-            ],
-          ),
+        body: Column(
+          children: [
+            // if (_selectedSong.isNotEmpty)
+            //   Padding(
+            //     padding: const EdgeInsets.all(8.0),
+            //     child: Text('Selected Song ID: $_selectedSong'),
+            //   ),
+            Expanded(
+              child: Center(
+                child: _recentlyPlayed.isEmpty
+                    ? const CircularProgressIndicator()
+                    : RefreshIndicator(
+                        onRefresh: fetchRecentlyPlayed,
+                        child: ListView.builder(
+                          itemCount: _recentlyPlayed.length,
+                          itemBuilder: (context, index) {
+                            final song = _recentlyPlayed[index];
+                            return ListTile(
+                              leading: Image.network(
+                                song['attributes']['artwork']['url']
+                                    .replaceAll('{w}', '100')
+                                    .replaceAll('{h}', '100'),
+                              ),
+                              title: Text(song['attributes']['name']),
+                              subtitle: Text(song['attributes']['artistName']),
+                              onTap: () {
+                                setState(() {
+                                  _selectedSong =
+                                      song.toString(); // Added this line
+                                });
+                                playSong(song); // Changed argument type
+                              },
+                            );
+                          },
+                        ),
+                      ),
+              ),
+            ),
+          ],
         ),
       ),
     );
