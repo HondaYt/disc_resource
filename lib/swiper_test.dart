@@ -14,8 +14,8 @@ void main() {
 
 class SwiperTest extends StatelessWidget {
   const SwiperTest({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +28,8 @@ class SwiperTest extends StatelessWidget {
 
 class Example extends StatefulWidget {
   const Example({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   State<Example> createState() => _ExamplePageState();

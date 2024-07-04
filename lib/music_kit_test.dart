@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'swiper_test.dart';
-import 'music_kit_test_old.dart';
 
 void main() {
   runApp(const MusicKitTest());
@@ -46,7 +45,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
   }
 
   Future<void> fetchRecentlyPlayed() async {
-    final url = 'https://api.music.apple.com/v1/me/recent/played/tracks';
+    const url = 'https://api.music.apple.com/v1/me/recent/played/tracks';
     final response = await http.get(
       Uri.parse(url),
       headers: {
@@ -72,8 +71,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
       await _musicKitPlugin.play();
     } catch (e) {
       // Added error handling
-      print(song);
-      print('Error playing song: $e');
+      Logger().d('Error playing song: $e');
     }
   }
 
@@ -90,29 +88,19 @@ class _MusicKitTestState extends State<MusicKitTest> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => SwiperTest(),
+                      builder: (context) => const SwiperTest(),
                     ),
                   );
                 }),
-            // IconButton(
-            //     icon: const Icon(Icons.music_note),
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => MusicKitTestOld(),
-            //         ),
-            //       );
-            //     }),
           ],
         ),
         body: Column(
           children: [
-            // if (_selectedSong.isNotEmpty)
-            //   Padding(
-            //     padding: const EdgeInsets.all(8.0),
-            //     child: Text('Selected Song ID: $_selectedSong'),
-            //   ),
+            if (_selectedSong.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text('Selected Song ID: $_selectedSong'),
+              ),
             Expanded(
               child: Center(
                 child: _recentlyPlayed.isEmpty

@@ -7,9 +7,9 @@ class ExampleCard extends StatelessWidget {
   final ExampleCandidateModel candidate;
 
   const ExampleCard({
-    Key? key,
+    super.key,
     required this.candidate,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

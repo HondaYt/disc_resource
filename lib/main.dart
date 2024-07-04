@@ -1,15 +1,23 @@
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'signin.dart';
 
-void main() {
-  runApp(const SwiperTest());
+Future<void> main() async {
+  await Supabase.initialize(
+    url: 'https://lonmdgyrkadqqsgpvxzn.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxvbm1kZ3lya2FkcXFzZ3B2eHpuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTkzNjUwMDEsImV4cCI6MjAzNDk0MTAwMX0.PKP--k6gghcY0wmYUzmM46pUWFsQ0aNNSZO81EaMHIA',
+  );
+
+  runApp(const MyApp());
 }
 
-class SwiperTest extends StatelessWidget {
-  const SwiperTest({super.key});
+final supabase = Supabase.instance.client;
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -42,6 +42,7 @@ dependencies:
   http: ^1.2.1
   sign_in_with_apple: ^6.1.1
   appinio_swiper: ^2.1.1
+  crypto: ^3.0.3
 
 dev_dependencies:
   flutter_test:
