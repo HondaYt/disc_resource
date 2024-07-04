@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:logger/logger.dart';
 
 import 'package:music_kit/music_kit.dart';
 import 'fixture.dart';
@@ -129,7 +130,7 @@ class _MusicKitTestOldState extends State<MusicKitTestOld> {
                     await _musicKitPlugin.setQueue(albumFolklore['type'],
                         item: albumFolklore);
                     await _musicKitPlugin.play();
-                    print(albumFolklore);
+                    Logger().d(albumFolklore);
                   },
                   child: const Text('Play an Album'))
             ],

@@ -50,8 +50,8 @@ class MyHomePageState extends State<MyHomePage> {
     switch (status) {
       case PermissionStatus.granted:
         Logger().w('権限が許可されました');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => SignInPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SignInPage()));
         break;
       case PermissionStatus.permanentlyDenied:
         Logger().w('権限が拒否されました');

@@ -4,11 +4,12 @@ import 'package:logger/logger.dart';
 import 'music_kit_test.dart';
 
 class SignInPage extends StatelessWidget {
+  const SignInPage({super.key});
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign In'),
+        title: const Text('Sign In'),
       ),
       body: Center(
         child: Padding(
@@ -25,8 +26,12 @@ class SignInPage extends StatelessWidget {
 
                 // サインイン成功時の処理
                 Logger().d(credential);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => MusicKitTest()));
+                if (context.mounted) {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const MusicKitTest()));
+                }
               } catch (error) {
                 // エラーハンドリング
                 Logger().e(error);
