@@ -46,7 +46,6 @@ class AuthStateState extends State<AuthState> {
   @override
   void initState() {
     super.initState();
-    // _checkAuthState() を initState から削除
   }
 
   @override
@@ -65,12 +64,7 @@ class AuthStateState extends State<AuthState> {
     final session = supabase.auth.currentSession;
     final permission = await Permission.mediaLibrary.status.isGranted;
     if (!mounted) return;
-    if (session != null && permission) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MusicKitTest()),
-      );
-    } else if (session == null) {
+    if (session == null) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => SignInPage()),
@@ -83,7 +77,7 @@ class AuthStateState extends State<AuthState> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInPage()),
+        MaterialPageRoute(builder: (context) => const MusicKitTest()),
       );
     }
   }

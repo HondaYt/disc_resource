@@ -22,7 +22,6 @@ class _MusicKitTestState extends State<MusicKitTest> {
   String _developerToken = '';
   String _userToken = '';
   List<dynamic> _recentlyPlayed = [];
-  String _selectedSong = ''; // Added this line
 
   @override
   void initState() {
@@ -58,7 +57,6 @@ class _MusicKitTestState extends State<MusicKitTest> {
       setState(() {
         _recentlyPlayed = json.decode(response.body)['data'];
       });
-      // Logger().d(response.body);
     } else {
       throw Exception('Failed to load recently played');
     }
@@ -96,11 +94,6 @@ class _MusicKitTestState extends State<MusicKitTest> {
         ),
         body: Column(
           children: [
-            if (_selectedSong.isNotEmpty)
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text('Selected Song ID: $_selectedSong'),
-              ),
             Expanded(
               child: Center(
                 child: _recentlyPlayed.isEmpty
@@ -120,11 +113,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
                               title: Text(song['attributes']['name']),
                               subtitle: Text(song['attributes']['artistName']),
                               onTap: () {
-                                setState(() {
-                                  _selectedSong =
-                                      song.toString(); // Added this line
-                                });
-                                playSong(song); // Changed argument type
+                                playSong(song);
                               },
                             );
                           },
