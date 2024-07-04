@@ -47,5 +47,11 @@
 		</array>
 		<key>NSAppleMusicUsageDescription</key>
 		<string>このアプリはApple Musicライブラリへのアクセスを必要とします。</string>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+			<string>io.supabase.disc</string>
+		</array>
 	</dict>
 </plist>

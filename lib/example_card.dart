@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import 'example_candidate_model.dart';
 
@@ -50,6 +51,7 @@ class ExampleCard extends StatelessWidget {
               ),
             ),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
                   mainAxisSize: MainAxisSize.min,
@@ -86,6 +88,16 @@ class ExampleCard extends StatelessWidget {
                     )
                   ],
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    Logger().d("ボタンクリック");
+                  },
+                  child: const Icon(
+                    CupertinoIcons.arrow_right,
+                    size: 20,
+                    color: CupertinoColors.systemGrey,
+                  ),
+                )
               ],
             ),
           ),

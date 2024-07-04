@@ -1,0 +1,48 @@
+{
+    "access_token": "eyJhbGciOiJIUzI1NiIsImtpZCI6IkY1ekppQUdPRXV1bnFrV3UiLCJ0eXAiOiJKV1QifQ.eyJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzIwMDczMTUyLCJpYXQiOjE3MjAwNjk1NTIsImlzcyI6Imh0dHBzOi8vbG9ubWRneXJrYWRxcXNncHZ4em4uc3VwYWJhc2UuY28vYXV0aC92MSIsInN1YiI6IjlhMmJiMmQ3LWIxMWItNGIxNy1iNzdlLTdjYzdkYzRmMzVkOSIsImVtYWlsIjoiaG9uZGFhYWEwOTI3QGljbG91ZC5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImFwcGxlIiwicHJvdmlkZXJzIjpbImFwcGxlIl19LCJ1c2VyX21ldGFkYXRhIjp7ImN1c3RvbV9jbGFpbXMiOnsiYXV0aF90aW1lIjoxNzIwMDY5NTQ5fSwiZW1haWwiOiJob25kYWFhYTA5MjdAaWNsb3VkLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczovL2FwcGxlaWQuYXBwbGUuY29tIiwicGhvbmVfdmVyaWZpZWQiOmZhbHNlLCJwcm92aWRlcl9pZCI6IjAwMDEyMC5jNDk2NjMzMjFlMTM0MzUwYjBlMjQxMGY2NGU4MjU0OS4wODMwIiwic3ViIjoiMDAwMTIwLmM0OTY2MzMyMWUxMzQzNTBiMGUyNDEwZjY0ZTgyNTQ5LjA4MzAifSwicm9sZSI6ImF1dGhlbnRpY2F0ZWQiLCJhYWwiOiJhYWwxIiwiYW1yIjpbeyJtZXRob2QiOiJvYXV0aCIsInRpbWVzdGFtcCI6MTcyMDA2OTU1Mn1dLCJzZXNzaW9uX2lkIjoiOWIyMGJiODYtOTc3NC00N2IzLTkyZmMtODRjZDU0NGFkZmM1IiwiaXNfYW5vbnltb3VzIjpmYWxzZX0.EVih3EOoao5lFpKoRGND0Pw91pHF_IwFN3DQpTn_Bl0",
+    "expires_in": 3600,
+    "expires_at": 1720073152,
+    "refresh_token": "E0GVI42tkAGMFVc8_naqSQ",
+    "token_type": "bearer",
+    "provider_token": null,
+    "provider_refresh_token": null,
+    "user": {
+        "id": "9a2bb2d7-b11b-4b17-b77e-7cc7dc4f35d9",
+        "app_metadata": {
+            "provider": "apple",
+            "providers": [
+                "apple"
+            ]
+        },
+        "user_metadata": {
+            "custom_claims": {
+                "auth_time": 1720069549
+            },
+            "email": "hondaaaa0927@icloud.com",
+            "email_verified": true,
+            "iss": "https://appleid.apple.com",
+            "phone_verified": false,
+            "provider_id": "000120.c49663321e134350b0e2410f64e82549.0830",
+            "sub": "000120.c49663321e134350b0e2410f64e82549.0830"
+        },
+        "aud": "authenticated",
+        "confirmation_sent_at": null,
+        "recovery_sent_at": null,
+        "email_change_sent_at": null,
+        "new_email": null,
+        "invited_at": null,
+        "action_link": null,
+        "email": "hondaaaa0927@icloud.com",
+        "phone": "",
+        "created_at": "2024-07-04T05:05:52.172818Z",
+        "confirmed_at": null,
+        "email_confirmed_at": "2024-07-04T05:05:52.182461854Z",
+        "phone_confirmed_at": null,
+        "last_sign_in_at": "2024-07-04T05:05:52.18493814Z",
+        "role": "authenticated",
+        "updated_at": "2024-07-04T05:05:52.189271Z",
+        "identities": [],
+        "factors": null,
+        "is_anonymous": false
+    }
+}
