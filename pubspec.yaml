@@ -36,13 +36,19 @@ dependencies:
     cupertino_icons: ^1.0.6
     logger: ^2.3.0
     permission_handler: ^11.3.1
-    music_kit: ^1.1.0
+    # music_kit: ^1.1.0
+    music_kit:
+        git:
+            url: https://github.com/HondaYt/flutter_music_kit.git
+            path: music_kit
     supabase_flutter: ^2.5.7
     http: ^1.2.1
     sign_in_with_apple: ^6.1.1
     appinio_swiper: ^2.1.1
     crypto: ^3.0.3
     flutter_dotenv: ^5.1.0
+    audioplayers: ^5.2.1
+    just_audio: ^0.9.37
 
 dev_dependencies:
     flutter_test:

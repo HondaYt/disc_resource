@@ -8,10 +8,6 @@ import 'package:flutter/material.dart';
 
 import 'example_buttons.dart';
 
-void main() {
-  runApp(const SwiperTest());
-}
-
 class SwiperTest extends StatelessWidget {
   const SwiperTest({
     super.key,

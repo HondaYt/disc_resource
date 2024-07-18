@@ -1,142 +1,135 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:logger/logger.dart';
-
 import 'package:music_kit/music_kit.dart';
-import 'fixture.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:logger/logger.dart';
+import 'swiper_test.dart';
 
-void main() {
-  runApp(const MusicKitTestOld());
-}
-
-class MusicKitTestOld extends StatefulWidget {
-  const MusicKitTestOld({super.key});
+class MusicKitTest extends StatefulWidget {
+  const MusicKitTest({super.key});
 
   @override
-  State<MusicKitTestOld> createState() => _MusicKitTestOldState();
+  State<MusicKitTest> createState() => _MusicKitTestState();
 }
 
-class _MusicKitTestOldState extends State<MusicKitTestOld> {
+class _MusicKitTestState extends State<MusicKitTest> {
   final _musicKitPlugin = MusicKit();
-  MusicAuthorizationStatus _status =
-      const MusicAuthorizationStatus.notDetermined();
-  String? _developerToken = '';
+  String _developerToken = '';
   String _userToken = '';
-  String _countryCode = '';
-
-  MusicSubscription _musicSubscription = MusicSubscription();
-  late StreamSubscription<MusicSubscription>
-      _musicSubscriptionStreamSubscription;
-
-  MusicPlayerState? _playerState;
-  late StreamSubscription<MusicPlayerState> _playerStateStreamSubscription;
-
-  MusicPlayerQueue? _playerQueue;
-  late StreamSubscription<MusicPlayerQueue> _playerQueueStreamSubscription;
+  List<dynamic> _recentlyPlayed = [];
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-
-    _musicSubscriptionStreamSubscription =
-        _musicKitPlugin.onSubscriptionUpdated.listen((event) {
-      setState(() {
-        _musicSubscription = event;
-      });
-    });
-
-    _playerStateStreamSubscription =
-        _musicKitPlugin.onMusicPlayerStateChanged.listen((event) {
-      setState(() {
-        _playerState = event;
-      });
-    });
-
-    _playerQueueStreamSubscription =
-        _musicKitPlugin.onPlayerQueueChanged.listen((event) {
-      setState(() {
-        _playerQueue = event;
-      });
-    });
   }
 
-  @override
-  void dispose() {
-    _musicSubscriptionStreamSubscription.cancel();
-    _playerStateStreamSubscription.cancel();
-    _playerQueueStreamSubscription.cancel();
-    super.dispose();
-  }
-
-  // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    final status = await _musicKitPlugin.authorizationStatus;
-
     final developerToken = await _musicKitPlugin.requestDeveloperToken();
     final userToken = await _musicKitPlugin.requestUserToken(developerToken);
 
-    final countryCode = await _musicKitPlugin.currentCountryCode;
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
     if (!mounted) return;
 
     setState(() {
-      _status = status;
       _developerToken = developerToken;
       _userToken = userToken;
-      _countryCode = countryCode;
     });
+
+    fetchRecentlyPlayed();
+  }
+
+  Future<void> fetchRecentlyPlayed() async {
+    const url = 'https://api.music.apple.com/v1/me/recent/played/tracks';
+    final response = await http.get(
+      Uri.parse(url),
+      headers: {
+        'Authorization': 'Bearer $_developerToken',
+        'Music-User-Token': _userToken,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      if (!mounted) return;
+      setState(() {
+        _recentlyPlayed = json.decode(response.body)['data'];
+      });
+    } else {
+      throw Exception('Failed to load recently played');
+    }
+  }
+
+  Future<void> playSong(Map<String, dynamic> song) async {
+    // Changed parameter type
+    try {
+      await _musicKitPlugin.setQueue('songs', item: song);
+      await _musicKitPlugin.play();
+    } catch (e) {
+      // Added error handling
+      Logger().d('Error playing song: $e');
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Column(
+    return PopScope(
+      canPop: false,
+      child: MaterialApp(
+        home: Scaffold(
+          appBar: AppBar(
+            title: const Text('Recently Played Songs'),
+            actions: [
+              IconButton(
+                  icon: const Icon(Icons.arrow_forward_ios),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SwiperTest(),
+                      ),
+                    );
+                  }),
+            ],
+          ),
+          body: Column(
             children: [
-              Text('DeveloperToken: $_developerToken\n'),
-              Text('UserToken: $_userToken\n'),
-              Text('Status: ${_status.toString()}\n'),
-              Text('CountryCode: $_countryCode\n'),
-              Text('Subscription: ${_musicSubscription.toString()}\n'),
-              Text('PlayerState: ${_playerState?.playbackStatus.toString()}'),
-              Text('PlayerQueue: ${_playerQueue?.currentEntry?.title}'),
-              TextButton(
-                  onPressed: () async {
-                    _musicKitPlugin
-                        .setShuffleMode(MusicPlayerShuffleMode.songs);
-                    _musicKitPlugin.musicPlayerState
-                        .then((value) => debugPrint(value.shuffleMode.name));
-                  },
-                  child: const Text('Shuffle')),
-              TextButton(
-                  onPressed: () async {
-                    final status =
-                        await _musicKitPlugin.requestAuthorizationStatus();
-                    setState(() {
-                      _status = status;
-                    });
-                  },
-                  child: const Text('Request authorization')),
-              TextButton(
-                  onPressed: () async {
-                    await _musicKitPlugin.setQueue(albumFolklore['type'],
-                        item: albumFolklore);
-                    await _musicKitPlugin.play();
-                    Logger().d(albumFolklore);
-                  },
-                  child: const Text('Play an Album'))
+              Expanded(
+                child: Center(
+                  child: _recentlyPlayed.isEmpty
+                      ? const CircularProgressIndicator()
+                      : RefreshIndicator(
+                          onRefresh: fetchRecentlyPlayed,
+                          child: ListView.builder(
+                            itemCount: _recentlyPlayed.length,
+                            itemBuilder: (context, index) {
+                              final song = _recentlyPlayed[index];
+                              return ListTile(
+                                leading: Image.network(
+                                  song['attributes']['artwork']['url']
+                                      .replaceAll('{w}', '100')
+                                      .replaceAll('{h}', '100'),
+                                ),
+                                title: Text(song['attributes']['name']),
+                                subtitle:
+                                    Text(song['attributes']['artistName']),
+                                onTap: () {
+                                  playSong(song);
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
