@@ -19,11 +19,11 @@
 		<key>CFBundlePackageType</key>
 		<string>APPL</string>
 		<key>CFBundleShortVersionString</key>
-		<string>$(FLUTTER_BUILD_NAME)</string>
+		<string>1.0.0</string>
 		<key>CFBundleSignature</key>
 		<string>????</string>
 		<key>CFBundleVersion</key>
-		<string>$(FLUTTER_BUILD_NUMBER)</string>
+		<string>11</string>
 		<key>LSRequiresIPhoneOS</key>
 		<true />
 		<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -47,6 +47,8 @@
 		</array>
 		<key>NSAppleMusicUsageDescription</key>
 		<string>このアプリはApple Musicライブラリへのアクセスを必要とします。</string>
+		<key>NSMicrophoneUsageDescription</key>
+		<string>このアプリは音楽再生のためにマイクへのアクセスを必要とします。</string>
 		<key>CFBundleTypeRole</key>
 		<string>Editor</string>
 		<key>CFBundleURLSchemes</key>

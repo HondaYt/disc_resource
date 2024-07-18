@@ -47,7 +47,6 @@ dependencies:
     appinio_swiper: ^2.1.1
     crypto: ^3.0.3
     flutter_dotenv: ^5.1.0
-    audioplayers: ^5.2.1
     just_audio: ^0.9.37
 
 dev_dependencies:
