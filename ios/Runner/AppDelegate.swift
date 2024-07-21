@@ -16,8 +16,8 @@ import UIKit
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     let controller: FlutterViewController = window?.rootViewController as! FlutterViewController
-    let methodChannel = FlutterMethodChannel(
-      name: methodChannelName, binaryMessenger: controller.binaryMessenger)
+    // let methodChannel = FlutterMethodChannel(
+    //   name: methodChannelName, binaryMessenger: controller.binaryMessenger)
 
     // methodChannel.setMethodCallHandler { [weak self] methodCall, result in
     //   switch methodCall.method {

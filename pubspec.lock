@@ -216,6 +216,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  interactive_slider:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: "19dadcc2e0ecec366605444970217bbc1ec77bb9"
+      url: "https://github.com/HondaYt/interactive_slider.git"
+    source: git
+    version: "0.2.2"
   json_annotation:
     dependency: transitive
     description:
