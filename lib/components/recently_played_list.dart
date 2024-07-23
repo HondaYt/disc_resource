@@ -47,21 +47,27 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
   void didUpdateWidget(RecentlyPlayedList oldWidget) {
     super.didUpdateWidget(oldWidget);
 
-    if (widget.remainingTime.inSeconds == 0 && !_hasSwiped) {
-      if ((widget.musicPlayerStatus == MusicPlayerPlaybackStatus.paused &&
-              widget.wasMusicPlayerStatusBeforeSeek ==
-                  MusicPlayerPlaybackStatus.playing) ||
-          (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.playing &&
-              widget.wasMusicPlayerStatusBeforeSeek ==
-                  MusicPlayerPlaybackStatus.paused)) {
-        widget.swiperController.swipeRight();
-        _hasSwiped = true;
-      }
+    if (widget.remainingTime.inSeconds == 0 &&
+        !_hasSwiped &&
+        _shouldSwipeRight()) {
+      widget.swiperController.swipeRight();
+      _hasSwiped = true;
     }
 
     if (widget.currentPlaybackTime.inSeconds == 0) {
       _hasSwiped = false;
     }
+  }
+
+  bool _shouldSwipeRight() {
+    return (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.paused &&
+            widget.wasMusicPlayerStatusBeforeSeek ==
+                MusicPlayerPlaybackStatus.playing) ||
+        (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.playing &&
+            widget.wasMusicPlayerStatusBeforeSeek ==
+                MusicPlayerPlaybackStatus.paused) ||
+        (widget.wasMusicPlayerStatusBeforeSeek ==
+            MusicPlayerPlaybackStatus.stopped);
   }
 
   @override

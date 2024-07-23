@@ -137,6 +137,20 @@ class SongCardState extends State<SongCard> {
                 color: Colors.grey[600],
               ),
             ),
+            Text(
+              widget.musicPlayerStatus.toString(),
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.grey[600],
+              ),
+            ),
+            Text(
+              'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
+              style: TextStyle(
+                fontSize: 18.0,
+                color: Colors.grey[600],
+              ),
+            ),
             const SizedBox(height: 8.0),
             InteractiveSlider(
               controller: _controller,
