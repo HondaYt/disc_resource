@@ -50,7 +50,6 @@ class AuthStateState extends State<AuthState> {
 
   @override
   Widget build(BuildContext context) {
-    // build メソッドの後に _checkAuthState を呼び出す
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _checkAuthState();
     });

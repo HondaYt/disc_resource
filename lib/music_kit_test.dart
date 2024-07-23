@@ -23,8 +23,9 @@ class _MusicKitTestState extends State<MusicKitTest> {
   Duration _currentPlaybackTime = Duration.zero;
   Duration _songDuration = Duration.zero;
   Duration _remainingTime = Duration.zero;
-  // double _songProgress = 0.0;
   MusicPlayerPlaybackStatus _musicPlayerStatus =
+      MusicPlayerPlaybackStatus.stopped;
+  MusicPlayerPlaybackStatus _wasMusicPlayerStatusBeforeSeek =
       MusicPlayerPlaybackStatus.stopped;
 
   @override
@@ -50,8 +51,6 @@ class _MusicKitTestState extends State<MusicKitTest> {
           _currentPlaybackTime =
               Duration(milliseconds: (playbackTime * 1000).toInt());
           _remainingTime = _songDuration - _currentPlaybackTime;
-          // _songProgress = _currentPlaybackTime.inMilliseconds /
-          //     _songDuration.inMilliseconds;
         });
       }
     });
@@ -143,6 +142,18 @@ class _MusicKitTestState extends State<MusicKitTest> {
     }
   }
 
+  Future<void> seekStart() async {
+    _wasMusicPlayerStatusBeforeSeek = _musicPlayerStatus;
+    pauseSong();
+  }
+
+  Future<void> seekEnd(Duration position) async {
+    await seekTo(position);
+    if (_wasMusicPlayerStatusBeforeSeek == MusicPlayerPlaybackStatus.playing) {
+      resumeSong();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -161,22 +172,15 @@ class _MusicKitTestState extends State<MusicKitTest> {
                       currentPlaybackTime: _currentPlaybackTime,
                       songDuration: _songDuration,
                       remainingTime: _remainingTime,
-                      // songProgress: _songProgress,
                       musicPlayerStatus: _musicPlayerStatus,
+                      wasMusicPlayerStatusBeforeSeek:
+                          _wasMusicPlayerStatusBeforeSeek,
+                      onSeekStart: seekStart,
+                      onSeekEnd: seekEnd,
                       onSeek: seekTo,
                       onPause: pauseSong,
                       onResume: resumeSong,
                       onPlaySong: playSong,
-                      // onSeekStart: () {
-                      //   _wasPlayingBeforeSeek = _musicPlayerStatus ==
-                      //       MusicPlayerPlaybackStatus.playing;
-                      //   pauseSong();
-                      // },
-                      // onSeekEnd: () {
-                      //   if (_wasPlayingBeforeSeek) {
-                      //     resumeSong();
-                      //   }
-                      // },
                     ),
             ),
             SizedBox(height: MediaQuery.of(context).padding.bottom),

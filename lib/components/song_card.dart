@@ -10,7 +10,10 @@ class SongCard extends StatefulWidget {
   final Duration songDuration;
   final Duration remainingTime;
   final MusicPlayerPlaybackStatus musicPlayerStatus;
+  final MusicPlayerPlaybackStatus wasMusicPlayerStatusBeforeSeek;
   final Function(Duration) onSeek;
+  final Function() onSeekStart;
+  final Function(Duration) onSeekEnd;
   final Function() onPause;
   final Function() onResume;
   final AppinioSwiperController swiperController;
@@ -22,7 +25,10 @@ class SongCard extends StatefulWidget {
     required this.songDuration,
     required this.remainingTime,
     required this.musicPlayerStatus,
+    required this.wasMusicPlayerStatusBeforeSeek,
+    required this.onSeekStart,
     required this.onSeek,
+    required this.onSeekEnd,
     required this.onPause,
     required this.onResume,
     required this.swiperController,
@@ -33,20 +39,26 @@ class SongCard extends StatefulWidget {
 }
 
 class SongCardState extends State<SongCard> {
-  late MusicPlayerPlaybackStatus wasMusicPlayerStatusBeforeSeek;
   final _controller = InteractiveSliderController(0.0);
 
   @override
   void initState() {
     super.initState();
-    _controller.value = widget.currentPlaybackTime.inMilliseconds.toDouble();
+    _updateSliderValue();
   }
 
   @override
   void didUpdateWidget(SongCard oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.currentPlaybackTime != oldWidget.currentPlaybackTime) {
-      _controller.value = widget.currentPlaybackTime.inMilliseconds.toDouble();
+      _updateSliderValue();
+    }
+  }
+
+  void _updateSliderValue() {
+    final newValue = widget.currentPlaybackTime.inMilliseconds.toDouble();
+    if (!newValue.isNaN) {
+      _controller.value = newValue;
     }
   }
 
@@ -71,12 +83,42 @@ class SongCardState extends State<SongCard> {
               borderRadius: BorderRadius.circular(20.0),
               child: SizedBox(
                 width: double.infinity,
-                height: 300.0,
-                child: Image.network(
-                  widget.song['attributes']['artwork']['url']
-                      .replaceAll('{w}', '700')
-                      .replaceAll('{h}', '700'),
-                  fit: BoxFit.cover,
+                // height: 300.0,
+                height: 318,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.network(
+                      widget.song['attributes']['artwork']['url']
+                          .replaceAll('{w}', '2')
+                          .replaceAll('{h}', '2'),
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      widget.song['attributes']['artwork']['url']
+                          .replaceAll('{w}', '159')
+                          .replaceAll('{h}', '159'),
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      widget.song['attributes']['artwork']['url']
+                          .replaceAll('{w}', '318')
+                          .replaceAll('{h}', '318'),
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      widget.song['attributes']['artwork']['url']
+                          .replaceAll('{w}', '636')
+                          .replaceAll('{h}', '636'),
+                      fit: BoxFit.cover,
+                    ),
+                    Image.network(
+                      widget.song['attributes']['artwork']['url']
+                          .replaceAll('{w}', '1272')
+                          .replaceAll('{h}', '1272'),
+                      fit: BoxFit.cover,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -96,26 +138,13 @@ class SongCardState extends State<SongCard> {
               ),
             ),
             const SizedBox(height: 8.0),
-            // Slider(
-            //   value: widget.currentPlaybackTime.inMilliseconds.toDouble(),
-            //   max: widget.songDuration.inMilliseconds.toDouble(),
-            //   onChangeStart: (value) {
-            //     wasMusicPlayerStatusBeforeSeek = widget.musicPlayerStatus;
-            //     widget.onPause();
-            //   },
-            //   onChangeEnd: (value) {
-            //     widget.onSeek(Duration(milliseconds: value.toInt()));
-            //     if (wasMusicPlayerStatusBeforeSeek ==
-            //         MusicPlayerPlaybackStatus.playing) {
-            //       widget.onResume();
-            //     }
-            //   },
-            //   onChanged: (value) {
-            //     widget.onSeek(Duration(milliseconds: value.toInt()));
-            //   },
-            //   divisions: 2000, // Optional: to make the slider smoother
-            // ),
             InteractiveSlider(
+              controller: _controller,
+              min: 0,
+              max: widget.songDuration.inMilliseconds.toDouble(),
+              onChangeStart: (value) => widget.onSeekStart(),
+              onChangeEnd: (value) =>
+                  widget.onSeekEnd(Duration(milliseconds: value.toInt())),
               iconPosition: IconPosition.below,
               startIcon: Text(
                 '${widget.currentPlaybackTime.inMinutes}:${(widget.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}',
@@ -131,24 +160,6 @@ class SongCardState extends State<SongCard> {
                   color: Colors.grey[600],
                 ),
               ),
-              controller: _controller,
-              min: 0,
-              max: widget.songDuration.inMilliseconds.toDouble(),
-              onChangeStart: (value) {
-                wasMusicPlayerStatusBeforeSeek = widget.musicPlayerStatus;
-                widget.onPause();
-              },
-              onChangeEnd: (value) {
-                widget.onSeek(Duration(milliseconds: value.toInt()));
-                if (wasMusicPlayerStatusBeforeSeek ==
-                    MusicPlayerPlaybackStatus.playing) {
-                  widget.onResume();
-                }
-              },
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -160,10 +171,12 @@ class SongCardState extends State<SongCard> {
                   },
                 ),
                 CupertinoButton(
-                  child: Icon(widget.musicPlayerStatus ==
-                          MusicPlayerPlaybackStatus.playing
-                      ? CupertinoIcons.pause_fill
-                      : CupertinoIcons.play_fill),
+                  child: Icon(
+                      size: 50,
+                      widget.musicPlayerStatus ==
+                              MusicPlayerPlaybackStatus.playing
+                          ? CupertinoIcons.pause_fill
+                          : CupertinoIcons.play_fill),
                   onPressed: () {
                     if (widget.musicPlayerStatus ==
                         MusicPlayerPlaybackStatus.playing) {
