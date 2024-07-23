@@ -3,6 +3,7 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:music_kit/music_kit.dart';
 import 'package:interactive_slider/interactive_slider.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 class SongCard extends StatefulWidget {
   final Map<String, dynamic> song;
@@ -70,17 +71,20 @@ class SongCardState extends State<SongCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0),
-      ),
+    return SmoothCard(
+      smoothness: 0.6,
+      elevation: 2.0,
+      shadowColor: Colors.black38,
+      borderRadius: BorderRadius.circular(40.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20.0),
+            SmoothClipRRect(
+              smoothness: 0.6,
+              // smoothness: 0,
+              borderRadius: BorderRadius.circular(40.0 - 16.0),
               child: SizedBox(
                 width: double.infinity,
                 // height: 300.0,
@@ -118,6 +122,59 @@ class SongCardState extends State<SongCard> {
                           .replaceAll('{h}', '1272'),
                       fit: BoxFit.cover,
                     ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                widget.musicPlayerStatus.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Duration:${widget.songDuration.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Remaining:${widget.remainingTime.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -137,48 +194,9 @@ class SongCardState extends State<SongCard> {
                 color: Colors.grey[600],
               ),
             ),
-            Text(
-              widget.musicPlayerStatus.toString(),
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.grey[600],
-              ),
-            ),
-            Text(
-              'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.grey[600],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Duration:${widget.songDuration.inSeconds.toString()}',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  'Remaining:${widget.remainingTime.inSeconds.toString()}',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.grey[600],
-                  ),
-                ),
-                Text(
-                  'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
-                  style: TextStyle(
-                    fontSize: 18.0,
-                    color: Colors.grey[600],
-                  ),
-                ),
-              ],
-            ),
             const SizedBox(height: 8.0),
             InteractiveSlider(
+              // unfocusedMargin: const EdgeInsets.all(0),
               controller: _controller,
               min: 0,
               max: widget.songDuration.inMilliseconds.toDouble(),
