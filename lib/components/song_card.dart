@@ -189,7 +189,7 @@ class SongCardState extends State<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.forward_fill),
                   onPressed: () {
-                    widget.swiperController.swipeRight();
+                    widget.swiperController.swipeLeft();
                   },
                 ),
               ],
