@@ -122,6 +122,7 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
         widget.onPlaySong(widget.recentlyPlayed[targetIndex]);
         break;
       case Unswipe():
+        widget.onPlaySong(widget.recentlyPlayed[targetIndex]);
         Logger().d('A ${activity.direction.name} swipe was undone.');
         Logger()
             .d('previous index: $previousIndex, target index: $targetIndex');
