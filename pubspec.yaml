@@ -53,6 +53,7 @@ dependencies:
             url: https://github.com/HondaYt/interactive_slider.git
             ref: main
     provider: ^6.1.2
+    smooth_corner: ^1.1.0
 
 dev_dependencies:
     flutter_test:
