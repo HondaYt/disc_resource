@@ -49,7 +49,8 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
 
     if (widget.remainingTime.inSeconds == 0 &&
         !_hasSwiped &&
-        _shouldSwipeRight()) {
+        widget.currentPlaybackTime.inSeconds != 0 &&
+        shouldSwipeRight()) {
       widget.swiperController.swipeRight();
       _hasSwiped = true;
     }
@@ -59,15 +60,16 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
     }
   }
 
-  bool _shouldSwipeRight() {
+  bool shouldSwipeRight() {
     return (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.paused &&
             widget.wasMusicPlayerStatusBeforeSeek ==
                 MusicPlayerPlaybackStatus.playing) ||
         (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.playing &&
             widget.wasMusicPlayerStatusBeforeSeek ==
                 MusicPlayerPlaybackStatus.paused) ||
-        (widget.wasMusicPlayerStatusBeforeSeek ==
-            MusicPlayerPlaybackStatus.stopped);
+        (widget.musicPlayerStatus != MusicPlayerPlaybackStatus.stopped &&
+            widget.wasMusicPlayerStatusBeforeSeek ==
+                MusicPlayerPlaybackStatus.stopped);
   }
 
   @override

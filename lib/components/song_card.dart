@@ -151,6 +151,32 @@ class SongCardState extends State<SongCard> {
                 color: Colors.grey[600],
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Duration:${widget.songDuration.inSeconds.toString()}',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                Text(
+                  'Remaining:${widget.remainingTime.inSeconds.toString()}',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.grey[600],
+                  ),
+                ),
+                Text(
+                  'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: Colors.grey[600],
+                  ),
+                ),
+              ],
+            ),
             const SizedBox(height: 8.0),
             InteractiveSlider(
               controller: _controller,
@@ -203,7 +229,11 @@ class SongCardState extends State<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.forward_fill),
                   onPressed: () {
+                    //   if (widget.currentPlaybackTime.inSeconds < 3) {
+                    //     widget.onSeek(const Duration(seconds: 0));
+                    //   } else {
                     widget.swiperController.swipeLeft();
+                    // }
                   },
                 ),
               ],
