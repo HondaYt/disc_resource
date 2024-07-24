@@ -7,7 +7,7 @@ import 'package:logger/logger.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'components/recently_played_list.dart';
 import 'liked_music.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/liked_songs_provider.dart';
 
 class MusicKitTest extends StatefulWidget {
@@ -158,7 +158,8 @@ class _MusicKitTestState extends State<MusicKitTest> {
   }
 
   Future<void> likeSong(Map<String, dynamic> song) async {
-    Provider.of<LikedSongsProvider>(context, listen: false).addSong(song);
+    final ref = ProviderScope.containerOf(context);
+    ref.read(likedSongsProvider.notifier).addSong(song);
   }
 
   @override

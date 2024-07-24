@@ -1,12 +1,15 @@
-import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class LikedSongsProvider with ChangeNotifier {
-  final List<Map<String, dynamic>> _likedSongs = [];
-
-  List<Map<String, dynamic>> get likedSongs => _likedSongs;
+class LikedSongsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
+  LikedSongsNotifier() : super([]);
 
   void addSong(Map<String, dynamic> song) {
-    _likedSongs.add(song);
-    notifyListeners();
+    state = [...state, song];
   }
 }
+
+final likedSongsProvider =
+    StateNotifierProvider<LikedSongsNotifier, List<Map<String, dynamic>>>(
+        (ref) {
+  return LikedSongsNotifier();
+});

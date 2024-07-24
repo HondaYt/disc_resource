@@ -55,6 +55,7 @@ dependencies:
     provider: ^6.1.2
     smooth_corner: ^1.1.0
     flutter_native_splash: ^2.4.1
+    flutter_riverpod: ^2.5.1
 
 dev_dependencies:
     flutter_test:

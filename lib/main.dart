@@ -5,8 +5,8 @@ import 'permission_page.dart';
 import 'select_music.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sign_in.dart';
-import 'package:provider/provider.dart';
-import 'providers/liked_songs_provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'providers/liked_songs_provider.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -17,11 +17,8 @@ Future<void> main() async {
   );
 
   runApp(
-    MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => LikedSongsProvider()),
-      ],
-      child: const MyApp(),
+    const ProviderScope(
+      child: MyApp(),
     ),
   );
 }

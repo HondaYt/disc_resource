@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/liked_songs_provider.dart';
 
-class LikedMusic extends StatelessWidget {
+class LikedMusic extends ConsumerWidget {
   const LikedMusic({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final likedSongs = Provider.of<LikedSongsProvider>(context).likedSongs;
+  Widget build(BuildContext context, WidgetRef ref) {
+    final likedSongs = ref.watch(likedSongsProvider);
 
     return Scaffold(
       appBar: AppBar(

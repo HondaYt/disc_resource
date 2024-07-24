@@ -3,7 +3,7 @@ import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:music_kit/music_kit.dart';
 import 'song_card.dart';
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/liked_songs_provider.dart';
 
 class RecentlyPlayedList extends StatefulWidget {
@@ -119,7 +119,9 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
         Logger().d('The card was swiped to the : ${activity.direction}');
         switch (activity.direction) {
           case AxisDirection.right:
-            Provider.of<LikedSongsProvider>(context, listen: false)
+            final ref = ProviderScope.containerOf(context);
+            ref
+                .read(likedSongsProvider.notifier)
                 .addSong(widget.recentlyPlayed[previousIndex]);
             break;
           case AxisDirection.left:
