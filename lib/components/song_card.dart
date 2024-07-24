@@ -194,7 +194,6 @@ class SongCardState extends State<SongCard> {
                 color: Colors.grey[600],
               ),
             ),
-            const SizedBox(height: 8.0),
             InteractiveSlider(
               // unfocusedMargin: const EdgeInsets.all(0),
               controller: _controller,

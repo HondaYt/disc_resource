@@ -18,6 +18,7 @@ class RecentlyPlayedList extends StatefulWidget {
   final Function() onPause;
   final Function() onResume;
   final Function(Map<String, dynamic>) onPlaySong;
+  final Function(Map<String, dynamic>) onLikeSong;
 
   const RecentlyPlayedList({
     super.key,
@@ -34,6 +35,7 @@ class RecentlyPlayedList extends StatefulWidget {
     required this.onPause,
     required this.onResume,
     required this.onPlaySong,
+    required this.onLikeSong,
   });
 
   @override
@@ -115,6 +117,7 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
         Logger().d('The card was swiped to the : ${activity.direction}');
         switch (activity.direction) {
           case AxisDirection.right:
+            widget.onLikeSong(widget.recentlyPlayed[previousIndex]);
             break;
           case AxisDirection.left:
             break;
