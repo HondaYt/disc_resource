@@ -5,6 +5,8 @@ import 'permission_page.dart';
 import 'select_music.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sign_in.dart';
+import 'package:provider/provider.dart';
+import 'providers/liked_songs_provider.dart';
 
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
@@ -14,7 +16,14 @@ Future<void> main() async {
     anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
   );
 
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LikedSongsProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 final supabase = Supabase.instance.client;

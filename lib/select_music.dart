@@ -7,6 +7,8 @@ import 'package:logger/logger.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'components/recently_played_list.dart';
 import 'liked_music.dart';
+import 'package:provider/provider.dart';
+import 'providers/liked_songs_provider.dart';
 
 class MusicKitTest extends StatefulWidget {
   const MusicKitTest({super.key});
@@ -28,7 +30,6 @@ class _MusicKitTestState extends State<MusicKitTest> {
       MusicPlayerPlaybackStatus.stopped;
   MusicPlayerPlaybackStatus _wasMusicPlayerStatusBeforeSeek =
       MusicPlayerPlaybackStatus.stopped;
-  final List<Map<String, dynamic>> _likedSongs = [];
 
   @override
   void initState() {
@@ -157,9 +158,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
   }
 
   Future<void> likeSong(Map<String, dynamic> song) async {
-    setState(() {
-      _likedSongs.add(song);
-    });
+    Provider.of<LikedSongsProvider>(context, listen: false).addSong(song);
   }
 
   @override
@@ -198,7 +197,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => LikedMusic(likedSongs: _likedSongs),
+                    builder: (context) => const LikedMusic(),
                   ),
                 );
               },
