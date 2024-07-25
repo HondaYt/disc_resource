@@ -29,6 +29,8 @@ Future<AuthResponse> signInWithApple() async {
       ? '${credential.givenName} ${credential.familyName}'
       : null;
 
+  final email = credential.email;
+
   final response = await supabase.auth.signInWithIdToken(
     provider: OAuthProvider.apple,
     idToken: idToken,
@@ -40,6 +42,11 @@ Future<AuthResponse> signInWithApple() async {
     await supabase
         .from('profiles')
         .update({'full_name': fullName}).eq('id', response.user?.id as Object);
+  }
+  if (email != null) {
+    await supabase
+        .from('profiles')
+        .update({'email': email}).eq('id', response.user?.id as Object);
   }
 
   return response;

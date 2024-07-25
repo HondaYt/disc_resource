@@ -9,6 +9,7 @@ import 'components/recently_played_list.dart';
 import 'liked_music.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/liked_songs_provider.dart';
+import 'user_info.dart';
 
 class MusicKitTest extends StatefulWidget {
   const MusicKitTest({super.key});
@@ -199,6 +200,17 @@ class _MusicKitTestState extends State<MusicKitTest> {
                   context,
                   MaterialPageRoute(
                     builder: (context) => const LikedMusic(),
+                  ),
+                );
+              },
+            ),
+            ElevatedButton(
+              child: const Text('User Info'),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserInfoPage(),
                   ),
                 );
               },
