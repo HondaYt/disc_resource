@@ -74,7 +74,8 @@ class SongCardState extends State<SongCard> {
     return SmoothCard(
       smoothness: 0.6,
       elevation: 2.0,
-      shadowColor: Colors.black38,
+      shadowColor: Colors.black45,
+      side: const BorderSide(color: Colors.black12),
       borderRadius: BorderRadius.circular(40.0),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -122,59 +123,59 @@ class SongCardState extends State<SongCard> {
                           .replaceAll('{h}', '1272'),
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                widget.musicPlayerStatus.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Duration:${widget.songDuration.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Remaining:${widget.remainingTime.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.end,
+                    //     children: [
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             widget.musicPlayerStatus.toString(),
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Duration:${widget.songDuration.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Remaining:${widget.remainingTime.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -246,10 +247,9 @@ class SongCardState extends State<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.forward_fill),
                   onPressed: () {
-                    //   if (widget.currentPlaybackTime.inSeconds < 3) {
-                    //     widget.onSeek(const Duration(seconds: 0));
-                    //   } else {
+                    // if (widget.currentPlaybackTime.inSeconds < 3) {
                     widget.swiperController.swipeLeft();
+                    // } else {
                     // }
                   },
                 ),

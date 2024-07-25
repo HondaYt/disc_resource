@@ -169,6 +169,19 @@ class _MusicKitTestState extends State<MusicKitTest> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Recently Played Songs'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserInfoPage(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           children: [
@@ -193,8 +206,23 @@ class _MusicKitTestState extends State<MusicKitTest> {
                       onLikeSong: likeSong,
                     ),
             ),
-            ElevatedButton(
-              child: const Text('Liked'),
+            // Row(
+            // mainAxisAlignment: MainAxisAlignment.spaceAround,
+            // children: [
+            //   ElevatedButton(
+            //     child: const Text('User Info'),
+            //     onPressed: () {
+            //       Navigator.push(
+            //         context,
+            //         MaterialPageRoute(
+            //           builder: (context) => const UserInfoPage(),
+            //         ),
+            //       );
+            //     },
+            //   ),
+            ElevatedButton.icon(
+              icon: const Icon(Icons.favorite, size: 20),
+              label: const Text('Liked', style: TextStyle(fontSize: 18)),
               onPressed: () {
                 Navigator.push(
                   context,
@@ -204,17 +232,8 @@ class _MusicKitTestState extends State<MusicKitTest> {
                 );
               },
             ),
-            ElevatedButton(
-              child: const Text('User Info'),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UserInfoPage(),
-                  ),
-                );
-              },
-            ),
+            // ],
+            // ),
             SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),

@@ -18,6 +18,12 @@ class LikedMusic extends ConsumerWidget {
         itemBuilder: (context, index) {
           final song = likedSongs[index];
           return ListTile(
+            leading: Image.network(
+              song['attributes']['artwork']['url']
+                  .replaceAll('{w}', '636')
+                  .replaceAll('{h}', '636'),
+              fit: BoxFit.cover,
+            ),
             title: Text(song['attributes']['name']),
             subtitle: Text(song['attributes']['artistName']),
           );

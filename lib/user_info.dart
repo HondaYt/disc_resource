@@ -43,10 +43,13 @@ class UserInfoPageState extends State<UserInfoPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('ID: ${userInfo?['id'] ?? 'N/A'}'),
-                  Text('Full Name: ${userInfo?['full_name'] ?? 'N/A'}'),
+                  // Text('ID: ${userInfo?['id'] ?? 'N/A'}',
+                  //     style: const TextStyle(fontSize: 20)),
+                  Text('Full Name: ${userInfo?['full_name'] ?? 'N/A'}',
+                      style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 8),
-                  Text('Email: ${userInfo?['email'] ?? 'N/A'}'),
+                  Text('Email: ${userInfo?['email'] ?? 'N/A'}',
+                      style: const TextStyle(fontSize: 24)),
                 ],
               ),
             ),
