@@ -243,7 +243,7 @@ class SongCardState extends State<SongCard> {
               unfocusedHeight: 8,
               focusedHeight: 16,
               unfocusedMargin: const EdgeInsets.symmetric(horizontal: 24),
-              focusedMargin: const EdgeInsets.symmetric(horizontal: 16),
+              focusedMargin: const EdgeInsets.symmetric(horizontal: 10),
               controller: widget.sliderController, // Changed
               min: 0,
               max: widget.songDuration.inMilliseconds.toDouble(),
