@@ -123,59 +123,59 @@ class SongCardState extends State<SongCard> {
                           .replaceAll('{h}', '1272'),
                       fit: BoxFit.cover,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.end,
-                    //     children: [
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             widget.musicPlayerStatus.toString(),
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Duration:${widget.songDuration.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Remaining:${widget.remainingTime.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //     ],
-                    //   ),
-                    // ),
+                    Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                widget.musicPlayerStatus.toString(),
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Duration:${widget.songDuration.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Remaining:${widget.remainingTime.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                          Container(
+                              color: Colors.black87,
+                              child: Text(
+                                'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
+                                style: const TextStyle(
+                                  fontSize: 18.0,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),

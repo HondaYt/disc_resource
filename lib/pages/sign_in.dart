@@ -1,7 +1,7 @@
-import 'main.dart';
+import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'sign_in_with_apple.dart';
+import '../components/sign_in_with_apple.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({super.key});

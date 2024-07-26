@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'permission_page.dart';
-import 'select_music.dart';
+import 'pages/permission_page.dart';
+import 'pages/select_music.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'sign_in.dart';
+import 'pages/sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 // import 'theme.dart';

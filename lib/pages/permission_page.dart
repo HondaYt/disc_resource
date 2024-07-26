@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
 // import 'signin.dart';
-import 'main.dart';
+import '../main.dart';
 
 class PermissionPage extends StatefulWidget {
   const PermissionPage({super.key});

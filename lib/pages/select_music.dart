@@ -5,10 +5,10 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
-import 'components/recently_played_list.dart';
+import '../components/recently_played_list.dart';
 import 'liked_music.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'providers/liked_songs_provider.dart';
+import '../providers/liked_songs_provider.dart';
 import 'user_info.dart';
 import 'package:interactive_slider/interactive_slider.dart';
 
