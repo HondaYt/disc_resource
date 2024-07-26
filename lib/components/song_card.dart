@@ -4,6 +4,7 @@ import 'package:music_kit/music_kit.dart';
 import 'package:interactive_slider/interactive_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smooth_corner/smooth_corner.dart';
+import 'package:text_scroll/text_scroll.dart';
 
 class SongCard extends StatefulWidget {
   final Map<String, dynamic> song;
@@ -67,21 +68,24 @@ class SongCardState extends State<SongCard> {
 
   @override
   Widget build(BuildContext context) {
+    double cardBorderRadius = 40.0;
+    double cardPadding = 8;
     return SmoothCard(
       smoothness: 0.6,
       elevation: 2.0,
       shadowColor: Colors.black45,
       side: const BorderSide(color: Colors.black12),
-      borderRadius: BorderRadius.circular(40.0),
+      borderRadius: BorderRadius.circular(cardBorderRadius),
       child: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(cardPadding),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SmoothClipRRect(
               smoothness: 0.6,
               // smoothness: 0,
-              borderRadius: BorderRadius.circular(40.0 - 16.0),
+              borderRadius:
+                  BorderRadius.circular(cardBorderRadius - cardPadding),
               child: SizedBox(
                 width: double.infinity,
                 // height: 300.0,
@@ -177,21 +181,69 @@ class SongCardState extends State<SongCard> {
               ),
             ),
             const SizedBox(height: 16.0),
-            Text(
-              widget.song['attributes']['name'],
-              style: const TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+            Padding(
+              padding: const EdgeInsets.only(right: 24.0),
+              child: ShaderMask(
+                shaderCallback: (Rect bounds) {
+                  return const LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      Colors.transparent,
+                      Colors.black87,
+                      Colors.black,
+                      Colors.black,
+                      Colors.black87,
+                      Colors.transparent
+                    ],
+                    stops: [0.0, 0.08, 0.12, 0.88, 0.92, 1.0],
+                  ).createShader(bounds);
+                },
+                blendMode: BlendMode.dstIn,
+                child: SizedBox(
+                  width: double.infinity, // 追加: ShaderMaskの幅をいっぱいに広げる
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      TextScroll(
+                        paddingLeft: 24.0,
+                        widget.song['attributes']['name'],
+                        style: const TextStyle(
+                          fontSize: 22.0,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                        ),
+                        intervalSpaces: 8,
+                        velocity:
+                            const Velocity(pixelsPerSecond: Offset(30, 0)),
+                        delayBefore: const Duration(seconds: 3),
+                        pauseBetween: const Duration(seconds: 3),
+                      ),
+                      TextScroll(
+                        paddingLeft: 24.0,
+                        widget.song['attributes']['artistName'],
+                        style: TextStyle(
+                          fontSize: 22.0,
+                          color: Colors.grey[600],
+                        ),
+                        intervalSpaces: 8,
+                        velocity:
+                            const Velocity(pixelsPerSecond: Offset(30, 0)),
+                        delayBefore: const Duration(seconds: 3),
+                        pauseBetween: const Duration(seconds: 3),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            Text(
-              widget.song['attributes']['artistName'],
-              style: TextStyle(
-                fontSize: 18.0,
-                color: Colors.grey[600],
-              ),
-            ),
+            const SizedBox(height: 16.0),
             InteractiveSlider(
+              padding: const EdgeInsets.all(0),
+              unfocusedHeight: 8,
+              focusedHeight: 16,
+              unfocusedMargin: const EdgeInsets.symmetric(horizontal: 24),
+              focusedMargin: const EdgeInsets.symmetric(horizontal: 16),
               controller: widget.sliderController, // Changed
               min: 0,
               max: widget.songDuration.inMilliseconds.toDouble(),
@@ -202,14 +254,16 @@ class SongCardState extends State<SongCard> {
               startIcon: Text(
                 '${widget.currentPlaybackTime.inMinutes}:${(widget.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}',
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.0,
                   color: Colors.grey[600],
                 ),
               ),
               endIcon: Text(
                 '-${widget.remainingTime.inMinutes}:${(widget.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
                 style: TextStyle(
-                  fontSize: 16.0,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 12.0,
                   color: Colors.grey[600],
                 ),
               ),
