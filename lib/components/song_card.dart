@@ -20,6 +20,7 @@ class SongCard extends StatefulWidget {
   final Function() onResume;
   final AppinioSwiperController swiperController;
   final InteractiveSliderController sliderController; // Added
+  final bool isActive;
 
   const SongCard({
     super.key,
@@ -36,6 +37,7 @@ class SongCard extends StatefulWidget {
     required this.onResume,
     required this.swiperController,
     required this.sliderController, // Added
+    required this.isActive,
   });
 
   @override
@@ -53,6 +55,7 @@ class SongCardState extends State<SongCard> {
 
   @override
   void didUpdateWidget(SongCard oldWidget) {
+    if (!widget.isActive) return;
     super.didUpdateWidget(oldWidget);
     if (widget.currentPlaybackTime != oldWidget.currentPlaybackTime) {
       _updateSliderValue();
@@ -60,6 +63,8 @@ class SongCardState extends State<SongCard> {
   }
 
   void _updateSliderValue() {
+    if (!widget.isActive) return;
+
     final newValue = widget.currentPlaybackTime.inMilliseconds.toDouble();
     if (!newValue.isNaN) {
       widget.sliderController.value = newValue;
@@ -123,59 +128,59 @@ class SongCardState extends State<SongCard> {
                           .replaceAll('{h}', '1272'),
                       fit: BoxFit.cover,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                widget.musicPlayerStatus.toString(),
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Duration:${widget.songDuration.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Remaining:${widget.remainingTime.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                          Container(
-                              color: Colors.black87,
-                              child: Text(
-                                'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
-                                style: const TextStyle(
-                                  fontSize: 18.0,
-                                  color: Colors.white,
-                                ),
-                              )),
-                        ],
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(4.0),
+                    //   child: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.end,
+                    //     children: [
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             widget.musicPlayerStatus.toString(),
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Duration:${widget.songDuration.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Remaining:${widget.remainingTime.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //       Container(
+                    //           color: Colors.black87,
+                    //           child: Text(
+                    //             'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
+                    //             style: const TextStyle(
+                    //               fontSize: 18.0,
+                    //               color: Colors.white,
+                    //             ),
+                    //           )),
+                    //     ],
+                    //   ),
+                    // ),
                   ],
                 ),
               ),
@@ -183,59 +188,87 @@ class SongCardState extends State<SongCard> {
             const SizedBox(height: 16.0),
             Padding(
               padding: const EdgeInsets.only(right: 24.0),
-              child: ShaderMask(
-                shaderCallback: (Rect bounds) {
-                  return const LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Colors.transparent,
-                      Colors.black87,
-                      Colors.black,
-                      Colors.black,
-                      Colors.black87,
-                      Colors.transparent
-                    ],
-                    stops: [0.0, 0.08, 0.12, 0.88, 0.92, 1.0],
-                  ).createShader(bounds);
-                },
-                blendMode: BlendMode.dstIn,
-                child: SizedBox(
-                  width: double.infinity, // 追加: ShaderMaskの幅をいっぱいに広げる
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      TextScroll(
-                        paddingLeft: 24.0,
-                        widget.song['attributes']['name'],
-                        style: const TextStyle(
-                          fontSize: 22.0,
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
+              child: widget.isActive
+                  ? ShaderMask(
+                      shaderCallback: (Rect bounds) {
+                        return const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Colors.transparent,
+                            Colors.black87,
+                            Colors.black,
+                            Colors.black,
+                            Colors.black87,
+                            Colors.transparent
+                          ],
+                          stops: [0.0, 0.08, 0.12, 0.88, 0.92, 1.0],
+                        ).createShader(bounds);
+                      },
+                      blendMode: BlendMode.dstIn,
+                      child: SizedBox(
+                        width: double.infinity, // 追加: ShaderMaskの幅をいっぱいに広げる
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            TextScroll(
+                              paddingLeft: 24.0,
+                              widget.song['attributes']['name'],
+                              style: const TextStyle(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                              intervalSpaces: 8,
+                              velocity: const Velocity(
+                                  pixelsPerSecond: Offset(30, 0)),
+                              delayBefore: const Duration(seconds: 3),
+                              pauseBetween: const Duration(seconds: 3),
+                            ),
+                            TextScroll(
+                              paddingLeft: 24.0,
+                              widget.song['attributes']['artistName'],
+                              style: TextStyle(
+                                fontSize: 22.0,
+                                color: Colors.grey[600],
+                              ),
+                              intervalSpaces: 8,
+                              velocity: const Velocity(
+                                  pixelsPerSecond: Offset(30, 0)),
+                              delayBefore: const Duration(seconds: 3),
+                              pauseBetween: const Duration(seconds: 3),
+                            ),
+                          ],
                         ),
-                        intervalSpaces: 8,
-                        velocity:
-                            const Velocity(pixelsPerSecond: Offset(30, 0)),
-                        delayBefore: const Duration(seconds: 3),
-                        pauseBetween: const Duration(seconds: 3),
                       ),
-                      TextScroll(
-                        paddingLeft: 24.0,
-                        widget.song['attributes']['artistName'],
-                        style: TextStyle(
-                          fontSize: 22.0,
-                          color: Colors.grey[600],
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.song['attributes']['name'],
+                              style: const TextStyle(
+                                fontSize: 22.0,
+                                fontWeight: FontWeight.bold,
+                                height: 1.2,
+                              ),
+                              maxLines: 1, // 追加: 1行に制限
+                            ),
+                            Text(
+                              widget.song['attributes']['artistName'],
+                              style: TextStyle(
+                                fontSize: 22.0,
+                                color: Colors.grey[600],
+                              ),
+                            ),
+                          ],
                         ),
-                        intervalSpaces: 8,
-                        velocity:
-                            const Velocity(pixelsPerSecond: Offset(30, 0)),
-                        delayBefore: const Duration(seconds: 3),
-                        pauseBetween: const Duration(seconds: 3),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
             ),
             const SizedBox(height: 16.0),
             InteractiveSlider(
@@ -244,7 +277,7 @@ class SongCardState extends State<SongCard> {
               focusedHeight: 16,
               unfocusedMargin: const EdgeInsets.symmetric(horizontal: 24),
               focusedMargin: const EdgeInsets.symmetric(horizontal: 10),
-              controller: widget.sliderController, // Changed
+              controller: widget.isActive ? widget.sliderController : null,
               min: 0,
               max: widget.songDuration.inMilliseconds.toDouble(),
               onChangeStart: (value) => widget.onSeekStart(),
@@ -252,7 +285,9 @@ class SongCardState extends State<SongCard> {
                   widget.onSeekEnd(Duration(milliseconds: value.toInt())),
               iconPosition: IconPosition.below,
               startIcon: Text(
-                '${widget.currentPlaybackTime.inMinutes}:${(widget.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}',
+                widget.isActive
+                    ? '${widget.currentPlaybackTime.inMinutes}:${(widget.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}'
+                    : '0:00',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 12.0,
@@ -260,7 +295,9 @@ class SongCardState extends State<SongCard> {
                 ),
               ),
               endIcon: Text(
-                '-${widget.remainingTime.inMinutes}:${(widget.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}',
+                widget.isActive
+                    ? '-${widget.remainingTime.inMinutes}:${(widget.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}'
+                    : '0:00',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 12.0,

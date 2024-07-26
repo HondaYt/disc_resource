@@ -22,7 +22,7 @@ class RecentlyPlayedList extends StatefulWidget {
   final Function() onResume;
   final Function(Map<String, dynamic>) onPlaySong;
   final Function(Map<String, dynamic>) onLikeSong;
-  final InteractiveSliderController sliderController; // Added
+  final InteractiveSliderController sliderController;
 
   const RecentlyPlayedList({
     super.key,
@@ -40,7 +40,7 @@ class RecentlyPlayedList extends StatefulWidget {
     required this.onResume,
     required this.onPlaySong,
     required this.onLikeSong,
-    required this.sliderController, // Added
+    required this.sliderController,
   });
 
   @override
@@ -49,6 +49,13 @@ class RecentlyPlayedList extends StatefulWidget {
 
 class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
   bool _hasSwiped = false;
+  late int currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    currentIndex = 0; // 初期値を設定
+  }
 
   @override
   void didUpdateWidget(RecentlyPlayedList oldWidget) {
@@ -105,10 +112,16 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
                   onPause: widget.onPause,
                   onResume: widget.onResume,
                   swiperController: widget.swiperController,
-                  sliderController: widget.sliderController, // Added
+                  sliderController: widget.sliderController,
+                  isActive: index == currentIndex,
                 );
               },
-              onSwipeEnd: _swipeEnd,
+              onSwipeEnd: (previousIndex, targetIndex, activity) {
+                _swipeEnd(previousIndex, targetIndex, activity);
+                setState(() {
+                  currentIndex = targetIndex;
+                });
+              },
               onEnd: _onEnd,
             ),
           ),
