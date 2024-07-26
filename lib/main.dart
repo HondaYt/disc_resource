@@ -6,8 +6,8 @@ import 'select_music.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import 'providers/liked_songs_provider.dart';
 
+// import 'theme.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
@@ -30,13 +30,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       title: 'Disc Resource',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-        useMaterial3: true,
-      ),
-      home: const AuthState(),
+      home: AuthState(),
     );
   }
 }
@@ -82,7 +78,7 @@ class AuthStateState extends State<AuthState> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const MusicKitTest()),
+        MaterialPageRoute(builder: (context) => const SelectMusic()),
       );
     }
   }

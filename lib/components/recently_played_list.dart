@@ -5,6 +5,7 @@ import 'song_card.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/liked_songs_provider.dart';
+import 'package:interactive_slider/interactive_slider.dart';
 
 class RecentlyPlayedList extends StatefulWidget {
   final List<dynamic> recentlyPlayed;
@@ -21,6 +22,7 @@ class RecentlyPlayedList extends StatefulWidget {
   final Function() onResume;
   final Function(Map<String, dynamic>) onPlaySong;
   final Function(Map<String, dynamic>) onLikeSong;
+  final InteractiveSliderController sliderController; // Added
 
   const RecentlyPlayedList({
     super.key,
@@ -38,6 +40,7 @@ class RecentlyPlayedList extends StatefulWidget {
     required this.onResume,
     required this.onPlaySong,
     required this.onLikeSong,
+    required this.sliderController, // Added
   });
 
   @override
@@ -102,6 +105,7 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
                   onPause: widget.onPause,
                   onResume: widget.onResume,
                   swiperController: widget.swiperController,
+                  sliderController: widget.sliderController, // Added
                 );
               },
               onSwipeEnd: _swipeEnd,
@@ -114,6 +118,11 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
   }
 
   void _swipeEnd(int previousIndex, int targetIndex, SwiperActivity activity) {
+    if (targetIndex < 0 || targetIndex >= widget.recentlyPlayed.length) {
+      Logger().d('Invalid target index: $targetIndex');
+      return;
+    }
+
     switch (activity) {
       case Swipe():
         Logger().d('The card was swiped to the : ${activity.direction}');

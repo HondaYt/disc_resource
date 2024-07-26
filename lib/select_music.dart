@@ -10,16 +10,19 @@ import 'liked_music.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'providers/liked_songs_provider.dart';
 import 'user_info.dart';
+import 'package:interactive_slider/interactive_slider.dart';
 
-class MusicKitTest extends StatefulWidget {
-  const MusicKitTest({super.key});
+class SelectMusic extends StatefulWidget {
+  const SelectMusic({super.key});
   @override
-  State<MusicKitTest> createState() => _MusicKitTestState();
+  State<SelectMusic> createState() => _SelectMusicState();
 }
 
-class _MusicKitTestState extends State<MusicKitTest> {
+class _SelectMusicState extends State<SelectMusic> {
   final _musicKitPlugin = MusicKit();
   final AppinioSwiperController _swiperController = AppinioSwiperController();
+  final InteractiveSliderController _sliderController =
+      InteractiveSliderController(0.0);
   String _developerToken = '';
   String _userToken = '';
   List<dynamic> _recentlyPlayed = [];
@@ -63,6 +66,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
   @override
   void dispose() {
     _timer?.cancel();
+    _sliderController.dispose();
     super.dispose();
   }
 
@@ -102,6 +106,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
         _recentlyPlayed = json.decode(response.body)['data'];
       });
     } else {
+      Logger().e('Failed to load recently played: ${response.body}');
       throw Exception('Failed to load recently played');
     }
   }
@@ -204,37 +209,54 @@ class _MusicKitTestState extends State<MusicKitTest> {
                       onResume: resumeSong,
                       onPlaySong: playSong,
                       onLikeSong: likeSong,
+                      sliderController: _sliderController,
                     ),
             ),
-            // Row(
-            // mainAxisAlignment: MainAxisAlignment.spaceAround,
-            // children: [
-            //   ElevatedButton(
-            //     child: const Text('User Info'),
-            //     onPressed: () {
-            //       Navigator.push(
-            //         context,
-            //         MaterialPageRoute(
-            //           builder: (context) => const UserInfoPage(),
-            //         ),
-            //       );
-            //     },
-            //   ),
-            ElevatedButton.icon(
-              icon: const Icon(Icons.favorite, size: 20),
-              label: const Text('Liked', style: TextStyle(fontSize: 18)),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LikedMusic(),
-                  ),
-                );
+            // ElevatedButton.icon(
+            //   icon: const Icon(Icons.favorite, size: 20),
+            //   label: const Text('Liked', style: TextStyle(fontSize: 18)),
+            //   onPressed: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) => const LikedMusic(),
+            //       ),
+            //     );
+            //   },
+            // ),
+
+            NavigationBar(
+              destinations: const <NavigationDestination>[
+                NavigationDestination(
+                  icon: Icon(Icons.home),
+                  label: 'Home',
+                ),
+                NavigationDestination(
+                  icon: Icon(Icons.favorite),
+                  label: 'Liked',
+                ),
+              ],
+              selectedIndex: 0,
+              onDestinationSelected: (index) {
+                if (index == 0) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectMusic(),
+                    ),
+                  );
+                }
+                if (index == 1) {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LikedMusic(),
+                    ),
+                  );
+                }
               },
             ),
-            // ],
-            // ),
-            SizedBox(height: MediaQuery.of(context).padding.bottom),
+            // SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),

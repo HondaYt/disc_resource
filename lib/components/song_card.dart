@@ -18,6 +18,7 @@ class SongCard extends StatefulWidget {
   final Function() onPause;
   final Function() onResume;
   final AppinioSwiperController swiperController;
+  final InteractiveSliderController sliderController; // Added
 
   const SongCard({
     super.key,
@@ -33,6 +34,7 @@ class SongCard extends StatefulWidget {
     required this.onPause,
     required this.onResume,
     required this.swiperController,
+    required this.sliderController, // Added
   });
 
   @override
@@ -40,7 +42,7 @@ class SongCard extends StatefulWidget {
 }
 
 class SongCardState extends State<SongCard> {
-  final _controller = InteractiveSliderController(0.0);
+  // final _controller = InteractiveSliderController(0.0); // Removed
 
   @override
   void initState() {
@@ -59,14 +61,8 @@ class SongCardState extends State<SongCard> {
   void _updateSliderValue() {
     final newValue = widget.currentPlaybackTime.inMilliseconds.toDouble();
     if (!newValue.isNaN) {
-      _controller.value = newValue;
+      widget.sliderController.value = newValue;
     }
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
   }
 
   @override
@@ -196,8 +192,7 @@ class SongCardState extends State<SongCard> {
               ),
             ),
             InteractiveSlider(
-              // unfocusedMargin: const EdgeInsets.all(0),
-              controller: _controller,
+              controller: widget.sliderController, // Changed
               min: 0,
               max: widget.songDuration.inMilliseconds.toDouble(),
               onChangeStart: (value) => widget.onSeekStart(),
