@@ -40,6 +40,7 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
 
   void startPlaybackTimeUpdater() {
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
+      if (!mounted) return; // ウィジェットがマウントされているか確認
       if (ref.read(musicPlayerProvider).musicPlayerStatus !=
           MusicPlayerPlaybackStatus.playing) return;
       final playbackTime = await _musicKitPlugin.playbackTime;
@@ -56,7 +57,6 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   @override
   void dispose() {
     _timer?.cancel();
-    ref.read(musicControlProvider.notifier).sliderController.dispose();
     super.dispose();
   }
 
@@ -64,7 +64,7 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
     await _fetchTokens();
     if (!mounted) return;
     await fetchRecentlyPlayed();
-    if (ref.read(recentlyPlayedProvider).isNotEmpty) {
+    if (mounted && ref.read(recentlyPlayedProvider).isNotEmpty) {
       ref
           .read(musicControlProvider.notifier)
           .playSong(ref.read(recentlyPlayedProvider)[0]);
@@ -92,8 +92,8 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
       },
     );
 
+    if (!mounted) return; // ウィジェットがマウントされているか確認
     if (response.statusCode == 200) {
-      if (!mounted) return;
       ref
           .read(recentlyPlayedProvider.notifier)
           .setRecentlyPlayed(json.decode(response.body)['data']);
