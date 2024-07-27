@@ -1,53 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
-import 'package:music_kit/music_kit.dart';
+import 'package:music_kit/music_kit.dart' as music_kit;
 import 'song_card.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/liked_songs_provider.dart';
-import 'package:interactive_slider/interactive_slider.dart';
+import '../providers/music_player_provider.dart' as providers;
+import '../providers/music_control_provider.dart';
+import '../providers/swiper_controller_provider.dart';
+import '../providers/recently_played_provider.dart';
 
-class RecentlyPlayedList extends StatefulWidget {
-  final List<dynamic> recentlyPlayed;
-  final AppinioSwiperController swiperController;
-  final Duration currentPlaybackTime;
-  final Duration songDuration;
-  final Duration remainingTime;
-  final MusicPlayerPlaybackStatus musicPlayerStatus;
-  final MusicPlayerPlaybackStatus wasMusicPlayerStatusBeforeSeek;
-  final Function(Duration) onSeek;
-  final Function() onSeekStart;
-  final Function(Duration) onSeekEnd;
-  final Function() onPause;
-  final Function() onResume;
-  final Function(Map<String, dynamic>) onPlaySong;
-  final Function(Map<String, dynamic>) onLikeSong;
-  final InteractiveSliderController sliderController;
-
-  const RecentlyPlayedList({
-    super.key,
-    required this.recentlyPlayed,
-    required this.swiperController,
-    required this.currentPlaybackTime,
-    required this.songDuration,
-    required this.remainingTime,
-    required this.musicPlayerStatus,
-    required this.wasMusicPlayerStatusBeforeSeek,
-    required this.onSeekStart,
-    required this.onSeekEnd,
-    required this.onSeek,
-    required this.onPause,
-    required this.onResume,
-    required this.onPlaySong,
-    required this.onLikeSong,
-    required this.sliderController,
-  });
+class RecentlyPlayedList extends ConsumerStatefulWidget {
+  const RecentlyPlayedList({super.key});
 
   @override
-  State<RecentlyPlayedList> createState() => _RecentlyPlayedListState();
+  _RecentlyPlayedListState createState() => _RecentlyPlayedListState();
 }
 
-class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
+class _RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
   bool _hasSwiped = false;
   late int currentIndex;
 
@@ -58,61 +28,39 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
   }
 
   @override
-  void didUpdateWidget(RecentlyPlayedList oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.remainingTime.inSeconds == 0 &&
-        !_hasSwiped &&
-        widget.currentPlaybackTime.inSeconds != 0 &&
-        shouldSwipeRight()) {
-      widget.swiperController.swipeRight();
-      _hasSwiped = true;
-    }
-
-    if (widget.currentPlaybackTime.inSeconds == 0) {
-      _hasSwiped = false;
-    }
-  }
-
-  bool shouldSwipeRight() {
-    return (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.paused &&
-            widget.wasMusicPlayerStatusBeforeSeek ==
-                MusicPlayerPlaybackStatus.playing) ||
-        (widget.musicPlayerStatus == MusicPlayerPlaybackStatus.playing &&
-            widget.wasMusicPlayerStatusBeforeSeek ==
-                MusicPlayerPlaybackStatus.paused) ||
-        (widget.musicPlayerStatus != MusicPlayerPlaybackStatus.stopped &&
-            widget.wasMusicPlayerStatusBeforeSeek ==
-                MusicPlayerPlaybackStatus.stopped);
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final swiperController = ref.watch(swiperControllerProvider);
+    final recentlyPlayed = ref.watch(recentlyPlayedProvider);
+
+    // ref.listenをbuildメソッド内に移動
+    ref.listen(providers.musicPlayerProvider, (previous, next) {
+      final swiperController = ref.read(swiperControllerProvider.notifier);
+
+      if (next.remainingTime.inSeconds == 0 &&
+          !_hasSwiped &&
+          next.currentPlaybackTime.inSeconds != 0 &&
+          shouldSwipeRight(next)) {
+        swiperController.swipeRight();
+        _hasSwiped = true;
+      }
+
+      if (next.currentPlaybackTime.inSeconds == 0) {
+        _hasSwiped = false;
+      }
+    });
+
     return Column(
       children: [
         Expanded(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: AppinioSwiper(
-              controller: widget.swiperController,
-              cardCount: widget.recentlyPlayed.length,
+              controller: swiperController,
+              cardCount: recentlyPlayed.length,
               cardBuilder: (BuildContext context, int index) {
-                final song = widget.recentlyPlayed[index];
+                final song = recentlyPlayed[index];
                 return SongCard(
                   song: song,
-                  currentPlaybackTime: widget.currentPlaybackTime,
-                  songDuration: widget.songDuration,
-                  remainingTime: widget.remainingTime,
-                  musicPlayerStatus: widget.musicPlayerStatus,
-                  wasMusicPlayerStatusBeforeSeek:
-                      widget.wasMusicPlayerStatusBeforeSeek,
-                  onSeek: widget.onSeek,
-                  onSeekStart: widget.onSeekStart,
-                  onSeekEnd: widget.onSeekEnd,
-                  onPause: widget.onPause,
-                  onResume: widget.onResume,
-                  swiperController: widget.swiperController,
-                  sliderController: widget.sliderController,
                   isActive: index == currentIndex,
                 );
               },
@@ -130,8 +78,29 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
     );
   }
 
+  bool shouldSwipeRight(providers.MusicPlayerState musicPlayerState) {
+    return (musicPlayerState.musicPlayerStatus ==
+                music_kit.MusicPlayerPlaybackStatus.paused &&
+            musicPlayerState.wasMusicPlayerStatusBeforeSeek ==
+                music_kit.MusicPlayerPlaybackStatus.playing) ||
+        (musicPlayerState.musicPlayerStatus ==
+                music_kit.MusicPlayerPlaybackStatus.playing &&
+            musicPlayerState.wasMusicPlayerStatusBeforeSeek ==
+                music_kit.MusicPlayerPlaybackStatus.paused) ||
+        (musicPlayerState.musicPlayerStatus !=
+                music_kit.MusicPlayerPlaybackStatus.stopped &&
+            musicPlayerState.wasMusicPlayerStatusBeforeSeek ==
+                music_kit.MusicPlayerPlaybackStatus.stopped);
+  }
+
+  Future<void> likeSong(Map<String, dynamic> song) async {
+    final ref = ProviderScope.containerOf(context);
+    ref.read(likedSongsProvider.notifier).addSong(song);
+  }
+
   void _swipeEnd(int previousIndex, int targetIndex, SwiperActivity activity) {
-    if (targetIndex < 0 || targetIndex >= widget.recentlyPlayed.length) {
+    if (targetIndex < 0 ||
+        targetIndex >= ref.read(recentlyPlayedProvider).length) {
       Logger().d('Invalid target index: $targetIndex');
       return;
     }
@@ -144,7 +113,7 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
             final ref = ProviderScope.containerOf(context);
             ref
                 .read(likedSongsProvider.notifier)
-                .addSong(widget.recentlyPlayed[previousIndex]);
+                .addSong(ref.read(recentlyPlayedProvider)[previousIndex]);
             break;
           case AxisDirection.left:
             break;
@@ -157,10 +126,14 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
         }
         Logger()
             .d('previous index: $previousIndex, target index: $targetIndex');
-        widget.onPlaySong(widget.recentlyPlayed[targetIndex]);
+        ref
+            .read(musicControlProvider.notifier)
+            .playSong(ref.read(recentlyPlayedProvider)[targetIndex]);
         break;
       case Unswipe():
-        widget.onPlaySong(widget.recentlyPlayed[targetIndex]);
+        ref
+            .read(musicControlProvider.notifier)
+            .playSong(ref.read(recentlyPlayedProvider)[targetIndex]);
         Logger().d('A ${activity.direction.name} swipe was undone.');
         Logger()
             .d('previous index: $previousIndex, target index: $targetIndex');
@@ -176,6 +149,6 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
 
   void _onEnd() {
     Logger().d('end reached!');
-    widget.onPause();
+    ref.read(musicControlProvider.notifier).pauseSong();
   }
 }

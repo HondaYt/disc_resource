@@ -1,42 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:appinio_swiper/appinio_swiper.dart';
-import 'package:music_kit/music_kit.dart';
+import 'package:music_kit/music_kit.dart' as music_kit;
 import 'package:interactive_slider/interactive_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:text_scroll/text_scroll.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/music_player_provider.dart' as local_provider;
+import '../providers/music_control_provider.dart' as control_provider;
+import '../providers/swiper_controller_provider.dart';
 
-class SongCard extends StatefulWidget {
+class SongCard extends ConsumerStatefulWidget {
   final Map<String, dynamic> song;
-  final Duration currentPlaybackTime;
-  final Duration songDuration;
-  final Duration remainingTime;
-  final MusicPlayerPlaybackStatus musicPlayerStatus;
-  final MusicPlayerPlaybackStatus wasMusicPlayerStatusBeforeSeek;
-  final Function(Duration) onSeek;
-  final Function() onSeekStart;
-  final Function(Duration) onSeekEnd;
-  final Function() onPause;
-  final Function() onResume;
-  final AppinioSwiperController swiperController;
-  final InteractiveSliderController sliderController;
   final bool isActive;
 
   const SongCard({
     super.key,
     required this.song,
-    required this.currentPlaybackTime,
-    required this.songDuration,
-    required this.remainingTime,
-    required this.musicPlayerStatus,
-    required this.wasMusicPlayerStatusBeforeSeek,
-    required this.onSeekStart,
-    required this.onSeek,
-    required this.onSeekEnd,
-    required this.onPause,
-    required this.onResume,
-    required this.swiperController,
-    required this.sliderController,
     required this.isActive,
   });
 
@@ -44,33 +23,39 @@ class SongCard extends StatefulWidget {
   SongCardState createState() => SongCardState();
 }
 
-class SongCardState extends State<SongCard> {
+class SongCardState extends ConsumerState<SongCard> {
   @override
   void initState() {
     super.initState();
-    _updateSliderValue();
   }
 
-  @override
-  void didUpdateWidget(SongCard oldWidget) {
-    if (!widget.isActive) return;
-    super.didUpdateWidget(oldWidget);
-    if (widget.currentPlaybackTime != oldWidget.currentPlaybackTime) {
-      _updateSliderValue();
-    }
-  }
-
-  void _updateSliderValue() {
-    if (!widget.isActive) return;
-
-    final newValue = widget.currentPlaybackTime.inMilliseconds.toDouble();
-    if (!newValue.isNaN) {
-      widget.sliderController.value = newValue;
+  void _updateSliderValue(Duration? currentPlaybackTime) {
+    if (currentPlaybackTime != null) {
+      final newValue = currentPlaybackTime.inMilliseconds.toDouble();
+      if (!newValue.isNaN) {
+        ref
+            .read(control_provider.musicControlProvider.notifier)
+            .sliderController
+            .value = newValue;
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final musicPlayerState = ref.watch(local_provider.musicPlayerProvider);
+    final musicControl =
+        ref.read(control_provider.musicControlProvider.notifier);
+    final swiperController = ref.read(swiperControllerProvider.notifier);
+
+    // ref.listenをbuildメソッド内で使用
+    ref.listen<local_provider.MusicPlayerState>(
+        local_provider.musicPlayerProvider, (previous, next) {
+      if (widget.isActive) {
+        _updateSliderValue(next.currentPlaybackTime);
+      }
+    });
+
     double cardBorderRadius = 40.0;
     double cardPadding = 8;
     return SmoothCard(
@@ -220,16 +205,20 @@ class SongCardState extends State<SongCard> {
               focusedHeight: 16,
               unfocusedMargin: const EdgeInsets.symmetric(horizontal: 24),
               focusedMargin: const EdgeInsets.symmetric(horizontal: 10),
-              controller: widget.isActive ? widget.sliderController : null,
+              controller: widget.isActive
+                  ? ref
+                      .read(control_provider.musicControlProvider.notifier)
+                      .sliderController
+                  : null,
               min: 0,
-              max: widget.songDuration.inMilliseconds.toDouble(),
-              onChangeStart: (value) => widget.onSeekStart(),
+              max: musicPlayerState.songDuration.inMilliseconds.toDouble(),
+              onChangeStart: (value) => musicControl.seekStart(),
               onChangeEnd: (value) =>
-                  widget.onSeekEnd(Duration(milliseconds: value.toInt())),
+                  musicControl.seekEnd(Duration(milliseconds: value.toInt())),
               iconPosition: IconPosition.below,
               startIcon: Text(
                 widget.isActive
-                    ? '${widget.currentPlaybackTime.inMinutes}:${(widget.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}'
+                    ? '${musicPlayerState.currentPlaybackTime.inMinutes}:${(musicPlayerState.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}'
                     : '0:00',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -239,7 +228,7 @@ class SongCardState extends State<SongCard> {
               ),
               endIcon: Text(
                 widget.isActive
-                    ? '-${widget.remainingTime.inMinutes}:${(widget.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}'
+                    ? '-${musicPlayerState.remainingTime.inMinutes}:${(musicPlayerState.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}'
                     : '0:00',
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -254,29 +243,29 @@ class SongCardState extends State<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.backward_fill),
                   onPressed: () {
-                    widget.swiperController.unswipe();
+                    swiperController.unswipe();
                   },
                 ),
                 CupertinoButton(
                   child: Icon(
                       size: 50,
-                      widget.musicPlayerStatus ==
-                              MusicPlayerPlaybackStatus.playing
+                      musicPlayerState.musicPlayerStatus ==
+                              music_kit.MusicPlayerPlaybackStatus.playing
                           ? CupertinoIcons.pause_fill
                           : CupertinoIcons.play_fill),
                   onPressed: () {
-                    if (widget.musicPlayerStatus ==
-                        MusicPlayerPlaybackStatus.playing) {
-                      widget.onPause();
+                    if (musicPlayerState.musicPlayerStatus ==
+                        music_kit.MusicPlayerPlaybackStatus.playing) {
+                      musicControl.pauseSong();
                     } else {
-                      widget.onResume();
+                      musicControl.resumeSong();
                     }
                   },
                 ),
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.forward_fill),
                   onPressed: () {
-                    widget.swiperController.swipeLeft();
+                    swiperController.swipeLeft();
                   },
                 ),
               ],
