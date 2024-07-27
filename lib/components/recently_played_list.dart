@@ -54,7 +54,7 @@ class _RecentlyPlayedListState extends State<RecentlyPlayedList> {
   @override
   void initState() {
     super.initState();
-    currentIndex = 0; // 初期値を設定
+    currentIndex = 0;
   }
 
   @override

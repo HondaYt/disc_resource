@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'pages/permission_page.dart';
+import 'pages/request_permission.dart';
 import 'pages/select_music.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'pages/sign_in.dart';

@@ -212,19 +212,6 @@ class _SelectMusicState extends State<SelectMusic> {
                       sliderController: _sliderController,
                     ),
             ),
-            // ElevatedButton.icon(
-            //   icon: const Icon(Icons.favorite, size: 20),
-            //   label: const Text('Liked', style: TextStyle(fontSize: 18)),
-            //   onPressed: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) => const LikedMusic(),
-            //       ),
-            //     );
-            //   },
-            // ),
-
             NavigationBar(
               destinations: const <NavigationDestination>[
                 NavigationDestination(
@@ -256,7 +243,6 @@ class _SelectMusicState extends State<SelectMusic> {
                 }
               },
             ),
-            // SizedBox(height: MediaQuery.of(context).padding.bottom),
           ],
         ),
       ),

@@ -19,7 +19,7 @@ class SongCard extends StatefulWidget {
   final Function() onPause;
   final Function() onResume;
   final AppinioSwiperController swiperController;
-  final InteractiveSliderController sliderController; // Added
+  final InteractiveSliderController sliderController;
   final bool isActive;
 
   const SongCard({
@@ -36,7 +36,7 @@ class SongCard extends StatefulWidget {
     required this.onPause,
     required this.onResume,
     required this.swiperController,
-    required this.sliderController, // Added
+    required this.sliderController,
     required this.isActive,
   });
 
@@ -45,8 +45,6 @@ class SongCard extends StatefulWidget {
 }
 
 class SongCardState extends State<SongCard> {
-  // final _controller = InteractiveSliderController(0.0); // Removed
-
   @override
   void initState() {
     super.initState();
@@ -88,12 +86,10 @@ class SongCardState extends State<SongCard> {
           children: [
             SmoothClipRRect(
               smoothness: 0.6,
-              // smoothness: 0,
               borderRadius:
                   BorderRadius.circular(cardBorderRadius - cardPadding),
               child: SizedBox(
                 width: double.infinity,
-                // height: 300.0,
                 height: 318,
                 child: Stack(
                   fit: StackFit.expand,
@@ -128,59 +124,6 @@ class SongCardState extends State<SongCard> {
                           .replaceAll('{h}', '1272'),
                       fit: BoxFit.cover,
                     ),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(4.0),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.end,
-                    //     children: [
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             widget.musicPlayerStatus.toString(),
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'was${widget.wasMusicPlayerStatusBeforeSeek.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Duration:${widget.songDuration.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Remaining:${widget.remainingTime.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //       Container(
-                    //           color: Colors.black87,
-                    //           child: Text(
-                    //             'Current:${widget.currentPlaybackTime.inSeconds.toString()}',
-                    //             style: const TextStyle(
-                    //               fontSize: 18.0,
-                    //               color: Colors.white,
-                    //             ),
-                    //           )),
-                    //     ],
-                    //   ),
-                    // ),
                   ],
                 ),
               ),
@@ -207,7 +150,7 @@ class SongCardState extends State<SongCard> {
                       },
                       blendMode: BlendMode.dstIn,
                       child: SizedBox(
-                        width: double.infinity, // 追加: ShaderMaskの幅をいっぱいに広げる
+                        width: double.infinity,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -256,7 +199,7 @@ class SongCardState extends State<SongCard> {
                                 fontWeight: FontWeight.bold,
                                 height: 1.2,
                               ),
-                              maxLines: 1, // 追加: 1行に制限
+                              maxLines: 1,
                             ),
                             Text(
                               widget.song['attributes']['artistName'],
@@ -333,10 +276,7 @@ class SongCardState extends State<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.forward_fill),
                   onPressed: () {
-                    // if (widget.currentPlaybackTime.inSeconds < 3) {
                     widget.swiperController.swipeLeft();
-                    // } else {
-                    // }
                   },
                 ),
               ],
