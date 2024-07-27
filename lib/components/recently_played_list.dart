@@ -32,7 +32,6 @@ class _RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
     final swiperController = ref.watch(swiperControllerProvider);
     final recentlyPlayed = ref.watch(recentlyPlayedProvider);
 
-    // ref.listenをbuildメソッド内に移動
     ref.listen(providers.musicPlayerProvider, (previous, next) {
       final swiperController = ref.read(swiperControllerProvider.notifier);
 
@@ -69,6 +68,9 @@ class _RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
                 setState(() {
                   currentIndex = targetIndex;
                 });
+                ref
+                    .read(providers.musicPlayerProvider.notifier)
+                    .updateCurrentSongIndex(targetIndex);
               },
               onEnd: _onEnd,
             ),

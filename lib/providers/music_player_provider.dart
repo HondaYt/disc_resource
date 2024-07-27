@@ -9,6 +9,7 @@ class MusicPlayerState {
   final MusicPlayerPlaybackStatus musicPlayerStatus;
   final MusicPlayerPlaybackStatus wasMusicPlayerStatusBeforeSeek;
   final InteractiveSliderController sliderController;
+  final int currentSongIndex;
 
   MusicPlayerState({
     required this.currentPlaybackTime,
@@ -17,6 +18,7 @@ class MusicPlayerState {
     required this.musicPlayerStatus,
     required this.wasMusicPlayerStatusBeforeSeek,
     required this.sliderController,
+    required this.currentSongIndex,
   });
 
   MusicPlayerState copyWith({
@@ -26,6 +28,7 @@ class MusicPlayerState {
     MusicPlayerPlaybackStatus? musicPlayerStatus,
     MusicPlayerPlaybackStatus? wasMusicPlayerStatusBeforeSeek,
     InteractiveSliderController? sliderController,
+    int? currentSongIndex,
   }) {
     return MusicPlayerState(
       currentPlaybackTime: currentPlaybackTime ?? this.currentPlaybackTime,
@@ -35,6 +38,7 @@ class MusicPlayerState {
       wasMusicPlayerStatusBeforeSeek:
           wasMusicPlayerStatusBeforeSeek ?? this.wasMusicPlayerStatusBeforeSeek,
       sliderController: sliderController ?? this.sliderController,
+      currentSongIndex: currentSongIndex ?? this.currentSongIndex,
     );
   }
 }
@@ -48,6 +52,7 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayerState> {
           musicPlayerStatus: MusicPlayerPlaybackStatus.stopped,
           wasMusicPlayerStatusBeforeSeek: MusicPlayerPlaybackStatus.stopped,
           sliderController: InteractiveSliderController(0.0),
+          currentSongIndex: 0,
         ));
 
   void updateCurrentPlaybackTime(Duration time) {
@@ -72,6 +77,10 @@ class MusicPlayerNotifier extends StateNotifier<MusicPlayerState> {
 
   void updateSliderControllerValue(double value) {
     state.sliderController.value = value;
+  }
+
+  void updateCurrentSongIndex(int index) {
+    state = state.copyWith(currentSongIndex: index);
   }
 }
 

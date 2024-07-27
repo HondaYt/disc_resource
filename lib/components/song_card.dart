@@ -244,7 +244,15 @@ class SongCardState extends ConsumerState<SongCard> {
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.backward_fill),
                   onPressed: () {
-                    swiperController.unswipe();
+                    if (ref
+                                .read(local_provider.musicPlayerProvider)
+                                .currentSongIndex ==
+                            0 ||
+                        musicPlayerState.currentPlaybackTime.inSeconds > 3) {
+                      musicControl.seekTo(const Duration(seconds: 0));
+                    } else {
+                      swiperController.unswipe();
+                    }
                   },
                 ),
                 CupertinoButton(
