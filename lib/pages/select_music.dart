@@ -28,17 +28,22 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   void initState() {
     super.initState();
     initPlatformState();
-    startPlaybackTimeUpdater();
     _musicKitPlugin.onMusicPlayerStateChanged.listen((state) {
       if (mounted) {
         ref
             .read(musicPlayerProvider.notifier)
             .updateMusicPlayerStatus(state.playbackStatus);
+        if (state.playbackStatus == MusicPlayerPlaybackStatus.playing) {
+          startPlaybackTimeUpdater();
+        } else {
+          _timer?.cancel();
+        }
       }
     });
   }
 
   void startPlaybackTimeUpdater() {
+    _timer?.cancel(); // 既存のタイマーをキャンセル
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
       if (!mounted) return; // ウィジェットがマウントされているか確認
       if (ref.read(musicPlayerProvider).musicPlayerStatus !=
