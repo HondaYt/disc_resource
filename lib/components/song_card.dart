@@ -192,6 +192,7 @@ class SongCardState extends ConsumerState<SongCard> {
                                 fontSize: 22.0,
                                 color: Colors.grey[600],
                               ),
+                              maxLines: 1,
                             ),
                           ],
                         ),
