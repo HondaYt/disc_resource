@@ -14,10 +14,10 @@ class RecentlyPlayedList extends ConsumerStatefulWidget {
   const RecentlyPlayedList({super.key});
 
   @override
-  _RecentlyPlayedListState createState() => _RecentlyPlayedListState();
+  RecentlyPlayedListState createState() => RecentlyPlayedListState();
 }
 
-class _RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
+class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
   bool _hasSwiped = false;
   late int currentIndex;
 

@@ -11,6 +11,7 @@ import 'user_info.dart';
 import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
 import '../providers/recently_played_provider.dart';
+import '../color.dart';
 
 class SelectMusic extends ConsumerStatefulWidget {
   const SelectMusic({super.key});
@@ -112,20 +113,32 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   Widget build(BuildContext context) {
     final recentlyPlayed = ref.watch(recentlyPlayedProvider);
     return MaterialApp(
+      theme: sampleTheme,
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Recently Played Songs'),
+          title: Image.asset(
+            "assets/logo_w700.png",
+            height: 32,
+          ),
+          centerTitle: false,
           actions: [
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UserInfoPage(),
-                  ),
-                );
-              },
+            Container(
+              margin: const EdgeInsets.all(8.0),
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                color: Colors.grey, // 背景色を設定
+              ),
+              child: IconButton(
+                icon: const Icon(Icons.person),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const UserInfoPage(),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),
@@ -137,6 +150,7 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
                   : const RecentlyPlayedList(),
             ),
             NavigationBar(
+              backgroundColor: Colors.black,
               destinations: const <NavigationDestination>[
                 NavigationDestination(
                   icon: Icon(Icons.home),

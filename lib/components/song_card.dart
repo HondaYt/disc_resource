@@ -59,6 +59,7 @@ class SongCardState extends ConsumerState<SongCard> {
     double cardBorderRadius = 40.0;
     double cardPadding = 8;
     return SmoothCard(
+      color: Colors.grey[900],
       smoothness: 0.6,
       elevation: 2.0,
       shadowColor: Colors.black45,
@@ -156,9 +157,9 @@ class SongCardState extends ConsumerState<SongCard> {
                             TextScroll(
                               paddingLeft: 24.0,
                               widget.song['attributes']['artistName'],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 22.0,
-                                color: Colors.grey[600],
+                                color: Colors.white60,
                               ),
                               intervalSpaces: 8,
                               velocity: const Velocity(
@@ -221,20 +222,20 @@ class SongCardState extends ConsumerState<SongCard> {
                 widget.isActive
                     ? '${musicPlayerState.currentPlaybackTime.inMinutes}:${(musicPlayerState.currentPlaybackTime.inSeconds % 60).toString().padLeft(2, '0')}'
                     : '0:00',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 12.0,
-                  color: Colors.grey[600],
+                  color: Colors.white70,
                 ),
               ),
               endIcon: Text(
                 widget.isActive
                     ? '-${musicPlayerState.remainingTime.inMinutes}:${(musicPlayerState.remainingTime.inSeconds % 60).toString().padLeft(2, '0')}'
                     : '0:00',
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 12.0,
-                  color: Colors.grey[600],
+                  color: Colors.white70,
                 ),
               ),
             ),
