@@ -122,24 +122,21 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
           ),
           centerTitle: false,
           actions: [
-            Container(
-              margin: const EdgeInsets.all(8.0),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey, // 背景色を設定
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const UserInfoPage(),
-                    ),
-                  );
-                },
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const UserInfoPage(),
+                  ),
+                );
+              },
+              child: CircleAvatar(
+                backgroundImage: AssetImage('assets/user_dummy.png'),
+                child: Container(),
               ),
             ),
+            const SizedBox(width: 10),
           ],
         ),
         body: Column(
@@ -150,7 +147,6 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
                   : const RecentlyPlayedList(),
             ),
             NavigationBar(
-              backgroundColor: Colors.black,
               destinations: const <NavigationDestination>[
                 NavigationDestination(
                   icon: Icon(Icons.home),
