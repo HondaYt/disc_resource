@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final sampleTheme = ThemeData(
+final discTheme = ThemeData(
   colorScheme: ColorScheme(
       brightness: Brightness.dark,
       primary: Colors.white,

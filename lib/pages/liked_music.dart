@@ -9,26 +9,21 @@ class LikedMusic extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final likedSongs = ref.watch(likedSongsProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Liked Music'),
-      ),
-      body: ListView.builder(
-        itemCount: likedSongs.length,
-        itemBuilder: (context, index) {
-          final song = likedSongs[index];
-          return ListTile(
-            leading: Image.network(
-              song['attributes']['artwork']['url']
-                  .replaceAll('{w}', '636')
-                  .replaceAll('{h}', '636'),
-              fit: BoxFit.cover,
-            ),
-            title: Text(song['attributes']['name']),
-            subtitle: Text(song['attributes']['artistName']),
-          );
-        },
-      ),
+    return ListView.builder(
+      itemCount: likedSongs.length,
+      itemBuilder: (context, index) {
+        final song = likedSongs[index];
+        return ListTile(
+          leading: Image.network(
+            song['attributes']['artwork']['url']
+                .replaceAll('{w}', '636')
+                .replaceAll('{h}', '636'),
+            fit: BoxFit.cover,
+          ),
+          title: Text(song['attributes']['name']),
+          subtitle: Text(song['attributes']['artistName']),
+        );
+      },
     );
   }
 }

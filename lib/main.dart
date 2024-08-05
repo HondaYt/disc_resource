@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'pages/request_permission.dart';
-import 'pages/select_music.dart';
+// import 'pages/select_music.dart';
+import 'pages/disc_main.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'pages/sign_in.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'color.dart';
 
 // import 'theme.dart';
 Future<void> main() async {
@@ -30,9 +32,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Disc Resource',
-      home: AuthState(),
+    return MaterialApp(
+      theme: discTheme,
+      title: 'Disc',
+      home: const AuthState(),
     );
   }
 }
@@ -78,7 +81,7 @@ class AuthStateState extends State<AuthState> {
     } else {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const SelectMusic()),
+        MaterialPageRoute(builder: (context) => const DiscMain()),
       );
     }
   }

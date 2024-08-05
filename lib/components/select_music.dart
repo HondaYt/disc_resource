@@ -4,14 +4,11 @@ import 'package:music_kit/music_kit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
-import '../components/recently_played_list.dart';
-import 'liked_music.dart';
+import 'recently_played_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'user_info.dart';
 import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
 import '../providers/recently_played_provider.dart';
-import '../color.dart';
 
 class SelectMusic extends ConsumerStatefulWidget {
   const SelectMusic({super.key});
@@ -44,9 +41,9 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   }
 
   void startPlaybackTimeUpdater() {
-    _timer?.cancel(); // 既存のタイマーをキャンセル
+    _timer?.cancel();
     _timer = Timer.periodic(const Duration(milliseconds: 200), (timer) async {
-      if (!mounted) return; // ウィジェットがマウントされているか確認
+      if (!mounted) return;
       if (ref.read(musicPlayerProvider).musicPlayerStatus !=
           MusicPlayerPlaybackStatus.playing) return;
       final playbackTime = await _musicKitPlugin.playbackTime;
@@ -98,7 +95,7 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
       },
     );
 
-    if (!mounted) return; // ウィジェットがマウントされているか確認
+    if (!mounted) return;
     if (response.statusCode == 200) {
       ref
           .read(recentlyPlayedProvider.notifier)
@@ -112,74 +109,8 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   @override
   Widget build(BuildContext context) {
     final recentlyPlayed = ref.watch(recentlyPlayedProvider);
-    return MaterialApp(
-      theme: sampleTheme,
-      home: Scaffold(
-        appBar: AppBar(
-          title: Image.asset(
-            "assets/logo_w700.png",
-            height: 32,
-          ),
-          centerTitle: false,
-          actions: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UserInfoPage(),
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                backgroundImage: const AssetImage('assets/user_dummy.png'),
-                child: Container(),
-              ),
-            ),
-            const SizedBox(width: 10),
-          ],
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: recentlyPlayed.isEmpty
-                  ? const Center(child: CircularProgressIndicator())
-                  : const RecentlyPlayedList(),
-            ),
-            NavigationBar(
-              destinations: const <NavigationDestination>[
-                NavigationDestination(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.favorite),
-                  label: 'Liked',
-                ),
-              ],
-              selectedIndex: 0,
-              onDestinationSelected: (index) {
-                if (index == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SelectMusic(),
-                    ),
-                  );
-                }
-                if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const LikedMusic(),
-                    ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
-      ),
-    );
+    return recentlyPlayed.isEmpty
+        ? const Center(child: CircularProgressIndicator())
+        : const RecentlyPlayedList();
   }
 }
