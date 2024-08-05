@@ -64,26 +64,24 @@ class SongCardState extends ConsumerState<SongCard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             const SizedBox(width: 8),
-            Container(
-              height: 40,
-              width: 40,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey,
-              ),
-              child: IconButton(
-                icon: const Icon(Icons.person),
-                onPressed: () {},
+            GestureDetector(
+              onTap: () {},
+              child: CircleAvatar(
+                radius: 16,
+                backgroundImage: const AssetImage('assets/user2_dummy.png'),
+                child: Container(),
               ),
             ),
             const SizedBox(width: 8),
             const Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('HondaYt',
-                    style: const TextStyle(fontSize: 18.0, height: 1)),
+                Text('HondaYt', style: TextStyle(fontSize: 16.0, height: 1)),
                 Text('2時間前',
-                    style: const TextStyle(fontSize: 12.0, color: Colors.grey)),
+                    style: TextStyle(
+                      fontSize: 12.0,
+                      color: Colors.white60,
+                    )),
               ],
             ),
           ],

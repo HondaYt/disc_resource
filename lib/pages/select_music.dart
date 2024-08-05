@@ -132,7 +132,7 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
                 );
               },
               child: CircleAvatar(
-                backgroundImage: AssetImage('assets/user_dummy.png'),
+                backgroundImage: const AssetImage('assets/user_dummy.png'),
                 child: Container(),
               ),
             ),
