@@ -138,6 +138,60 @@ class SongCardState extends ConsumerState<SongCard> {
                               .replaceAll('{h}', '1272'),
                           fit: BoxFit.cover,
                         ),
+                        Padding(
+                          padding: const EdgeInsets.all(4.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Container(
+                                  color: Colors.black87,
+                                  child: Text(
+                                    musicPlayerState.musicPlayerStatus
+                                        .toString(),
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              Container(
+                                  color: Colors.black87,
+                                  child: Text(
+                                    'was${musicPlayerState.wasMusicPlayerStatusBeforeSeek.toString()}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              Container(
+                                  color: Colors.black87,
+                                  child: Text(
+                                    'Duration:${musicPlayerState.songDuration.inSeconds.toString()}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              Container(
+                                  color: Colors.black87,
+                                  child: Text(
+                                    'Remaining:${musicPlayerState.remainingTime.inSeconds.toString()}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                              Container(
+                                  color: Colors.black87,
+                                  child: Text(
+                                    'Current:${musicPlayerState.currentPlaybackTime.inSeconds.toString()}',
+                                    style: const TextStyle(
+                                      fontSize: 18.0,
+                                      color: Colors.white,
+                                    ),
+                                  )),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),

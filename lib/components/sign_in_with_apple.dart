@@ -41,7 +41,7 @@ Future<AuthResponse> signInWithApple() async {
   if (fullName != null) {
     await supabase
         .from('profiles')
-        .update({'full_name': fullName}).eq('id', response.user?.id as Object);
+        .update({'username': fullName}).eq('id', response.user?.id as Object);
   }
   if (email != null) {
     await supabase

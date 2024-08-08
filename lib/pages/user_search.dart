@@ -5,8 +5,10 @@ class UserSearch extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Expanded(
-      child: Text('User Search'),
+    return const Scaffold(
+      body: Center(
+        child: Text('User Search'),
+      ),
     );
   }
 }

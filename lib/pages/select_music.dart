@@ -4,7 +4,7 @@ import 'package:music_kit/music_kit.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:logger/logger.dart';
-import 'recently_played_list.dart';
+import '../components/recently_played_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
@@ -64,10 +64,15 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
   }
 
   Future<void> initPlatformState() async {
+    if (!mounted) return;
+
     await _fetchTokens();
     if (!mounted) return;
+
     await fetchRecentlyPlayed();
-    if (mounted && ref.read(recentlyPlayedProvider).isNotEmpty) {
+    if (!mounted) return;
+
+    if (ref.read(recentlyPlayedProvider).isNotEmpty) {
       ref
           .read(musicControlProvider.notifier)
           .playSong(ref.read(recentlyPlayedProvider)[0]);

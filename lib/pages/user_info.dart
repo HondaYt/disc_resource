@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'edit_user_info.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -35,6 +36,19 @@ class UserInfoPageState extends State<UserInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('User Information'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EditUserInfoPage(),
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: userInfo == null
           ? const Center(child: CircularProgressIndicator())
@@ -45,7 +59,7 @@ class UserInfoPageState extends State<UserInfoPage> {
                 children: [
                   // Text('ID: ${userInfo?['id'] ?? 'N/A'}',
                   //     style: const TextStyle(fontSize: 20)),
-                  Text('Full Name: ${userInfo?['full_name'] ?? 'N/A'}',
+                  Text('User Name: ${userInfo?['username'] ?? 'N/A'}',
                       style: const TextStyle(fontSize: 24)),
                   const SizedBox(height: 8),
                   Text('Email: ${userInfo?['email'] ?? 'N/A'}',

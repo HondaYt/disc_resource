@@ -3,7 +3,7 @@ import 'liked_music.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'user_info.dart';
 // import '../color.dart';
-import '../components/select_music.dart';
+import 'select_music.dart';
 import 'user_search.dart'; // New import
 
 class DiscMain extends ConsumerStatefulWidget {
@@ -17,66 +17,67 @@ class _DiscMainState extends ConsumerState<DiscMain> {
 
   @override
   Widget build(BuildContext context) {
-    return PopScope(
-      canPop: false,
-      child: Scaffold(
-        appBar: AppBar(
-          leading: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Image.asset(
-              "assets/logo_w700.png",
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent, // 背景を透明に設定
+        elevation: 0, // 影を削除
+        leading: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Image.asset(
+            "assets/logo_w700.png",
+          ),
+        ),
+        // title: const Text('MusicKit Demo'),
+        centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const UserInfoPage(),
+                ),
+              );
+            },
+            child: CircleAvatar(
+              backgroundImage: const AssetImage('assets/user_dummy.png'),
+              child: Container(),
             ),
           ),
-          // title: const Text('MusicKit Demo'),
-          centerTitle: true,
-          actions: [
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const UserInfoPage(),
-                  ),
-                );
-              },
-              child: CircleAvatar(
-                backgroundImage: const AssetImage('assets/user_dummy.png'),
-                child: Container(),
+          const SizedBox(width: 10),
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: _buildSelectedWidget(),
+          ),
+          NavigationBar(
+            backgroundColor: Colors.transparent, // 背景を透明に設定
+            elevation: 0, // 影を削除
+            destinations: const <NavigationDestination>[
+              NavigationDestination(
+                icon: Icon(Icons.home),
+                label: 'Home',
               ),
-            ),
-            const SizedBox(width: 10),
-          ],
-        ),
-        body: Column(
-          children: [
-            Expanded(
-              child: _buildSelectedWidget(),
-            ),
-            NavigationBar(
-              destinations: const <NavigationDestination>[
-                NavigationDestination(
-                  icon: Icon(Icons.home),
-                  label: 'Home',
-                ),
-                NavigationDestination(
-                  icon: Icon(Icons.favorite),
-                  label: 'Liked',
-                ),
-                NavigationDestination(
-                  // New search icon added
-                  icon: Icon(Icons.search),
-                  label: 'User Search',
-                ),
-              ],
-              selectedIndex: _selectedIndex,
-              onDestinationSelected: (index) {
-                setState(() {
-                  _selectedIndex = index;
-                });
-              },
-            ),
-          ],
-        ),
+              NavigationDestination(
+                icon: Icon(Icons.favorite),
+                label: 'Liked',
+              ),
+              NavigationDestination(
+                // New search icon added
+                icon: Icon(Icons.search),
+                label: 'User Search',
+              ),
+            ],
+            selectedIndex: _selectedIndex,
+            onDestinationSelected: (index) {
+              setState(() {
+                _selectedIndex = index;
+              });
+            },
+          ),
+        ],
       ),
     );
   }
