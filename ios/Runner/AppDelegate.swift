@@ -2,7 +2,7 @@ import Flutter
 import MusicKit
 import UIKit
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
 
   var eventSink: FlutterEventSink?
