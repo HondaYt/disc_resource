@@ -38,7 +38,7 @@ class AuthStateState extends State<AuthState> {
     } else if (!permission) {
       context.go('/request_permission');
     } else {
-      context.go('/main_page');
+      context.go('/select_music');
     }
   }
 }

@@ -1,4 +1,5 @@
 import 'package:go_router/go_router.dart';
+import 'package:flutter/material.dart';
 import 'pages/disc_main.dart';
 import 'pages/liked_music.dart';
 import 'pages/select_music.dart';
@@ -23,21 +24,35 @@ final GoRouter router = GoRouter(
           path: 'permission',
           builder: (context, state) => const PermissionPage(),
         ),
-        GoRoute(
-          path: 'main_page',
-          builder: (context, state) => const DiscMain(),
-          routes: [
-            GoRoute(
-              path: 'select_music',
-              builder: (context, state) => const SelectMusic(),
+        StatefulShellRoute.indexedStack(
+          builder: (BuildContext context, GoRouterState state,
+              StatefulNavigationShell navigationShell) {
+            return DiscMain(child: navigationShell);
+          },
+          branches: [
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: 'select_music',
+                  builder: (context, state) => const SelectMusic(),
+                ),
+              ],
             ),
-            GoRoute(
-              path: 'liked',
-              builder: (context, state) => const LikedMusic(),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: 'liked',
+                  builder: (context, state) => const LikedMusic(),
+                ),
+              ],
             ),
-            GoRoute(
-              path: 'user_search',
-              builder: (context, state) => const UserSearch(),
+            StatefulShellBranch(
+              routes: [
+                GoRoute(
+                  path: 'user_search',
+                  builder: (context, state) => const UserSearch(),
+                ),
+              ],
             ),
           ],
         ),
@@ -52,14 +67,6 @@ final GoRouter router = GoRouter(
           builder: (context, state) => const EditUserInfoPage(),
         ),
       ],
-    ),
-    GoRoute(
-      path: '/sign_in',
-      builder: (context, state) => SignInPage(),
-    ),
-    GoRoute(
-      path: '/request_permission',
-      builder: (context, state) => const PermissionPage(),
     ),
   ],
 );

@@ -1,42 +1,31 @@
 import 'package:flutter/material.dart';
-import 'liked_music.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'user_info.dart';
-import 'select_music.dart';
-import 'user_search.dart';
+import 'package:go_router/go_router.dart';
 
-class DiscMain extends ConsumerStatefulWidget {
-  const DiscMain({super.key});
-  @override
-  ConsumerState<DiscMain> createState() => _DiscMainState();
-}
+class DiscMain extends StatelessWidget {
+  const DiscMain({super.key, required this.child});
+  final Widget child;
 
-class _DiscMainState extends ConsumerState<DiscMain> {
-  int _selectedIndex = 0;
+  static final List<(String, IconData, String)> _navItems = [
+    ('/select_music', Icons.home, 'Select Music'),
+    ('/liked', Icons.favorite, 'Liked'),
+    ('/user_search', Icons.search, 'User Search'),
+  ];
 
   @override
   Widget build(BuildContext context) {
+    final String location = GoRouterState.of(context).uri.path;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0, // 影を削除
+        elevation: 0,
         leading: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: Image.asset(
-            "assets/logo_w700.png",
-          ),
+          child: Image.asset("assets/logo_w700.png"),
         ),
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const UserInfoPage(),
-                ),
-              );
-            },
+            onTap: () => GoRouter.of(context).push('/user_info'),
             child: CircleAvatar(
               backgroundImage: const AssetImage('assets/user_dummy.png'),
               child: Container(),
@@ -45,51 +34,28 @@ class _DiscMainState extends ConsumerState<DiscMain> {
           const SizedBox(width: 10),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: _buildSelectedWidget(),
-          ),
-          NavigationBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0, // 影を削除
-            destinations: const <NavigationDestination>[
-              NavigationDestination(
-                icon: Icon(Icons.home),
-                label: 'Home',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.favorite),
-                label: 'Liked',
-              ),
-              NavigationDestination(
-                // New search icon added
-                icon: Icon(Icons.search),
-                label: 'User Search',
-              ),
-            ],
-            selectedIndex: _selectedIndex,
-            onDestinationSelected: (index) {
-              setState(() {
-                _selectedIndex = index;
-              });
-            },
-          ),
-        ],
+      body: child,
+      bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        destinations: _navItems
+            .map((item) => NavigationDestination(
+                  icon: Icon(item.$2),
+                  label: item.$3,
+                ))
+            .toList(),
+        selectedIndex: _calculateSelectedIndex(location),
+        onDestinationSelected: (int idx) => _onItemTapped(idx, context),
       ),
     );
   }
 
-  Widget _buildSelectedWidget() {
-    switch (_selectedIndex) {
-      case 0:
-        return const SelectMusic();
-      case 1:
-        return const LikedMusic();
-      case 2:
-        return const UserSearch();
-      default:
-        return const SizedBox.shrink();
-    }
+  int _calculateSelectedIndex(String location) {
+    final index = _navItems.indexWhere((item) => item.$1 == location);
+    return index < 0 ? 0 : index;
+  }
+
+  void _onItemTapped(int index, BuildContext context) {
+    GoRouter.of(context).go(_navItems[index].$1);
   }
 }
