@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
-import '../main.dart';
+import 'package:go_router/go_router.dart';
+// import '../main.dart';
 
 class PermissionPage extends StatefulWidget {
   const PermissionPage({super.key});
@@ -18,8 +19,7 @@ class PermissionPageState extends State<PermissionPage> {
     switch (status) {
       case PermissionStatus.granted:
         Logger().w('権限が許可されました');
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const MyApp()));
+        context.go('/main_page');
         break;
       case PermissionStatus.permanentlyDenied:
         Logger().w('権限が拒否されました');
@@ -53,13 +53,49 @@ class PermissionPageState extends State<PermissionPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('権限の許可'),
+        centerTitle: true,
+        backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            requestPermission();
-          },
-          child: const Text("Request authorization"),
+      body: Container(
+        color: Colors.black,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.perm_media,
+                  size: 100,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  'メディアライブラリへのアクセス許可が必要です',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 30),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.check_circle_outline),
+                  label: Text('権限を許可する'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                  onPressed: () {
+                    requestPermission();
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

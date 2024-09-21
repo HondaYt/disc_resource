@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'liked_music.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'user_info.dart';
-// import '../color.dart';
 import 'select_music.dart';
-import 'user_search.dart'; // New import
+import 'user_search.dart';
 
 class DiscMain extends ConsumerStatefulWidget {
   const DiscMain({super.key});
@@ -19,7 +18,7 @@ class _DiscMainState extends ConsumerState<DiscMain> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent, // 背景を透明に設定
+        backgroundColor: Colors.transparent,
         elevation: 0, // 影を削除
         leading: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -27,7 +26,6 @@ class _DiscMainState extends ConsumerState<DiscMain> {
             "assets/logo_w700.png",
           ),
         ),
-        // title: const Text('MusicKit Demo'),
         centerTitle: true,
         actions: [
           GestureDetector(
@@ -53,7 +51,7 @@ class _DiscMainState extends ConsumerState<DiscMain> {
             child: _buildSelectedWidget(),
           ),
           NavigationBar(
-            backgroundColor: Colors.transparent, // 背景を透明に設定
+            backgroundColor: Colors.transparent,
             elevation: 0, // 影を削除
             destinations: const <NavigationDestination>[
               NavigationDestination(
@@ -91,7 +89,7 @@ class _DiscMainState extends ConsumerState<DiscMain> {
       case 2:
         return const UserSearch();
       default:
-        return const SizedBox.shrink(); // デフォルトの場合、空のウィジェットを返す
+        return const SizedBox.shrink();
     }
   }
 }

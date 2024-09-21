@@ -1,7 +1,8 @@
-import '../main.dart';
+// import '../main.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/sign_in_with_apple.dart';
+import 'package:go_router/go_router.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({super.key});
@@ -23,34 +24,58 @@ class SignInPageState extends State<SignInPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('signInPage'),
+        title: const Text('ログイン'),
+        centerTitle: true,
+        backgroundColor: Colors.black,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              _loginStatus,
+      body: Container(
+        color: Colors.black,
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.account_circle,
+                  size: 100,
+                  color: Colors.white,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  _loginStatus,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(height: 30),
+                ElevatedButton.icon(
+                  icon: Icon(Icons.apple),
+                  label: Text('Appleでサインイン'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    foregroundColor: Colors.black,
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    textStyle: TextStyle(fontSize: 18),
+                  ),
+                  onPressed: () async {
+                    try {
+                      await signInWithApple();
+                      _changeLoginStatus();
+                      if (!mounted) return;
+                      context.go('/request_permission');
+                    } on AuthException catch (error) {
+                      debugPrint(error.toString());
+                    } catch (error) {
+                      debugPrint(error.toString());
+                    }
+                  },
+                ),
+              ],
             ),
-            ElevatedButton(
-              child: const Text('Sign in with Apple'),
-              onPressed: () async {
-                try {
-                  // ③Sign in with Appleを呼び出す関数
-                  await signInWithApple();
-                  // ④サインインできた場合Stateを更新
-                  _changeLoginStatus();
-                  if (!context.mounted) return; // mountedチェックを追加
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const MyApp()));
-                } on AuthException catch (error) {
-                  debugPrint(error.toString());
-                } catch (error) {
-                  debugPrint(error.toString());
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
