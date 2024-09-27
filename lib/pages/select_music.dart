@@ -116,6 +116,11 @@ class _SelectMusicState extends ConsumerState<SelectMusic> {
     final recentlyPlayed = ref.watch(recentlyPlayedProvider);
     return recentlyPlayed.isEmpty
         ? const Center(child: CircularProgressIndicator())
-        : const RecentlyPlayedList();
+        : const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: RecentlyPlayedList(),
+            ),
+          );
   }
 }

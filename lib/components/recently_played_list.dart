@@ -48,35 +48,31 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
       }
     });
 
-    return Column(
-      children: [
-        Expanded(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: AppinioSwiper(
-              controller: swiperController,
-              cardCount: recentlyPlayed.length,
-              cardBuilder: (BuildContext context, int index) {
-                final song = recentlyPlayed[index];
-                return SongCard(
-                  song: song,
-                  isActive: index == currentIndex,
-                );
-              },
-              onSwipeEnd: (previousIndex, targetIndex, activity) {
-                _swipeEnd(previousIndex, targetIndex, activity);
-                setState(() {
-                  currentIndex = targetIndex;
-                });
-                ref
-                    .read(providers.musicPlayerProvider.notifier)
-                    .updateCurrentSongIndex(targetIndex);
-              },
-              onEnd: _onEnd,
-            ),
-          ),
-        ),
-      ],
+    return AppinioSwiper(
+      controller: swiperController,
+      cardCount: recentlyPlayed.length,
+      cardBuilder: (BuildContext context, int index) {
+        final song = recentlyPlayed[index];
+        return SongCard(
+          song: song,
+          isActive: index == currentIndex,
+        );
+      },
+      // スワイプオプションを追加
+      swipeOptions: const SwipeOptions.symmetric(
+        horizontal: true,
+        vertical: false,
+      ),
+      onSwipeEnd: (previousIndex, targetIndex, activity) {
+        _swipeEnd(previousIndex, targetIndex, activity);
+        setState(() {
+          currentIndex = targetIndex;
+        });
+        ref
+            .read(providers.musicPlayerProvider.notifier)
+            .updateCurrentSongIndex(targetIndex);
+      },
+      onEnd: _onEnd,
     );
   }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'edit_user_info.dart';
+import 'package:go_router/go_router.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -35,17 +35,12 @@ class UserInfoPageState extends State<UserInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Information'),
+        title: const Text('ユーザー情報'),
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EditUserInfoPage(),
-                ),
-              );
+              context.go('/user_info/edit');
             },
           ),
         ],

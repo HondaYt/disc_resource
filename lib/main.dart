@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'router.dart';
 import 'color.dart';
 
-// import 'theme.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 

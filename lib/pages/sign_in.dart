@@ -36,36 +36,37 @@ class SignInPageState extends State<SignInPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.account_circle,
                   size: 100,
                   color: Colors.white,
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 Text(
                   _loginStatus,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.apple),
-                  label: Text('Appleでサインイン'),
+                  icon: const Icon(Icons.apple),
+                  label: const Text('Appleでサインイン'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(fontSize: 18),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
                   ),
                   onPressed: () async {
                     try {
                       await signInWithApple();
                       _changeLoginStatus();
-                      if (!mounted) return;
-                      context.go('/request_permission');
+                      if (!context.mounted) return;
+                      context.push('/');
                     } on AuthException catch (error) {
                       debugPrint(error.toString());
                     } catch (error) {

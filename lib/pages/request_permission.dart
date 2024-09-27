@@ -19,7 +19,7 @@ class PermissionPageState extends State<PermissionPage> {
     switch (status) {
       case PermissionStatus.granted:
         Logger().w('権限が許可されました');
-        context.go('/main_page');
+        context.push('/');
         break;
       case PermissionStatus.permanentlyDenied:
         Logger().w('権限が拒否されました');
@@ -33,7 +33,7 @@ class PermissionPageState extends State<PermissionPage> {
                 TextButton(
                   child: const Text('OK'),
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    context.pop('/');
                   },
                 ),
               ],
@@ -64,13 +64,13 @@ class PermissionPageState extends State<PermissionPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
+                const Icon(
                   Icons.perm_media,
                   size: 100,
                   color: Colors.white,
                 ),
-                SizedBox(height: 20),
-                Text(
+                const SizedBox(height: 20),
+                const Text(
                   'メディアライブラリへのアクセス許可が必要です',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -79,15 +79,16 @@ class PermissionPageState extends State<PermissionPage> {
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ElevatedButton.icon(
-                  icon: Icon(Icons.check_circle_outline),
-                  label: Text('権限を許可する'),
+                  icon: const Icon(Icons.check_circle_outline),
+                  label: const Text('権限を許可する'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,
                     foregroundColor: Colors.black,
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
-                    textStyle: TextStyle(fontSize: 18),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 15),
+                    textStyle: const TextStyle(fontSize: 18),
                   ),
                   onPressed: () {
                     requestPermission();
