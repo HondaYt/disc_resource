@@ -10,13 +10,13 @@ import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
 import '../providers/recently_played_provider.dart';
 
-class SelectMusic extends ConsumerStatefulWidget {
-  const SelectMusic({super.key});
+class SelectMusicPage extends ConsumerStatefulWidget {
+  const SelectMusicPage({super.key});
   @override
-  ConsumerState<SelectMusic> createState() => _SelectMusicState();
+  ConsumerState<SelectMusicPage> createState() => _SelectMusicPageState();
 }
 
-class _SelectMusicState extends ConsumerState<SelectMusic> {
+class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
   final _musicKitPlugin = MusicKit();
   String _developerToken = '';
   String _userToken = '';

@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DiscContainer extends StatelessWidget {
-  const DiscContainer({super.key, required this.child});
-  final Widget child;
+class AppNavigationBar extends StatelessWidget {
+  const AppNavigationBar({
+    super.key,
+    required this.navigationShell,
+  });
 
-  static final List<(String, dynamic, String)> _navItems = [
-    ('/', const Icon(Icons.home), 'Select Music'),
-    ('/liked', const Icon(Icons.favorite), 'Liked'),
-    ('/user_search', const Icon(Icons.search), 'User Search'),
+  final StatefulNavigationShell navigationShell;
+
+  static final List<(String, IconData, String)> _navItems = [
+    ('/', Icons.home, 'Select Music'),
+    ('/liked', Icons.favorite, 'Liked'),
+    ('/user_search', Icons.search, 'User Search'),
   ];
 
   @override
   Widget build(BuildContext context) {
-    final String location = GoRouterState.of(context).uri.path;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -37,7 +40,7 @@ class DiscContainer extends StatelessWidget {
           ),
         ],
       ),
-      body: child,
+      body: navigationShell,
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(10),
         child: ClipRRect(
@@ -51,11 +54,18 @@ class DiscContainer extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: _navItems
-                  .map((item) => IconButton(
-                        icon: item.$2,
-                        onPressed: () => GoRouter.of(context).go(item.$1),
-                        color:
-                            location == item.$1 ? Colors.white : Colors.white54,
+                  .asMap()
+                  .entries
+                  .map((entry) => IconButton(
+                        icon: Icon(entry.value.$2),
+                        onPressed: () => navigationShell.goBranch(
+                          entry.key,
+                          initialLocation:
+                              entry.key == navigationShell.currentIndex,
+                        ),
+                        color: navigationShell.currentIndex == entry.key
+                            ? Colors.white
+                            : Colors.white54,
                       ))
                   .toList(),
             ),

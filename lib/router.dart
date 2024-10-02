@@ -2,7 +2,7 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sheet/route.dart';
 
-import 'components/disc_container.dart';
+import 'components/app_navigation_bar.dart';
 import 'pages/liked_music.dart';
 import 'pages/select_music.dart';
 import 'pages/user_search.dart';
@@ -18,12 +18,12 @@ final supabase = Supabase.instance.client;
 
 // リダイレクト状態を管理するための変数
 
-final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey<NavigatorState> _shellNavigatorKey =
-    GlobalKey<NavigatorState>();
+final rootNavigatorKey = GlobalKey<NavigatorState>();
+final nestedNavigationKey = GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
-  navigatorKey: _rootNavigatorKey,
+  debugLogDiagnostics: true,
+  navigatorKey: rootNavigatorKey,
   initialLocation: '/',
   redirect: (context, state) async {
     final session = supabase.auth.currentSession;
@@ -42,7 +42,7 @@ final GoRouter router = GoRouter(
           StatefulNavigationShell navigationShell) {
         return MaterialExtendedPage<void>(
           key: state.pageKey,
-          child: DiscContainer(child: navigationShell),
+          child: AppNavigationBar(navigationShell: navigationShell),
         );
       },
       branches: [
@@ -51,7 +51,7 @@ final GoRouter router = GoRouter(
             GoRoute(
               path: '/',
               builder: (BuildContext context, GoRouterState state) {
-                return const SelectMusic();
+                return const SelectMusicPage();
               },
             ),
           ],
@@ -60,7 +60,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/liked',
-              builder: (context, state) => const LikedMusic(),
+              builder: (context, state) => const LikedMusicPage(),
             ),
           ],
         ),
@@ -68,25 +68,39 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/user_search',
-              builder: (context, state) => const UserSearch(),
+              builder: (context, state) => const UserSearchPage(),
             ),
           ],
         ),
       ],
     ),
-    GoRoute(
-      path: '/user_info',
-      parentNavigatorKey: _rootNavigatorKey,
-      pageBuilder: (BuildContext context, GoRouterState state) {
-        return const CupertinoSheetPage<void>(
-          child: UserInfoPage(),
-        );
+    ShellRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      navigatorKey: nestedNavigationKey,
+      pageBuilder: (context, state, child) {
+        return CupertinoSheetPage<void>(child: child);
       },
       routes: [
         GoRoute(
-          path: 'edit',
-          builder: (context, state) => const EditUserInfoPage(),
-        ),
+            path: '/user_info',
+            pageBuilder: (BuildContext context, GoRouterState state) {
+              return MaterialPage<void>(
+                key: state.pageKey,
+                child: const UserInfoPage(),
+              );
+            },
+            routes: [
+              GoRoute(
+                path: 'edit',
+                parentNavigatorKey: nestedNavigationKey,
+                pageBuilder: (context, state) {
+                  return MaterialPage<void>(
+                    key: state.pageKey,
+                    child: const EditUserInfoPage(),
+                  );
+                },
+              ),
+            ]),
       ],
     ),
     GoRoute(

@@ -40,7 +40,7 @@ class UserInfoPageState extends State<UserInfoPage> {
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
-              context.go('/user_info/edit');
+              context.push('/user_info/edit');
             },
           ),
         ],
