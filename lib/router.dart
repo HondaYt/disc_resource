@@ -1,7 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:sheet/route.dart';
 
-import 'components/disc_main.dart';
+import 'components/disc_container.dart';
 import 'pages/liked_music.dart';
 import 'pages/select_music.dart';
 import 'pages/user_search.dart';
@@ -18,6 +19,8 @@ final supabase = Supabase.instance.client;
 // リダイレクト状態を管理するための変数
 
 final GlobalKey<NavigatorState> _rootNavigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> _shellNavigatorKey =
+    GlobalKey<NavigatorState>();
 
 final GoRouter router = GoRouter(
   navigatorKey: _rootNavigatorKey,
@@ -35,16 +38,21 @@ final GoRouter router = GoRouter(
   },
   routes: <RouteBase>[
     StatefulShellRoute.indexedStack(
-      builder: (BuildContext context, GoRouterState state,
+      pageBuilder: (BuildContext context, GoRouterState state,
           StatefulNavigationShell navigationShell) {
-        return DiscMain(child: navigationShell);
+        return MaterialExtendedPage<void>(
+          key: state.pageKey,
+          child: DiscContainer(child: navigationShell),
+        );
       },
       branches: [
         StatefulShellBranch(
           routes: [
             GoRoute(
               path: '/',
-              builder: (context, state) => const SelectMusic(),
+              builder: (BuildContext context, GoRouterState state) {
+                return const SelectMusic();
+              },
             ),
           ],
         ),
@@ -64,19 +72,20 @@ final GoRouter router = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/user_info',
-              builder: (context, state) => const UserInfoPage(),
-              routes: [
-                GoRoute(
-                  path: 'edit',
-                  builder: (context, state) => const EditUserInfoPage(),
-                ),
-              ],
-            ),
-          ],
+      ],
+    ),
+    GoRoute(
+      path: '/user_info',
+      parentNavigatorKey: _rootNavigatorKey,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        return const CupertinoSheetPage<void>(
+          child: UserInfoPage(),
+        );
+      },
+      routes: [
+        GoRoute(
+          path: 'edit',
+          builder: (context, state) => const EditUserInfoPage(),
         ),
       ],
     ),

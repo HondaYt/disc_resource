@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class DiscMain extends StatelessWidget {
-  const DiscMain({super.key, required this.child});
+class DiscContainer extends StatelessWidget {
+  const DiscContainer({super.key, required this.child});
   final Widget child;
 
   static final List<(String, dynamic, String)> _navItems = [
@@ -22,11 +22,12 @@ class DiscMain extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Image.asset("assets/logo_w700.png"),
         ),
-        // title: Image.asset("assets/logo_w700.png", width: 40),
         centerTitle: true,
         actions: [
           GestureDetector(
-            onTap: () => GoRouter.of(context).push('/user_info'),
+            onTap: () {
+              context.push('/user_info');
+            },
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: ClipOval(
@@ -37,16 +38,6 @@ class DiscMain extends StatelessWidget {
         ],
       ),
       body: child,
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     GoRouter.of(context).go('/');
-      //   },
-      //   child: const Icon(Icons.home),
-      //   shape: const CircleBorder(),
-      //   backgroundColor: Colors.grey,
-      //   foregroundColor: Colors.white,
-      // ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.all(10),
         child: ClipRRect(
