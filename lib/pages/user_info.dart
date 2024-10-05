@@ -48,16 +48,21 @@ class UserInfoPageState extends State<UserInfoPage> {
                   children: [
                     const SizedBox(height: 20),
                     Center(
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: userInfo?['avatar_url'] != null
-                            ? NetworkImage(userInfo!['avatar_url'])
-                            : null,
-                        child: userInfo?['avatar_url'] == null
-                            ? const Icon(Icons.person,
-                                size: 60, color: Colors.white)
-                            : null,
-                        backgroundColor: Colors.blue.shade200,
+                      child: ClipOval(
+                        child: userInfo?['avatar_url'] != null
+                            ? Image.network(
+                                userInfo!['avatar_url'],
+                                width: 120,
+                                height: 120,
+                                fit: BoxFit.cover,
+                              )
+                            : Container(
+                                width: 120,
+                                height: 120,
+                                color: Colors.blue.shade200,
+                                child: const Icon(Icons.person,
+                                    size: 60, color: Colors.white),
+                              ),
                       ),
                     ),
                     const SizedBox(height: 24),

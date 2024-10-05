@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({
@@ -39,7 +40,23 @@ class AppNavigationBar extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: ClipOval(
-                child: Image.asset('assets/user_dummy.png'),
+                child: FutureBuilder<String?>(
+                  future: _getAvatarUrl(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasData && snapshot.data != null) {
+                      return Image.network(
+                        snapshot.data!,
+                        width: 32,
+                        height: 32,
+                        fit: BoxFit.cover,
+                      );
+                    }
+                    return Image.asset('assets/user_dummy.png');
+                  },
+                ),
               ),
             ),
           ),
@@ -78,5 +95,18 @@ class AppNavigationBar extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<String?> _getAvatarUrl() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      final data = await Supabase.instance.client
+          .from('profiles')
+          .select('avatar_url')
+          .eq('id', user.id)
+          .single();
+      return data['avatar_url'] as String?;
+    }
+    return null;
   }
 }
