@@ -9,6 +9,13 @@ class LikedMusicPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final likedSongs = ref.watch(likedSongsProvider);
 
+    // likedSongsが空の場合のチェックを追加
+    if (likedSongs.isEmpty) {
+      return const Center(
+        child: Text('まだ何も追加されていません'),
+      );
+    }
+
     return ListView.builder(
       itemCount: likedSongs.length,
       itemBuilder: (context, index) {

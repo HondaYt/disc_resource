@@ -36,32 +36,81 @@ class UserInfoPageState extends State<UserInfoPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ユーザー情報'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings),
-            onPressed: () {
-              context.push('/user_info/edit');
-            },
-          ),
-        ],
+        elevation: 0,
       ),
       body: userInfo == null
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Text('ID: ${userInfo?['id'] ?? 'N/A'}',
-                  //     style: const TextStyle(fontSize: 20)),
-                  Text('User Name: ${userInfo?['username'] ?? 'N/A'}',
-                      style: const TextStyle(fontSize: 24)),
-                  const SizedBox(height: 8),
-                  Text('Email: ${userInfo?['email'] ?? 'N/A'}',
-                      style: const TextStyle(fontSize: 24)),
-                ],
+          : SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(24.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    const SizedBox(height: 20),
+                    Center(
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage: userInfo?['avatar_url'] != null
+                            ? NetworkImage(userInfo!['avatar_url'])
+                            : null,
+                        child: userInfo?['avatar_url'] == null
+                            ? const Icon(Icons.person,
+                                size: 60, color: Colors.white)
+                            : null,
+                        backgroundColor: Colors.blue.shade200,
+                      ),
+                    ),
+                    const SizedBox(height: 24),
+                    _buildInfoCard('ユーザー名', userInfo?['username'] ?? 'N/A'),
+                    _buildInfoCard(
+                        'Disc ID', '@${userInfo?['user_id'] ?? 'N/A'}'),
+                    _buildInfoCard('メールアドレス', userInfo?['email'] ?? 'N/A'),
+                    const SizedBox(height: 32),
+                    ElevatedButton.icon(
+                      icon: const Icon(Icons.edit),
+                      label: const Text('プロフィールを編集'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        context.push('/user_info/edit');
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
+    );
+  }
+
+  Widget _buildInfoCard(String label, String value) {
+    return Card(
+      elevation: 2,
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              label,
+              style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 18),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

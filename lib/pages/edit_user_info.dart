@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_cropper/image_cropper.dart';
+// import 'package:logger/logger.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -14,6 +19,7 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _userNameController;
   late TextEditingController _userIdController;
+  File? _avatarFile;
 
   @override
   void initState() {
@@ -35,20 +41,100 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
     }
   }
 
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      final croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 100,
+        maxWidth: 1080,
+        maxHeight: 1080,
+        compressFormat: ImageCompressFormat.jpg,
+        uiSettings: [
+          AndroidUiSettings(
+            toolbarTitle: '画像を切り抜く',
+            toolbarColor: Colors.deepOrange,
+            toolbarWidgetColor: Colors.white,
+            initAspectRatio: CropAspectRatioPreset.square,
+            lockAspectRatio: true,
+          ),
+          IOSUiSettings(
+            title: '画像を切り抜く',
+            aspectRatioLockEnabled: true,
+            resetAspectRatioEnabled: false,
+          ),
+        ],
+      );
+
+      if (croppedFile != null) {
+        setState(() {
+          _avatarFile = File(croppedFile.path);
+        });
+      }
+    }
+  }
+
+  Future<void> _uploadAvatar() async {
+    if (_avatarFile == null) return;
+
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final fileExt = _avatarFile!.path.split('.').last;
+    final fileName = '${user.id}/avatar.$fileExt';
+
+    try {
+      await supabase.storage.from('avatars').upload(
+            fileName,
+            _avatarFile!,
+            fileOptions: const FileOptions(upsert: true),
+          );
+
+      final avatarUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
+
+      await supabase.from('profiles').upsert({
+        'id': user.id,
+        'avatar_url': avatarUrl,
+      });
+    } catch (error) {
+      if (!mounted) return;
+      String errorMessage = 'アバターのアップロードに失敗しました';
+      if (error is StorageException) {
+        errorMessage += ': ${error.message} (ステータスコード: ${error.statusCode})';
+      } else {
+        errorMessage += ': $error';
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(errorMessage)),
+      );
+      rethrow;
+    }
+  }
+
   Future<void> _updateProfile() async {
     if (_formKey.currentState!.validate()) {
       final user = supabase.auth.currentUser;
       if (user != null) {
-        await supabase.from('profiles').upsert({
-          'id': user.id,
-          'username': _userNameController.text,
-          'user_id': _userIdController.text,
-        });
-        if (!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('プロフィールが更新されました')),
-        );
-        Navigator.of(context).pop();
+        try {
+          await _uploadAvatar();
+          await supabase.from('profiles').upsert({
+            'id': user.id,
+            'username': _userNameController.text,
+            'user_id': _userIdController.text,
+          });
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('プロフィールが更新されました')),
+          );
+          Navigator.of(context).pop();
+        } catch (error) {
+          if (!mounted) return;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('プロフィールの更新に失敗しました: $error')),
+          );
+        }
       }
     }
   }
@@ -62,6 +148,26 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
+            Center(
+              child: GestureDetector(
+                onTap: _pickImage,
+                child: ClipOval(
+                  child: _avatarFile != null
+                      ? Image.file(
+                          _avatarFile!,
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : Container(
+                          width: 100,
+                          height: 100,
+                          color: Colors.grey[300],
+                          child: const Icon(Icons.add_a_photo, size: 50),
+                        ),
+                ),
+              ),
+            ),
             TextFormField(
               controller: _userNameController,
               decoration: const InputDecoration(labelText: 'User Name'),

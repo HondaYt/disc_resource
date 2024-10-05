@@ -10,15 +10,20 @@ class AppNavigationBar extends StatelessWidget {
   final StatefulNavigationShell navigationShell;
 
   static final List<(String, IconData, String)> _navItems = [
-    ('/', Icons.home, 'Select Music'),
-    ('/liked', Icons.favorite, 'Liked'),
-    ('/user_search', Icons.search, 'User Search'),
+    ('/', Icons.home, 'フィード'),
+    ('/liked', Icons.favorite, 'お気に入り'),
+    ('/user_search', Icons.search, 'ユーザー検索'),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: Text(
+          navigationShell.currentIndex == 0
+              ? ''
+              : _navItems[navigationShell.currentIndex].$3,
+        ),
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
