@@ -48,7 +48,7 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: pickedFile.path,
         aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 100,
+        compressQuality: 80,
         maxWidth: 1080,
         maxHeight: 1080,
         compressFormat: ImageCompressFormat.jpg,
