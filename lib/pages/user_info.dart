@@ -13,11 +13,14 @@ class UserInfoPage extends StatefulWidget {
 
 class UserInfoPageState extends State<UserInfoPage> {
   Map<String, dynamic>? userInfo;
+  int followersCount = 0;
+  int followingCount = 0;
 
   @override
   void initState() {
     super.initState();
     _fetchUserInfo();
+    _fetchFollowCounts();
   }
 
   Future<void> _fetchUserInfo() async {
@@ -27,6 +30,28 @@ class UserInfoPageState extends State<UserInfoPage> {
           await supabase.from('profiles').select().eq('id', user.id).single();
       setState(() {
         userInfo = data;
+      });
+    }
+  }
+
+  Future<void> _fetchFollowCounts() async {
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      final followersData = await supabase
+          .from('follows')
+          .select()
+          .eq('followed_id', user.id)
+          .count();
+
+      final followingData = await supabase
+          .from('follows')
+          .select()
+          .eq('follower_id', user.id)
+          .count();
+
+      setState(() {
+        followersCount = followersData.count;
+        followingCount = followingData.count;
       });
     }
   }
@@ -65,12 +90,37 @@ class UserInfoPageState extends State<UserInfoPage> {
                               ),
                       ),
                     ),
+                    const SizedBox(height: 44),
+                    Text(
+                      textAlign: TextAlign.center,
+                      userInfo?['username'] ?? 'N/A',
+                      style: const TextStyle(
+                          fontSize: 24, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      textAlign: TextAlign.center,
+                      '@${userInfo?['user_id'] ?? 'N/A'}',
+                      style: TextStyle(
+                          color: Colors.grey[500],
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    // _buildInfoCard('ユーザー名', userInfo?['username'] ?? 'N/A'),
+                    // _buildInfoCard(
+                    //     'Disc ID', '@${userInfo?['user_id'] ?? 'N/A'}'),
                     const SizedBox(height: 24),
-                    _buildInfoCard('ユーザー名', userInfo?['username'] ?? 'N/A'),
-                    _buildInfoCard(
-                        'Disc ID', '@${userInfo?['user_id'] ?? 'N/A'}'),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        _buildFollowCount('フォロワー', followersCount),
+                        const SizedBox(width: 32),
+                        _buildFollowCount('フォロー中', followingCount),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
                     _buildInfoCard('メールアドレス', userInfo?['email'] ?? 'N/A'),
-                    const SizedBox(height: 32),
+                    const SizedBox(height: 24),
                     ElevatedButton.icon(
                       icon: const Icon(Icons.edit),
                       label: const Text('プロフィールを編集'),
@@ -94,6 +144,7 @@ class UserInfoPageState extends State<UserInfoPage> {
 
   Widget _buildInfoCard(String label, String value) {
     return Card(
+      color: Colors.grey[900]!,
       elevation: 2,
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: Padding(
@@ -116,6 +167,27 @@ class UserInfoPageState extends State<UserInfoPage> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildFollowCount(String label, int count) {
+    return Column(
+      children: [
+        Text(
+          count.toString(),
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 14,
+            color: Colors.grey[500],
+          ),
+        ),
+      ],
     );
   }
 }
