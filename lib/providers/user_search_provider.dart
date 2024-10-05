@@ -14,13 +14,15 @@ class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
     }
 
     try {
-      final currentUserId = supabase.auth.currentUser!.id;
+      final currentUserId = supabase.auth.currentUser?.id;
+      if (currentUserId == null) {
+        throw Exception('ユーザーが認証されていません');
+      }
       final searchResults = await _fetchSearchResults(query, currentUserId);
       final followedUserIds = await _fetchFollowedUserIds(currentUserId);
 
       state = _processSearchResults(searchResults, followedUserIds);
     } catch (error) {
-      // エラー処理
       Logger().e('検索エラー: $error');
       state = [];
     }
@@ -56,10 +58,13 @@ class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
   }
 
   Future<void> toggleFollow(String targetUserId) async {
-    final currentUserId = supabase.auth.currentUser!.id;
+    final currentUserId = supabase.auth.currentUser?.id;
+    if (currentUserId == null) {
+      Logger().e('ユーザーが認証されていません');
+      return;
+    }
     try {
       await _performFollowAction(currentUserId, targetUserId);
-      // 検索結果を更新
       state = state.map((user) {
         if (user['id'] == targetUserId) {
           return {...user, 'is_following': !user['is_following']};
@@ -67,7 +72,7 @@ class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
         return user;
       }).toList();
     } catch (error) {
-      print('フォロー/アンフォローエラー: $error');
+      Logger().e('フォロー/アンフォローエラー: $error');
     }
   }
 

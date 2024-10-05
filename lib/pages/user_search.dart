@@ -36,6 +36,7 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: CupertinoSearchTextField(
+        style: const TextStyle(color: Colors.white),
         controller: _searchController,
         onSubmitted: (query) =>
             ref.read(userSearchProvider.notifier).searchUsers(query),
@@ -66,18 +67,42 @@ class _UserSearchPageState extends ConsumerState<UserSearchPage> {
   }
 
   Widget _buildUserAvatar(Map<String, dynamic> user) {
-    return CircleAvatar(
-      backgroundImage:
-          user['avatar_url'] != null ? NetworkImage(user['avatar_url']) : null,
-      child: user['avatar_url'] == null
-          ? Text(user['username'][0].toUpperCase())
-          : null,
+    return ClipOval(
+      child: user['avatar_url'] != null
+          ? Image.network(
+              user['avatar_url'],
+              width: 40,
+              height: 40,
+              fit: BoxFit.cover,
+            )
+          : Container(
+              width: 40,
+              height: 40,
+              color: Colors.grey,
+              child: Center(
+                child: Text(
+                  user['username'][0].toUpperCase(),
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                ),
+              ),
+            ),
     );
   }
 
   Widget _buildFollowButton(Map<String, dynamic> user) {
+    final isFollowing = user['is_following'] ?? false;
     return ElevatedButton(
-      child: Text(user['is_following'] ? 'フォロー解除' : 'フォロー'),
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isFollowing ? Colors.black : Colors.white,
+        foregroundColor: isFollowing ? Colors.white : Colors.black,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: isFollowing
+              ? const BorderSide(color: Colors.white, width: 2)
+              : BorderSide.none,
+        ),
+      ),
+      child: Text(isFollowing ? 'フォロー中' : 'フォロー'),
       onPressed: () async {
         await ref.read(userSearchProvider.notifier).toggleFollow(user['id']);
       },

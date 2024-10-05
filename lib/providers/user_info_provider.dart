@@ -1,5 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:logger/logger.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -9,19 +10,32 @@ class UserInfoNotifier extends StateNotifier<Map<String, dynamic>?> {
   }
 
   Future<void> fetchUserInfo() async {
-    final user = supabase.auth.currentUser;
-    if (user != null) {
-      final data =
-          await supabase.from('profiles').select().eq('id', user.id).single();
-      state = data;
+    try {
+      final user = supabase.auth.currentUser;
+      if (user != null) {
+        final data =
+            await supabase.from('profiles').select().eq('id', user.id).single();
+        state = data;
+      } else {
+        state = null;
+      }
+    } catch (error) {
+      Logger().e('ユーザー情報の取得エラー: $error');
+      state = null;
     }
   }
 
   Future<void> updateUserInfo(Map<String, dynamic> newInfo) async {
-    final user = supabase.auth.currentUser;
-    if (user != null) {
-      await supabase.from('profiles').update(newInfo).eq('id', user.id);
-      await fetchUserInfo();
+    try {
+      final user = supabase.auth.currentUser;
+      if (user != null) {
+        await supabase.from('profiles').update(newInfo).eq('id', user.id);
+        await fetchUserInfo();
+      } else {
+        throw Exception('ユーザーが認証されていません');
+      }
+    } catch (error) {
+      Logger().e('ユーザー情報の更新エラー: $error');
     }
   }
 }
@@ -32,22 +46,26 @@ final userInfoProvider =
 
 // フォロワー数とフォロー中の数を取得するプロバイダー
 final followCountsProvider = FutureProvider<Map<String, int>>((ref) async {
-  final user = supabase.auth.currentUser;
-  if (user != null) {
-    final followersCount = await supabase
-        .from('follows')
-        .select()
-        .eq('followed_id', user.id)
-        .count();
-    final followingCount = await supabase
-        .from('follows')
-        .select()
-        .eq('follower_id', user.id)
-        .count();
-    return {
-      'followers': followersCount.count,
-      'following': followingCount.count,
-    };
+  try {
+    final user = supabase.auth.currentUser;
+    if (user != null) {
+      final followersCount = await supabase
+          .from('follows')
+          .select()
+          .eq('followed_id', user.id)
+          .count();
+      final followingCount = await supabase
+          .from('follows')
+          .select()
+          .eq('follower_id', user.id)
+          .count();
+      return {
+        'followers': followersCount.count,
+        'following': followingCount.count,
+      };
+    }
+  } catch (error) {
+    Logger().e('フォロー数の取得エラー: $error');
   }
   return {'followers': 0, 'following': 0};
 });
