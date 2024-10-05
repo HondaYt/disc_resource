@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sheet/route.dart';
+import 'providers/user_info_provider.dart';
 
 import 'components/app_navigation_bar.dart';
 import 'pages/liked_music.dart';
@@ -8,8 +9,9 @@ import 'pages/select_music.dart';
 import 'pages/user_search.dart';
 import 'pages/user_info.dart';
 import 'pages/edit_user_info.dart';
-import '../pages/request_permission.dart';
-import '../pages/sign_in.dart';
+import 'pages/request_permission.dart';
+import 'pages/sign_in.dart';
+import 'pages/follow_list_page.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -82,25 +84,52 @@ final GoRouter router = GoRouter(
       },
       routes: [
         GoRoute(
-            path: '/user_info',
-            pageBuilder: (BuildContext context, GoRouterState state) {
-              return MaterialPage<void>(
-                key: state.pageKey,
-                child: const UserInfoPage(),
-              );
-            },
-            routes: [
-              GoRoute(
-                path: 'edit',
-                parentNavigatorKey: nestedNavigationKey,
-                pageBuilder: (context, state) {
-                  return MaterialPage<void>(
-                    key: state.pageKey,
-                    child: const EditUserInfoPage(),
-                  );
-                },
-              ),
-            ]),
+          path: '/user_info',
+          pageBuilder: (BuildContext context, GoRouterState state) {
+            return MaterialPage<void>(
+              key: state.pageKey,
+              child: const UserInfoPage(),
+            );
+          },
+          routes: [
+            GoRoute(
+              path: 'edit',
+              parentNavigatorKey: nestedNavigationKey,
+              pageBuilder: (context, state) {
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: const EditUserInfoPage(),
+                );
+              },
+            ),
+            GoRoute(
+              path: 'followers',
+              parentNavigatorKey: nestedNavigationKey,
+              pageBuilder: (context, state) {
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: FollowListPage(
+                    title: 'フォロワー',
+                    provider: followersProvider,
+                  ),
+                );
+              },
+            ),
+            GoRoute(
+              path: 'following',
+              parentNavigatorKey: nestedNavigationKey,
+              pageBuilder: (context, state) {
+                return MaterialPage<void>(
+                  key: state.pageKey,
+                  child: FollowListPage(
+                    title: 'フォロー中',
+                    provider: followingProvider,
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
