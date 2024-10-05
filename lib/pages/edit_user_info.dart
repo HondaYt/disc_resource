@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
-// import 'package:logger/logger.dart';
+import 'package:logger/logger.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -20,6 +20,7 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
   late TextEditingController _userNameController;
   late TextEditingController _userIdController;
   File? _avatarFile;
+  bool _isUserIdTaken = false;
 
   @override
   void initState() {
@@ -131,9 +132,17 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
           Navigator.of(context).pop();
         } catch (error) {
           if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('プロフィールの更新に失敗しました: $error')),
-          );
+          Logger().e('プロフィールの更新に失敗しました: $error');
+          if (error is PostgrestException && error.code == '23505') {
+            setState(() {
+              _isUserIdTaken = true;
+            });
+            _formKey.currentState!.validate();
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('プロフィールの更新に失敗しました: $error')),
+            );
+          }
         }
       }
     }
@@ -145,6 +154,7 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
       appBar: AppBar(title: const Text('プロフィール編集')),
       body: Form(
         key: _formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
@@ -181,6 +191,13 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
             TextFormField(
               controller: _userIdController,
               decoration: const InputDecoration(labelText: 'Disc ID'),
+              onChanged: (value) {
+                setState(() {
+                  _isUserIdTaken = false;
+                });
+                // フォームの状態をリセット
+                _formKey.currentState?.validate();
+              },
               validator: (value) {
                 if (value == null || value.isEmpty) {
                   return 'ユーザーネームを入力してください';
@@ -192,6 +209,9 @@ class EditUserInfoPageState extends State<EditUserInfoPage> {
                 final validCharacters = RegExp(r'^[a-zA-Z0-9_\-\.]+$');
                 if (!validCharacters.hasMatch(value)) {
                   return 'ユーザーネームは英数字、アンダースコア、ハイフン、ドットのみ使用できます';
+                }
+                if (_isUserIdTaken) {
+                  return 'このユーザーIDは既に使用されています';
                 }
                 return null;
               },
