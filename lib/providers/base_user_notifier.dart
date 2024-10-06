@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-// import '../utils/user_utils.dart';
 import 'follow_provider.dart';
 
 abstract class BaseUserNotifier

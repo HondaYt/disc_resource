@@ -1,14 +1,18 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+// import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
 import '../utils/user_utils.dart';
 import 'base_user_notifier.dart';
-import 'follow_provider.dart';
 
-final supabase = Supabase.instance.client;
+// この行を削除（user_utils.dartですでに定義されています）
+// final supabase = Supabase.instance.client;
 
 class FollowListNotifier extends BaseUserNotifier {
   FollowListNotifier(super.ref);
+
+  // toggleFollowメソッドは使用されていないため、削除できます
+  // BaseUserNotifierから継承したメソッドを使用する場合は、
+  // オーバーライドする必要がある場合のみ記述してください
 
   Future<void> fetchFollowList(bool isFollowers) async {
     try {
@@ -54,19 +58,6 @@ class FollowListNotifier extends BaseUserNotifier {
         ...Map<String, dynamic>.from(profile),
         'is_following': !isFollowers,
       };
-    }).toList();
-  }
-
-  @override
-  Future<void> toggleFollow(String targetUserId) async {
-    final followNotifier = ref.read(followProvider.notifier);
-    await followNotifier.toggleFollow(targetUserId);
-
-    state = state.map((user) {
-      if (user['id'] == targetUserId) {
-        return {...user, 'is_following': !user['is_following']};
-      }
-      return user;
     }).toList();
   }
 }

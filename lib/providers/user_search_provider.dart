@@ -1,11 +1,8 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
-import '../utils/user_utils.dart';
+import '../utils/user_utils.dart' as user_utils;
 import 'base_user_notifier.dart';
 import 'follow_provider.dart';
-
-final supabase = Supabase.instance.client;
 
 class UserSearchNotifier extends BaseUserNotifier {
   UserSearchNotifier(super.ref);
@@ -17,8 +14,8 @@ class UserSearchNotifier extends BaseUserNotifier {
     }
 
     try {
-      await throwIfNotAuthenticated();
-      final currentUserId = getCurrentUserId()!;
+      await user_utils.throwIfNotAuthenticated();
+      final currentUserId = user_utils.getCurrentUserId()!;
       final searchResults = await _fetchSearchResults(query, currentUserId);
       final followNotifier = ref.read(followProvider.notifier);
       final followedUserIds =
@@ -26,33 +23,19 @@ class UserSearchNotifier extends BaseUserNotifier {
 
       state = processUserList(searchResults, followedUserIds);
     } catch (error) {
-      Logger().e('検索エラー: $error');
+      Logger().e('検索エラー: $error', error: error, stackTrace: StackTrace.current);
       state = [];
     }
   }
 
   Future<List<Map<String, dynamic>>> _fetchSearchResults(
       String query, String currentUserId) async {
-    return await supabase
+    return await user_utils.supabase
         .from('profiles')
         .select()
         .or('username.ilike.%$query%,user_id.ilike.%$query%')
         .neq('id', currentUserId)
         .limit(20);
-  }
-
-  @override
-  Future<void> toggleFollow(String targetUserId) async {
-    final followNotifier = ref.read(followProvider.notifier);
-    await followNotifier.toggleFollow(targetUserId);
-
-    // 状態を更新
-    state = state.map((user) {
-      if (user['id'] == targetUserId) {
-        return {...user, 'is_following': !user['is_following']};
-      }
-      return user;
-    }).toList();
   }
 }
 
