@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_search_provider.dart';
+// import '../providers/follow_provider.dart';
 
 class UserSearchPage extends ConsumerStatefulWidget {
   const UserSearchPage({super.key});

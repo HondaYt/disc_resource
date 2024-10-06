@@ -1,8 +1,8 @@
 import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 import 'package:sheet/route.dart';
-import 'providers/user_info_provider.dart';
-
+// import 'providers/follow_provider.dart';
+import 'providers/follow_list_provider.dart';
 import 'components/app_navigation_bar.dart';
 import 'pages/liked_music.dart';
 import 'pages/select_music.dart';
@@ -11,7 +11,7 @@ import 'pages/user_info.dart';
 import 'pages/edit_user_info.dart';
 import 'pages/request_permission.dart';
 import 'pages/sign_in.dart';
-import 'pages/follow_list_page.dart';
+import 'pages/follow_list.dart';
 
 import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -110,7 +110,7 @@ final GoRouter router = GoRouter(
                   key: state.pageKey,
                   child: FollowListPage(
                     title: 'フォロワー',
-                    provider: followersProvider,
+                    provider: followersListProvider,
                   ),
                 );
               },
@@ -123,7 +123,7 @@ final GoRouter router = GoRouter(
                   key: state.pageKey,
                   child: FollowListPage(
                     title: 'フォロー中',
-                    provider: followingProvider,
+                    provider: followingListProvider,
                   ),
                 );
               },

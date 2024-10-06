@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../providers/user_info_provider.dart';
+import '../providers/follow_provider.dart';
 
 class UserInfoPage extends ConsumerWidget {
   const UserInfoPage({super.key});

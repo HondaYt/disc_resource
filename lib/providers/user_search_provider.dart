@@ -1,11 +1,14 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:logger/logger.dart';
+import '../utils/user_utils.dart';
+import 'base_user_notifier.dart';
+import 'follow_provider.dart';
 
 final supabase = Supabase.instance.client;
 
-class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
-  UserSearchNotifier() : super([]);
+class UserSearchNotifier extends BaseUserNotifier {
+  UserSearchNotifier(super.ref);
 
   Future<void> searchUsers(String query) async {
     if (query.isEmpty) {
@@ -14,14 +17,14 @@ class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
     }
 
     try {
-      final currentUserId = supabase.auth.currentUser?.id;
-      if (currentUserId == null) {
-        throw Exception('ユーザーが認証されていません');
-      }
+      await throwIfNotAuthenticated();
+      final currentUserId = getCurrentUserId()!;
       final searchResults = await _fetchSearchResults(query, currentUserId);
-      final followedUserIds = await _fetchFollowedUserIds(currentUserId);
+      final followNotifier = ref.read(followProvider.notifier);
+      final followedUserIds =
+          await followNotifier.getFollowedUserIds(currentUserId);
 
-      state = _processSearchResults(searchResults, followedUserIds);
+      state = processUserList(searchResults, followedUserIds);
     } catch (error) {
       Logger().e('検索エラー: $error');
       state = [];
@@ -38,68 +41,21 @@ class UserSearchNotifier extends StateNotifier<List<Map<String, dynamic>>> {
         .limit(20);
   }
 
-  Future<Set<String>> _fetchFollowedUserIds(String currentUserId) async {
-    final followsResponse = await supabase
-        .from('follows')
-        .select()
-        .eq('follower_id', currentUserId);
-    return Set<String>.from(
-        followsResponse.map((follow) => follow['followed_id'] as String));
-  }
-
-  List<Map<String, dynamic>> _processSearchResults(
-      List<Map<String, dynamic>> searchResults, Set<String> followedUserIds) {
-    return searchResults.map((profile) {
-      return {
-        ...profile,
-        'is_following': followedUserIds.contains(profile['id']),
-      };
-    }).toList();
-  }
-
+  @override
   Future<void> toggleFollow(String targetUserId) async {
-    final currentUserId = supabase.auth.currentUser?.id;
-    if (currentUserId == null) {
-      Logger().e('ユーザーが認証されていません');
-      return;
-    }
-    try {
-      await _performFollowAction(currentUserId, targetUserId);
-      state = state.map((user) {
-        if (user['id'] == targetUserId) {
-          return {...user, 'is_following': !user['is_following']};
-        }
-        return user;
-      }).toList();
-    } catch (error) {
-      Logger().e('フォロー/アンフォローエラー: $error');
-    }
-  }
+    final followNotifier = ref.read(followProvider.notifier);
+    await followNotifier.toggleFollow(targetUserId);
 
-  Future<void> _performFollowAction(
-      String currentUserId, String targetUserId) async {
-    final existingFollow = await supabase
-        .from('follows')
-        .select()
-        .eq('follower_id', currentUserId)
-        .eq('followed_id', targetUserId)
-        .maybeSingle();
-
-    if (existingFollow == null) {
-      await supabase.from('follows').insert({
-        'follower_id': currentUserId,
-        'followed_id': targetUserId,
-      });
-    } else {
-      await supabase
-          .from('follows')
-          .delete()
-          .eq('follower_id', currentUserId)
-          .eq('followed_id', targetUserId);
-    }
+    // 状態を更新
+    state = state.map((user) {
+      if (user['id'] == targetUserId) {
+        return {...user, 'is_following': !user['is_following']};
+      }
+      return user;
+    }).toList();
   }
 }
 
 final userSearchProvider =
     StateNotifierProvider<UserSearchNotifier, List<Map<String, dynamic>>>(
-        (ref) => UserSearchNotifier());
+        (ref) => UserSearchNotifier(ref));
