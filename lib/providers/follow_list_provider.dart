@@ -4,15 +4,8 @@ import 'package:logger/logger.dart';
 import '../utils/user_utils.dart';
 import 'base_user_notifier.dart';
 
-// この行を削除（user_utils.dartですでに定義されています）
-// final supabase = Supabase.instance.client;
-
 class FollowListNotifier extends BaseUserNotifier {
   FollowListNotifier(super.ref);
-
-  // toggleFollowメソッドは使用されていないため、削除できます
-  // BaseUserNotifierから継承したメソッドを使用する場合は、
-  // オーバーライドする必要がある場合のみ記述してください
 
   Future<void> fetchFollowList(bool isFollowers) async {
     try {
@@ -36,7 +29,6 @@ class FollowListNotifier extends BaseUserNotifier {
     final String column = isFollowers ? 'followed_id' : 'follower_id';
     final String oppositeColumn = isFollowers ? 'follower_id' : 'followed_id';
 
-    // クエリを2段階に分けて実行します
     final followResult = await supabase
         .from('follows')
         .select(oppositeColumn)
