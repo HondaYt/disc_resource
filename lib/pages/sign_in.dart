@@ -1,8 +1,9 @@
-// import '../main.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../components/sign_in_with_apple.dart';
 import 'package:go_router/go_router.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 class SignInPage extends StatefulWidget {
   SignInPage({super.key});
@@ -12,72 +13,139 @@ class SignInPage extends StatefulWidget {
 }
 
 class SignInPageState extends State<SignInPage> {
-  String _loginStatus = 'ログインしていません';
-
   void _changeLoginStatus() {
-    setState(() {
-      _loginStatus = 'ログインしました';
-    });
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('ログイン'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-      ),
       body: Container(
-        color: Colors.black,
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const Icon(
-                  Icons.account_circle,
-                  size: 100,
-                  color: Colors.white,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  _loginStatus,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Colors.black, Colors.grey[900]!],
+          ),
+        ),
+        child: SafeArea(
+          child: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(64),
+                    child: Image.asset(
+                      'assets/full_logo.png',
+                    ),
                   ),
-                ),
-                const SizedBox(height: 30),
-                ElevatedButton.icon(
-                  icon: const Icon(Icons.apple),
-                  label: const Text('Appleでサインイン'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: Colors.black,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 30, vertical: 15),
-                    textStyle: const TextStyle(fontSize: 18),
-                  ),
-                  onPressed: () async {
-                    try {
-                      await signInWithApple();
-                      _changeLoginStatus();
-                      if (!context.mounted) return;
-                      context.push('/');
-                    } on AuthException catch (error) {
-                      debugPrint(error.toString());
-                    } catch (error) {
-                      debugPrint(error.toString());
-                    }
-                  },
-                ),
-              ],
+                  const SizedBox(height: 40),
+                  _buildAppleSignInButton(),
+                  const SizedBox(height: 30),
+                  _buildTermsAndPrivacyText(),
+                ],
+              ),
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildAppleSignInButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ClipPath(
+        clipper: ShapeBorderClipper(
+          shape: SmoothRectangleBorder(
+            smoothness: 0.6,
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            textStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            elevation: 2,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
+          onPressed: () async {
+            try {
+              await signInWithApple();
+              _changeLoginStatus();
+              if (!mounted) return;
+              context.push('/');
+            } on AuthException catch (error) {
+              debugPrint(error.toString());
+            } catch (error) {
+              debugPrint(error.toString());
+            }
+          },
+          child: const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.apple, size: 28),
+              SizedBox(width: 10),
+              Text('Appleでサインイン'),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTermsAndPrivacyText() {
+    return RichText(
+      textAlign: TextAlign.center,
+      text: TextSpan(
+        style: const TextStyle(color: Colors.white70, fontSize: 13),
+        children: [
+          TextSpan(
+            text: '利用規約',
+            style: const TextStyle(
+                color: Colors.white70, decoration: TextDecoration.underline),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                    title: Text('利用規約'),
+                    content: Text('利用規約の内容を表示'),
+                  ),
+                );
+              },
+          ),
+          const TextSpan(
+            text: 'と',
+            style: TextStyle(color: Colors.white),
+          ),
+          TextSpan(
+            text: 'プライバシーポリシー',
+            style: const TextStyle(
+                color: Colors.white70, decoration: TextDecoration.underline),
+            recognizer: TapGestureRecognizer()
+              ..onTap = () {
+                showDialog(
+                  context: context,
+                  builder: (context) => const AlertDialog(
+                    title: Text('プライバシーポリシー'),
+                    content: Text('プライバシーポリシーの内容を表示'),
+                  ),
+                );
+              },
+          ),
+          const TextSpan(
+            text: 'に\n同意の上、本サービスをご利用ください。',
+            style: TextStyle(color: Colors.white),
+          ),
+        ],
       ),
     );
   }
