@@ -15,6 +15,12 @@ class UserInfoPage extends ConsumerWidget {
       appBar: AppBar(
         title: const Text('ユーザー情報'),
         elevation: 0,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () => context.pop(),
+          ),
+        ],
       ),
       body: userInfo == null
           ? const Center(child: CircularProgressIndicator())
