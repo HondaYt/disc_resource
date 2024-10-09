@@ -127,7 +127,7 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
           // ユーザー情報を別途取得
           final userResponse = await supabase
               .from('profiles')
-              .select('username')
+              .select('username, avatar_url') // avatar_urlを追加
               .eq('id', post['user_id'])
               .single();
 
@@ -137,6 +137,7 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
               song: songData,
               userName: userResponse['username'] ?? '不明なユーザー',
               postedAt: DateTime.parse(post['created_at']),
+              avatarUrl: userResponse['avatar_url'], // 追加
             ));
           }
         }

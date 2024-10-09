@@ -69,7 +69,10 @@ class SongCardState extends ConsumerState<SongCard> {
               onTap: () {},
               child: CircleAvatar(
                 radius: 16,
-                backgroundImage: const AssetImage('assets/user2_dummy.png'),
+                backgroundImage: widget.item.avatarUrl != null
+                    ? NetworkImage(widget.item.avatarUrl!)
+                    : const AssetImage('assets/user2_dummy.png')
+                        as ImageProvider,
                 child: Container(),
               ),
             ),
