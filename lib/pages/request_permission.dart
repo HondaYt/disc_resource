@@ -87,7 +87,7 @@ class PermissionPageState extends State<PermissionPage> {
                     ),
                     const SizedBox(height: 20),
                     const Text(
-                      'Discでは、あなたのApple Musicの再生履歴を\n使用して、あなたのフォロワーと共有します。',
+                      'Discでは、あなたのApple Musicの再生履歴を\n使用してあなたのフォロワーと共有します。',
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 16,
