@@ -52,13 +52,12 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
       controller: swiperController,
       cardCount: recentlyPlayed.length,
       cardBuilder: (BuildContext context, int index) {
-        final song = recentlyPlayed[index];
+        final item = recentlyPlayed[index];
         return SongCard(
-          song: song,
+          item: item,
           isActive: index == currentIndex,
         );
       },
-      // スワイプオプションを追加
       swipeOptions: const SwipeOptions.symmetric(
         horizontal: true,
         vertical: false,
@@ -91,9 +90,9 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
                 music_kit.MusicPlayerPlaybackStatus.stopped);
   }
 
-  Future<void> likeSong(Map<String, dynamic> song) async {
+  Future<void> likeSong(RecentlyPlayedItem item) async {
     final ref = ProviderScope.containerOf(context);
-    ref.read(likedSongsProvider.notifier).addSong(song);
+    ref.read(likedSongsProvider.notifier).addSong(item.song);
   }
 
   void _swipeEnd(int previousIndex, int targetIndex, SwiperActivity activity) {
@@ -111,7 +110,7 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
             final ref = ProviderScope.containerOf(context);
             ref
                 .read(likedSongsProvider.notifier)
-                .addSong(ref.read(recentlyPlayedProvider)[previousIndex]);
+                .addSong(ref.read(recentlyPlayedProvider)[previousIndex].song);
             break;
           case AxisDirection.left:
             break;
@@ -126,12 +125,12 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
             .d('previous index: $previousIndex, target index: $targetIndex');
         ref
             .read(musicControlProvider.notifier)
-            .playSong(ref.read(recentlyPlayedProvider)[targetIndex]);
+            .playSong(ref.read(recentlyPlayedProvider)[targetIndex].song);
         break;
       case Unswipe():
         ref
             .read(musicControlProvider.notifier)
-            .playSong(ref.read(recentlyPlayedProvider)[targetIndex]);
+            .playSong(ref.read(recentlyPlayedProvider)[targetIndex].song);
         Logger().d('A ${activity.direction.name} swipe was undone.');
         Logger()
             .d('previous index: $previousIndex, target index: $targetIndex');

@@ -8,14 +8,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/music_player_provider.dart' as local_provider;
 import '../providers/music_control_provider.dart' as control_provider;
 import '../providers/swiper_controller_provider.dart';
+import '../providers/recently_played_provider.dart';
 
 class SongCard extends ConsumerStatefulWidget {
-  final Map<String, dynamic> song;
+  final RecentlyPlayedItem item;
   final bool isActive;
 
   const SongCard({
     super.key,
-    required this.song,
+    required this.item,
     required this.isActive,
   });
 
@@ -73,15 +74,18 @@ class SongCardState extends ConsumerState<SongCard> {
               ),
             ),
             const SizedBox(width: 8),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('HondaYt', style: TextStyle(fontSize: 16.0, height: 1)),
-                Text('2時間前',
-                    style: TextStyle(
-                      fontSize: 12.0,
-                      color: Colors.white60,
-                    )),
+                Text(widget.item.userName,
+                    style: const TextStyle(fontSize: 16.0, height: 1)),
+                Text(
+                  _getTimeAgo(widget.item.postedAt),
+                  style: const TextStyle(
+                    fontSize: 12.0,
+                    color: Colors.white60,
+                  ),
+                ),
               ],
             ),
           ],
@@ -109,31 +113,31 @@ class SongCardState extends ConsumerState<SongCard> {
                       fit: StackFit.expand,
                       children: [
                         Image.network(
-                          widget.song['attributes']['artwork']['url']
+                          widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '2')
                               .replaceAll('{h}', '2'),
                           fit: BoxFit.cover,
                         ),
                         Image.network(
-                          widget.song['attributes']['artwork']['url']
+                          widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '159')
                               .replaceAll('{h}', '159'),
                           fit: BoxFit.cover,
                         ),
                         Image.network(
-                          widget.song['attributes']['artwork']['url']
+                          widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '318')
                               .replaceAll('{h}', '318'),
                           fit: BoxFit.cover,
                         ),
                         Image.network(
-                          widget.song['attributes']['artwork']['url']
+                          widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '636')
                               .replaceAll('{h}', '636'),
                           fit: BoxFit.cover,
                         ),
                         Image.network(
-                          widget.song['attributes']['artwork']['url']
+                          widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '1272')
                               .replaceAll('{h}', '1272'),
                           fit: BoxFit.cover,
@@ -224,7 +228,7 @@ class SongCardState extends ConsumerState<SongCard> {
                               children: [
                                 TextScroll(
                                   paddingLeft: 24.0,
-                                  widget.song['attributes']['name'],
+                                  widget.item.song['attributes']['name'],
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.bold,
@@ -238,7 +242,7 @@ class SongCardState extends ConsumerState<SongCard> {
                                 ),
                                 TextScroll(
                                   paddingLeft: 24.0,
-                                  widget.song['attributes']['artistName'],
+                                  widget.item.song['attributes']['artistName'],
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.white60,
@@ -261,7 +265,7 @@ class SongCardState extends ConsumerState<SongCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.song['attributes']['name'],
+                                  widget.item.song['attributes']['name'],
                                   style: const TextStyle(
                                     fontSize: 22.0,
                                     fontWeight: FontWeight.bold,
@@ -270,7 +274,7 @@ class SongCardState extends ConsumerState<SongCard> {
                                   maxLines: 1,
                                 ),
                                 Text(
-                                  widget.song['attributes']['artistName'],
+                                  widget.item.song['attributes']['artistName'],
                                   style: TextStyle(
                                     fontSize: 22.0,
                                     color: Colors.grey[600],
@@ -373,5 +377,20 @@ class SongCardState extends ConsumerState<SongCard> {
         ),
       ],
     );
+  }
+
+  String _getTimeAgo(DateTime postedAt) {
+    final now = DateTime.now();
+    final difference = now.difference(postedAt);
+
+    if (difference.inDays > 0) {
+      return '${difference.inDays}日前';
+    } else if (difference.inHours > 0) {
+      return '${difference.inHours}時間前';
+    } else if (difference.inMinutes > 0) {
+      return '${difference.inMinutes}分前';
+    } else {
+      return 'たった今';
+    }
   }
 }
