@@ -66,16 +66,16 @@ Future<void> sendRecentlyPlayed() async {
   }
 
   final recentlyPlayedData =
-      await fetchRecentlyPlayedData(developerToken, userToken);
+      await RecentlyPlayedUtilsData(developerToken, userToken);
   if (recentlyPlayedData == null) return;
 
   final songData = recentlyPlayedData['data'][0];
   final songId = songData['id'];
 
-  await processAndSaveSongData(supabase, userId, songId, recentlyPlayedData);
+  await processAndSaveSongData(supabase, userId, songId, songData);
 }
 
-Future<Map<String, dynamic>?> fetchRecentlyPlayedData(
+Future<Map<String, dynamic>?> RecentlyPlayedUtilsData(
     String developerToken, String userToken) async {
   const url = 'https://api.music.apple.com/v1/me/recent/played/tracks?limit=1';
   final response = await http.get(
@@ -95,7 +95,7 @@ Future<Map<String, dynamic>?> fetchRecentlyPlayedData(
 }
 
 Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
-    String songId, Map<String, dynamic> recentlyPlayedData) async {
+    String songId, Map<String, dynamic> songData) async {
   final today = DateTime.now().toUtc().toString().split(' ')[0];
 
   try {
@@ -107,13 +107,13 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
     Logger().d(existingData);
 
     if (existingData.isEmpty) {
-      await insertSongData(supabase, userId, songId, recentlyPlayedData);
+      await insertSongData(supabase, userId, songId, songData);
       Logger().d('最近再生した曲のデータをSupabaseに送信しました');
     } else {
       final createdAt = DateTime.parse(existingData[0]['created_at']);
       Logger().d(createdAt);
       if (createdAt.toUtc().toString().split(' ')[0] != today) {
-        await insertSongData(supabase, userId, songId, recentlyPlayedData);
+        await insertSongData(supabase, userId, songId, songData);
         Logger().d('新しい日付で最近再生した曲のデータをSupabaseに送信しました');
       } else {
         Logger().d('同じ曲のデータが今日既に存在するため、挿入をスキップしました');
@@ -125,11 +125,11 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
 }
 
 Future<void> insertSongData(SupabaseClient supabase, String userId,
-    String songId, Map<String, dynamic> recentlyPlayedData) async {
+    String songId, Map<String, dynamic> songData) async {
   await supabase.from('posts').insert({
     'user_id': userId,
     'song_id': songId,
-    'recently_played': json.encode(recentlyPlayedData),
+    'recently_played': json.encode(songData),
   });
 }
 
