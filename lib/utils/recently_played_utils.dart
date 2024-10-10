@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'dart:convert';
+// import 'dart:convert';
 import 'package:logger/logger.dart';
 import '../providers/recently_played_provider.dart';
 
@@ -45,14 +45,22 @@ class RecentlyPlayedUtils {
       if (postsResponse.isNotEmpty) {
         List<RecentlyPlayedItem> recentlyPlayedList = [];
         for (var post in postsResponse) {
+          // 曲の詳細情報を取得
+          final songResponse = await supabase
+              .from('songs')
+              .select('details')
+              .eq('id', post['song_id'])
+              .single();
+
+          // ユーザー情報を取得
           final userResponse = await supabase
               .from('profiles')
               .select('username, avatar_url')
               .eq('id', post['user_id'])
               .single();
-          final songData = json.decode(post['recently_played']);
+
           recentlyPlayedList.add(RecentlyPlayedItem(
-            song: songData,
+            song: songResponse['details'],
             userName: userResponse['username'] ?? '不明なユーザー',
             postedAt: DateTime.parse(post['created_at']),
             avatarUrl: userResponse['avatar_url'],
