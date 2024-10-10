@@ -3,6 +3,7 @@
     "cmake.configureOnOpen": false,
     "cSpell.words": [
         "appinio",
+        "autovalidate",
         "cupertino",
         "dotenv",
         "gghc",
@@ -14,6 +15,7 @@
         "MHIA",
         "Millis",
         "NNSZO",
+        "Postgrest",
         "riverpod",
         "Schyler",
         "supabase",

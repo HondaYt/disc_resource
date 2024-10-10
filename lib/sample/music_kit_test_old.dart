@@ -36,10 +36,10 @@ class _MusicKitTestState extends State<MusicKitTest> {
       _userToken = userToken;
     });
 
-    RecentlyPlayedUtils();
+    recentlyPlayedUtils();
   }
 
-  Future<void> RecentlyPlayedUtils() async {
+  Future<void> recentlyPlayedUtils() async {
     const url = 'https://api.music.apple.com/v1/me/recent/played/tracks';
     final response = await http.get(
       Uri.parse(url),
@@ -98,7 +98,7 @@ class _MusicKitTestState extends State<MusicKitTest> {
                   child: _recentlyPlayed.isEmpty
                       ? const CircularProgressIndicator()
                       : RefreshIndicator(
-                          onRefresh: RecentlyPlayedUtils,
+                          onRefresh: recentlyPlayedUtils,
                           child: ListView.builder(
                             itemCount: _recentlyPlayed.length,
                             itemBuilder: (context, index) {
