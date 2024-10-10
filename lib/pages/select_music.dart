@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:music_kit/music_kit.dart';
 // import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:logger/logger.dart';
+
 import '../components/recently_played_list.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
 import '../providers/recently_played_provider.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+
+import '../utils/recently_played_utils.dart';
 
 class SelectMusicPage extends ConsumerStatefulWidget {
   const SelectMusicPage({super.key});
@@ -68,7 +68,7 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
     await _fetchTokens();
     if (!mounted) return;
 
-    await fetchRecentlyPlayed();
+    await RecentlyPlayedUtils(ref).fetch();
     if (!mounted) return;
 
     if (ref.read(recentlyPlayedProvider).isNotEmpty) {
@@ -81,77 +81,6 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
   Future<void> _fetchTokens() async {
     if (mounted) {
       setState(() {});
-    }
-  }
-
-  Future<void> fetchRecentlyPlayed() async {
-    try {
-      final supabase = Supabase.instance.client;
-
-      // 現在のユーザーのIDを取得
-      final currentUserId = supabase.auth.currentUser?.id;
-
-      if (currentUserId == null) {
-        throw Exception('ユーザーが認証されていません');
-      }
-
-      // フォローしているユーザーのIDを取得
-      final followedUsersResponse = await supabase
-          .from('follows')
-          .select('followed_id')
-          .eq('follower_id', currentUserId);
-
-      final followedUserIds = followedUsersResponse
-          .map((follow) => follow['followed_id'] as String)
-          .toList();
-
-      if (followedUserIds.isEmpty) {
-        // フォローしているユーザーがいない場合
-        ref.read(recentlyPlayedProvider.notifier).setRecentlyPlayed([]);
-        return;
-      }
-
-      // フォローしているユーザーの投稿を取得
-      final postsResponse = await supabase
-          .from('posts')
-          .select('*')
-          .inFilter('user_id', followedUserIds)
-          .order('created_at', ascending: false)
-          .limit(10);
-
-      if (!mounted) return;
-
-      if (postsResponse.isNotEmpty) {
-        List<RecentlyPlayedItem> recentlyPlayedList = [];
-        for (var post in postsResponse) {
-          // ユーザー情報を別途取得
-          final userResponse = await supabase
-              .from('profiles')
-              .select('username, avatar_url') // avatar_urlを追加
-              .eq('id', post['user_id'])
-              .single();
-
-          final recentlyPlayedData = json.decode(post['recently_played']);
-          for (var songData in recentlyPlayedData['data']) {
-            recentlyPlayedList.add(RecentlyPlayedItem(
-              song: songData,
-              userName: userResponse['username'] ?? '不明なユーザー',
-              postedAt: DateTime.parse(post['created_at']),
-              avatarUrl: userResponse['avatar_url'], // 追加
-            ));
-          }
-        }
-        ref
-            .read(recentlyPlayedProvider.notifier)
-            .setRecentlyPlayed(recentlyPlayedList);
-      } else {
-        // フォローしているユーザーの投稿がない場合
-        ref.read(recentlyPlayedProvider.notifier).setRecentlyPlayed([]);
-      }
-    } catch (e) {
-      Logger().e('最近再生した曲の取得に失敗しました: $e');
-      // エラーが発生した場合も空のリストをセット
-      ref.read(recentlyPlayedProvider.notifier).setRecentlyPlayed([]);
     }
   }
 
@@ -186,6 +115,13 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
                     color: Colors.white,
                   ),
                 ),
+                ElevatedButton.icon(
+                  label: Text('再読み込み'),
+                  onPressed: () {
+                    RecentlyPlayedUtils(ref).fetch();
+                  },
+                  icon: Icon(Icons.refresh),
+                )
               ],
             ),
           )

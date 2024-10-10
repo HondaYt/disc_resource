@@ -8,14 +8,14 @@ import 'package:logger/logger.dart';
 
 final supabase = Supabase.instance.client;
 
-class EditUserInfoPage extends StatefulWidget {
-  const EditUserInfoPage({super.key});
+class UserInfoEditPage extends StatefulWidget {
+  const UserInfoEditPage({super.key});
 
   @override
-  State<EditUserInfoPage> createState() => EditUserInfoPageState();
+  State<UserInfoEditPage> createState() => UserInfoEditPageState();
 }
 
-class EditUserInfoPageState extends State<EditUserInfoPage> {
+class UserInfoEditPageState extends State<UserInfoEditPage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _userNameController;
   late TextEditingController _userIdController;

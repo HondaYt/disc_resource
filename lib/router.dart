@@ -8,7 +8,7 @@ import 'pages/liked_music.dart';
 import 'pages/select_music.dart';
 import 'pages/user_search.dart';
 import 'pages/user_info.dart';
-import 'pages/edit_user_info.dart';
+import 'pages/user_info_edit.dart';
 import 'pages/request_permission.dart';
 import 'pages/sign_in.dart';
 import 'pages/follow_list.dart';
@@ -98,7 +98,7 @@ final GoRouter router = GoRouter(
               pageBuilder: (context, state) {
                 return MaterialPage<void>(
                   key: state.pageKey,
-                  child: const EditUserInfoPage(),
+                  child: const UserInfoEditPage(),
                 );
               },
             ),

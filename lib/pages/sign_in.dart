@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../components/sign_in_with_apple.dart';
+import '../utils/apple_sign_in_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 
@@ -78,7 +78,7 @@ class SignInPageState extends State<SignInPage> {
           ),
           onPressed: () async {
             try {
-              await signInWithApple();
+              await appleSignInUtils();
               _changeLoginStatus();
               if (!mounted) return;
               context.push('/');
