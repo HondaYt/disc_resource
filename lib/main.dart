@@ -2,15 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
-import 'package:music_kit/music_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
-import 'dart:convert';
 import 'router.dart';
 import 'color.dart';
 import 'package:background_fetch/background_fetch.dart';
+import 'services/recently_played_service.dart';
 
 @pragma('vm:entry-point')
 void backgroundFetchHeadlessTask(HeadlessTask task) async {
@@ -52,87 +50,6 @@ Future<void> main() async {
   // フォアグラウンドでの最初の実行
 }
 
-final _musicKitPlugin = MusicKit();
-
-Future<void> sendRecentlyPlayed() async {
-  final supabase = Supabase.instance.client;
-  final developerToken = await _musicKitPlugin.requestDeveloperToken();
-  final userToken = await _musicKitPlugin.requestUserToken(developerToken);
-
-  final userId = supabase.auth.currentUser?.id;
-  if (userId == null) {
-    Logger().e('ユーザーが認証されていません');
-    return;
-  }
-
-  final recentlyPlayedData =
-      await RecentlyPlayedUtilsData(developerToken, userToken);
-  if (recentlyPlayedData == null) return;
-
-  final songData = recentlyPlayedData['data'][0];
-  final songId = songData['id'];
-
-  await processAndSaveSongData(supabase, userId, songId, songData);
-}
-
-Future<Map<String, dynamic>?> RecentlyPlayedUtilsData(
-    String developerToken, String userToken) async {
-  const url = 'https://api.music.apple.com/v1/me/recent/played/tracks?limit=1';
-  final response = await http.get(
-    Uri.parse(url),
-    headers: {
-      'Authorization': 'Bearer $developerToken',
-      'Music-User-Token': userToken,
-    },
-  );
-
-  if (response.statusCode == 200) {
-    return json.decode(response.body);
-  } else {
-    Logger().e('最近再生した曲の読み込みに失敗しました: ${response.body}');
-    return null;
-  }
-}
-
-Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
-    String songId, Map<String, dynamic> songData) async {
-  final today = DateTime.now().toUtc().toString().split(' ')[0];
-
-  try {
-    final existingData = await supabase
-        .from('posts')
-        .select()
-        .eq('user_id', userId)
-        .eq('song_id', songId);
-    Logger().d(existingData);
-
-    if (existingData.isEmpty) {
-      await insertSongData(supabase, userId, songId, songData);
-      Logger().d('最近再生した曲のデータをSupabaseに送信しました');
-    } else {
-      final createdAt = DateTime.parse(existingData[0]['created_at']);
-      Logger().d(createdAt);
-      if (createdAt.toUtc().toString().split(' ')[0] != today) {
-        await insertSongData(supabase, userId, songId, songData);
-        Logger().d('新しい日付で最近再生した曲のデータをSupabaseに送信しました');
-      } else {
-        Logger().d('同じ曲のデータが今日既に存在するため、挿入をスキップしました');
-      }
-    }
-  } catch (e) {
-    Logger().e('Supabaseの操作中にエラーが発生しました: $e');
-  }
-}
-
-Future<void> insertSongData(SupabaseClient supabase, String userId,
-    String songId, Map<String, dynamic> songData) async {
-  await supabase.from('posts').insert({
-    'user_id': userId,
-    'song_id': songId,
-    'recently_played': json.encode(songData),
-  });
-}
-
 class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
@@ -167,7 +84,6 @@ Future<void> initBackgroundFetch() async {
 void _onBackgroundFetch(String taskId) async {
   Logger().d("[BackgroundFetch] Event received: $taskId");
 
-  // アプリがフォアグラウンドにある場合は何もしない
   if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
     Logger().d("[BackgroundFetch] App is in foreground, skipping execution");
   } else {
