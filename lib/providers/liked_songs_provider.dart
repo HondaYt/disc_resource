@@ -57,6 +57,32 @@ class LikedSongsNotifier extends StateNotifier<List<Map<String, dynamic>>> {
       rethrow;
     }
   }
+
+  Future<void> removeSong(Map<String, dynamic> song) async {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser?.id;
+
+    if (userId == null) {
+      Logger().e('ユーザーが認証されていません');
+      return;
+    }
+
+    try {
+      // Supabaseからいいね情報を削除
+      await supabase
+          .from('liked')
+          .delete()
+          .eq('user_id', userId)
+          .eq('song_id', int.parse(song['id']));
+
+      // ローカルの状態を更新
+      state = state.where((s) => s['id'] != song['id']).toList();
+      Logger().d('いいねを削除しました: ${song['attributes']['name']}');
+    } catch (e) {
+      Logger().e('いいねの削除に失敗しました: $e');
+      rethrow;
+    }
+  }
 }
 
 final likedSongsProvider =

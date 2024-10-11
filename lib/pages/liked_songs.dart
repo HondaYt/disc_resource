@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import '../providers/liked_songs_provider.dart';
 
 class LikedSongsPage extends ConsumerStatefulWidget {
@@ -50,22 +51,55 @@ class LikedSongsPageState extends ConsumerState<LikedSongsPage> {
                 final song = likedSongs[index];
                 final attributes = song['attributes'] as Map<String, dynamic>;
                 final artworkUrl = attributes['artwork']['url'] as String;
-                return ListTile(
-                  leading: Image.network(
-                    artworkUrl.replaceAll('{w}', '80').replaceAll('{h}', '80'),
-                    width: 60,
-                    height: 60,
-                    fit: BoxFit.cover,
-                    errorBuilder: (context, error, stackTrace) {
-                      return const Icon(Icons.music_note, size: 60);
-                    },
+                return Slidable(
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => _deleteSong(song),
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete,
+                        label: '削除',
+                      ),
+                    ],
                   ),
-                  title: Text(attributes['name'] ?? '不明な曲名'),
-                  subtitle: Text(attributes['artistName'] ?? '不明なアーティスト'),
-                  onTap: () {},
+                  child: ListTile(
+                    leading: Image.network(
+                      artworkUrl
+                          .replaceAll('{w}', '80')
+                          .replaceAll('{h}', '80'),
+                      width: 60,
+                      height: 60,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) {
+                        return const Icon(Icons.music_note, size: 60);
+                      },
+                    ),
+                    title: Text(attributes['name'] ?? '不明な曲名'),
+                    subtitle: Text(attributes['artistName'] ?? '不明なアーティスト'),
+                    onTap: () {},
+                  ),
                 );
               },
             ),
     );
+  }
+
+  void _deleteSong(Map<String, dynamic> song) async {
+    try {
+      await ref.read(likedSongsProvider.notifier).removeSong(song);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('曲を削除しました')),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('曲の削除に失敗しました: $e')),
+        );
+      }
+    }
   }
 }
