@@ -105,22 +105,25 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                   ),
                   const SizedBox(height: 16),
                   // _buildInfoCard('メールアドレス', userInfo['email'] ?? 'N/A'),
-                  const SizedBox(height: 24),
-                  ElevatedButton.icon(
-                    icon: const Icon(Icons.edit),
-                    label: const Text('プロフィールを編集'),
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 32, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
+                  // const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: ElevatedButton.icon(
+                      icon: const Icon(Icons.edit),
+                      label: const Text('プロフィールを編集'),
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 32, vertical: 12),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
                       ),
+                      onPressed: () {
+                        context.push('/user_info/edit');
+                      },
                     ),
-                    onPressed: () {
-                      context.push('/user_info/edit');
-                    },
                   ),
-                  const SizedBox(height: 24),
+                  // const SizedBox(height: 24),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: const Text(
@@ -170,9 +173,12 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
       itemCount: posts.length + (notifier.hasMorePosts ? 1 : 0),
       itemBuilder: (context, index) {
         if (index == posts.length) {
-          return ElevatedButton(
-            onPressed: () => notifier.fetchUserPosts(),
-            child: const Text('さらに読み込む'),
+          return Padding(
+            padding: const EdgeInsets.all(16),
+            child: ElevatedButton(
+              onPressed: () => notifier.fetchUserPosts(),
+              child: const Text('さらに読み込む'),
+            ),
           );
         }
 
