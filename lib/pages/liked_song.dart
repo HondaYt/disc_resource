@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/liked_songs_provider.dart';
 
-class LikedMusicPage extends ConsumerStatefulWidget {
-  const LikedMusicPage({super.key});
+class LikedSongPage extends ConsumerStatefulWidget {
+  const LikedSongPage({super.key});
 
   @override
-  LikedMusicPageState createState() => LikedMusicPageState(); // アンダースコアを削除
+  LikedSongPageState createState() => LikedSongPageState(); // アンダースコアを削除
 }
 
-class LikedMusicPageState extends ConsumerState<LikedMusicPage> {
+class LikedSongPageState extends ConsumerState<LikedSongPage> {
   // アンダースコアを削除
   @override
   void initState() {
