@@ -4,7 +4,7 @@ import 'package:sheet/route.dart';
 // import 'providers/follow_provider.dart';
 import 'providers/follow_list_provider.dart';
 import 'components/app_navigation_bar.dart';
-import 'pages/liked_song.dart';
+import 'pages/liked_songs.dart';
 import 'pages/select_music.dart';
 import 'pages/user_search.dart';
 import 'pages/user_info.dart';
@@ -62,7 +62,7 @@ final GoRouter router = GoRouter(
           routes: [
             GoRoute(
               path: '/liked',
-              builder: (context, state) => const LikedSongPage(),
+              builder: (context, state) => const LikedSongsPage(),
             ),
           ],
         ),
