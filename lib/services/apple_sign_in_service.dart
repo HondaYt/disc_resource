@@ -6,7 +6,7 @@ import 'dart:convert';
 final supabase = Supabase.instance.client;
 
 /// Performs Apple sign in on iOS or macOS
-Future<AuthResponse> appleSignInUtils() async {
+Future<AuthResponse> appleSignInService() async {
   final rawNonce = supabase.auth.generateRawNonce();
   final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
 

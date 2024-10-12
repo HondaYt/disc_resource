@@ -5,6 +5,7 @@ import '../providers/user_info_provider.dart';
 import '../providers/follow_provider.dart';
 import '../providers/user_posts_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import '../notifiers/user_posts_notifier.dart';
 
 class UserInfoPage extends ConsumerStatefulWidget {
   const UserInfoPage({super.key});
@@ -17,7 +18,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
   @override
   void initState() {
     super.initState();
-    // 非同期処理を使用してより効率的に投稿を取得
     Future.microtask(() {
       ref.read(userPostsProvider.notifier).fetchUserPosts(refresh: true);
     });

@@ -2,29 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
 import 'router.dart';
 import 'color.dart';
-import 'package:background_fetch/background_fetch.dart';
-import 'services/recently_played_service.dart';
+import 'services/recently_played_sender_service.dart';
+import 'services/background_fetch_service.dart';
 
-@pragma('vm:entry-point')
-void backgroundFetchHeadlessTask(HeadlessTask task) async {
-  String taskId = task.taskId;
-  bool isTimeout = task.timeout;
-  if (isTimeout) {
-    Logger().d("[BackgroundFetch] Headless task timed-out: $taskId");
-    BackgroundFetch.finish(taskId);
-    return;
-  }
-
-  await sendRecentlyPlayed();
-
-  BackgroundFetch.finish(taskId);
-}
-
+final supabase = Supabase.instance.client;
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
 
@@ -39,7 +24,7 @@ Future<void> main() async {
     await sendRecentlyPlayed();
   }
 
-  await initBackgroundFetch();
+  await BackgroundFetchService.initialize();
 
   runApp(
     const ProviderScope(
@@ -60,42 +45,4 @@ class MyApp extends ConsumerWidget {
       routerConfig: router,
     );
   }
-}
-
-Future<void> initBackgroundFetch() async {
-  await BackgroundFetch.configure(
-      BackgroundFetchConfig(
-          minimumFetchInterval: 15,
-          stopOnTerminate: false,
-          enableHeadless: true,
-          requiresBatteryNotLow: false,
-          requiresCharging: false,
-          requiresStorageNotLow: false,
-          requiresDeviceIdle: false,
-          requiredNetworkType: NetworkType.NONE),
-      _onBackgroundFetch,
-      _onBackgroundFetchTimeout);
-
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
-}
-
-void _onBackgroundFetch(String taskId) async {
-  Logger().d("[BackgroundFetch] Event received: $taskId");
-
-  try {
-    final session = supabase.auth.currentSession;
-    final permission = await Permission.mediaLibrary.status.isGranted;
-    if (session != null && permission) {
-      await sendRecentlyPlayed();
-    }
-  } catch (e) {
-    Logger().e("[BackgroundFetch] Error: $e");
-  } finally {
-    BackgroundFetch.finish(taskId);
-  }
-}
-
-void _onBackgroundFetchTimeout(String taskId) {
-  Logger().d("[BackgroundFetch] TIMEOUT: $taskId");
-  BackgroundFetch.finish(taskId);
 }

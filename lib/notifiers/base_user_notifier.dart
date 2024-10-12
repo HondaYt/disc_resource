@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'follow_provider.dart';
+import '../providers/follow_provider.dart';
 
 abstract class BaseUserNotifier
     extends StateNotifier<List<Map<String, dynamic>>> {

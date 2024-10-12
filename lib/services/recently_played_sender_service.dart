@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:logger/logger.dart';
 import 'package:music_kit/music_kit.dart';
 import 'dart:convert';
+import '../utils/user_utils.dart';
 
 final _musicKitPlugin = MusicKit();
 
@@ -11,11 +12,14 @@ Future<void> sendRecentlyPlayed() async {
   final developerToken = await _musicKitPlugin.requestDeveloperToken();
   final userToken = await _musicKitPlugin.requestUserToken(developerToken);
 
-  final userId = supabase.auth.currentUser?.id;
-  if (userId == null) {
-    Logger().e('ユーザーが認証されていません');
+  try {
+    await throwIfNotAuthenticated();
+  } catch (e) {
+    Logger().e('ユーザーが認証されていません: $e');
     return;
   }
+
+  final userId = getCurrentUserId()!;
 
   final recentlyPlayedData =
       await recentlyPlayedUtilsData(developerToken, userToken);

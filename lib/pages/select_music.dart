@@ -8,8 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart';
 import '../providers/recently_played_provider.dart';
-
-import '../utils/recently_played_utils.dart';
+import '../services/recently_played_fetcher_service.dart';
 
 class SelectMusicPage extends ConsumerStatefulWidget {
   const SelectMusicPage({super.key});
@@ -68,7 +67,7 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
     await _fetchTokens();
     if (!mounted) return;
 
-    await RecentlyPlayedUtils(ref).fetch();
+    await RecentlyPlayedFetcherService(ref).fetch();
     if (!mounted) return;
 
     if (ref.read(recentlyPlayedProvider).isNotEmpty) {
@@ -118,7 +117,7 @@ class _SelectMusicPageState extends ConsumerState<SelectMusicPage> {
                 ElevatedButton.icon(
                   label: Text('再読み込み'),
                   onPressed: () {
-                    RecentlyPlayedUtils(ref).fetch();
+                    RecentlyPlayedFetcherService(ref).fetch();
                   },
                   icon: Icon(Icons.refresh),
                 )

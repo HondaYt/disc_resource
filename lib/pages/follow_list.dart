@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/follow_list_provider.dart';
+import '../notifiers/follow_list_notifier.dart';
 
 class FollowListPage extends ConsumerStatefulWidget {
   final String title;

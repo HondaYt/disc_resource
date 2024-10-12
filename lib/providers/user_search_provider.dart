@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 import '../utils/user_utils.dart' as user_utils;
-import 'base_user_notifier.dart';
+import '../notifiers/base_user_notifier.dart';
 import 'follow_provider.dart';
 
 class UserSearchNotifier extends BaseUserNotifier {

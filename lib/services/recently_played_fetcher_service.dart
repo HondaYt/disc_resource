@@ -1,13 +1,13 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-// import 'dart:convert';
 import 'package:logger/logger.dart';
 import '../providers/recently_played_provider.dart';
+import '../models/recently_played_item.dart';
 
-class RecentlyPlayedUtils {
+class RecentlyPlayedFetcherService {
   final WidgetRef ref;
 
-  RecentlyPlayedUtils(this.ref);
+  RecentlyPlayedFetcherService(this.ref);
 
   Future<void> fetch() async {
     try {

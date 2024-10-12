@@ -5,10 +5,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:smooth_corner/smooth_corner.dart';
 import 'package:text_scroll/text_scroll.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../providers/music_player_provider.dart' as local_provider;
+import '../providers/music_player_provider.dart';
 import '../providers/music_control_provider.dart' as control_provider;
 import '../providers/swiper_controller_provider.dart';
-import '../providers/recently_played_provider.dart';
+import '../models/music_player_state.dart';
+import '../models/recently_played_item.dart';
 
 class SongCard extends ConsumerStatefulWidget {
   final RecentlyPlayedItem item;
@@ -44,14 +45,13 @@ class SongCardState extends ConsumerState<SongCard> {
 
   @override
   Widget build(BuildContext context) {
-    final musicPlayerState = ref.watch(local_provider.musicPlayerProvider);
+    final musicPlayerState = ref.watch(musicPlayerProvider);
     final musicControl =
         ref.read(control_provider.musicControlProvider.notifier);
     final swiperController = ref.read(swiperControllerProvider.notifier);
 
     // ref.listenをbuildメソッド内で使用
-    ref.listen<local_provider.MusicPlayerState>(
-        local_provider.musicPlayerProvider, (previous, next) {
+    ref.listen<AppMusicPlayerState>(musicPlayerProvider, (previous, next) {
       if (widget.isActive) {
         _updateSliderValue(next.currentPlaybackTime);
       }
@@ -334,9 +334,7 @@ class SongCardState extends ConsumerState<SongCard> {
                     CupertinoButton(
                       child: const Icon(CupertinoIcons.backward_fill),
                       onPressed: () {
-                        if (ref
-                                    .read(local_provider.musicPlayerProvider)
-                                    .currentSongIndex ==
+                        if (ref.read(musicPlayerProvider).currentSongIndex ==
                                 0 ||
                             musicPlayerState.currentPlaybackTime.inSeconds >
                                 3) {
