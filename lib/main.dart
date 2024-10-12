@@ -46,8 +46,6 @@ Future<void> main() async {
       child: MyApp(),
     ),
   );
-
-  // フォアグラウンドでの最初の実行
 }
 
 class MyApp extends ConsumerWidget {
@@ -67,7 +65,7 @@ class MyApp extends ConsumerWidget {
 Future<void> initBackgroundFetch() async {
   await BackgroundFetch.configure(
       BackgroundFetchConfig(
-          minimumFetchInterval: 15, // 15分ごとに実行
+          minimumFetchInterval: 15,
           stopOnTerminate: false,
           enableHeadless: true,
           requiresBatteryNotLow: false,
@@ -84,17 +82,17 @@ Future<void> initBackgroundFetch() async {
 void _onBackgroundFetch(String taskId) async {
   Logger().d("[BackgroundFetch] Event received: $taskId");
 
-  if (WidgetsBinding.instance.lifecycleState == AppLifecycleState.resumed) {
-    Logger().d("[BackgroundFetch] App is in foreground, skipping execution");
-  } else {
+  try {
     final session = supabase.auth.currentSession;
     final permission = await Permission.mediaLibrary.status.isGranted;
     if (session != null && permission) {
       await sendRecentlyPlayed();
     }
+  } catch (e) {
+    Logger().e("[BackgroundFetch] Error: $e");
+  } finally {
+    BackgroundFetch.finish(taskId);
   }
-
-  BackgroundFetch.finish(taskId);
 }
 
 void _onBackgroundFetchTimeout(String taskId) {

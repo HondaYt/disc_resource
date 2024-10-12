@@ -54,12 +54,38 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
       'details': songData,
     }, onConflict: 'id');
 
+    // 既読の投稿を確認
+    final readPosts = await supabase
+        .from('read')
+        .select('post_id, created_at')
+        .eq('user_id', userId);
+
+    if (readPosts.isNotEmpty) {
+      final now = DateTime.now().toUtc();
+      bool canPost = true;
+
+      for (var readPost in readPosts) {
+        final readAt = DateTime.parse(readPost['created_at']);
+        final timeSinceRead = now.difference(readAt);
+
+        if (timeSinceRead.inHours < 24) {
+          // 既読の投稿に含まれる曲を確認
+
+          canPost = false;
+          Logger().d('この曲は24時間以内に既読の投稿に含まれているため、投稿をスキップします');
+          break;
+        }
+      }
+
+      if (!canPost) return;
+    }
+
+    // 既存の投稿を確認
     final existingData = await supabase
         .from('posts')
         .select()
         .eq('user_id', userId)
         .eq('song_id', songId);
-    Logger().d(existingData);
 
     if (existingData.isEmpty) {
       await insertPostData(supabase, userId, songId);
