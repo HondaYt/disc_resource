@@ -3,6 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
 import 'package:go_router/go_router.dart';
 import 'package:smooth_corner/smooth_corner.dart';
+import '../components/smooth_button.dart';
 
 // import '../main.dart';
 
@@ -95,7 +96,10 @@ class PermissionPageState extends State<PermissionPage> {
                       ),
                     ),
                     const SizedBox(height: 40),
-                    _buildPermissionButton(),
+                    SmoothButton(
+                      text: '権限を許可する',
+                      onPressed: requestPermission,
+                    ),
                   ],
                 ),
               ),

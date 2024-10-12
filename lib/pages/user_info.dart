@@ -6,6 +6,7 @@ import '../providers/follow_provider.dart';
 import '../providers/user_posts_provider.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import '../notifiers/user_posts_notifier.dart';
+import '../components/smooth_button.dart';
 
 class UserInfoPage extends ConsumerStatefulWidget {
   const UserInfoPage({super.key});
@@ -108,20 +109,27 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                   // const SizedBox(height: 24),
                   Padding(
                     padding: const EdgeInsets.all(16),
-                    child: ElevatedButton.icon(
-                      icon: const Icon(Icons.edit),
-                      label: const Text('プロフィールを編集'),
-                      style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 32, vertical: 12),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
+                    child: SmoothButton(
+                      text: 'プロフィールを編集',
                       onPressed: () {
                         context.push('/user_info/edit');
                       },
+                      isOutlined: true,
                     ),
+                    // child: ElevatedButton.icon(
+                    //   icon: const Icon(Icons.edit),
+                    //   label: const Text('プロフィールを編集'),
+                    //   style: ElevatedButton.styleFrom(
+                    //     padding: const EdgeInsets.symmetric(
+                    //         horizontal: 32, vertical: 12),
+                    //     shape: RoundedRectangleBorder(
+                    //       borderRadius: BorderRadius.circular(30),
+                    //     ),
+                    //   ),
+                    //   onPressed: () {
+                    //     context.push('/user_info/edit');
+                    //   },
+                    // ),
                   ),
                   // const SizedBox(height: 24),
                   Padding(
@@ -175,9 +183,9 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
         if (index == posts.length) {
           return Padding(
             padding: const EdgeInsets.all(16),
-            child: ElevatedButton(
-              onPressed: () => notifier.fetchUserPosts(),
+            child: TextButton(
               child: const Text('さらに読み込む'),
+              onPressed: () => notifier.fetchUserPosts(),
             ),
           );
         }

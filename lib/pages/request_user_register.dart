@@ -4,7 +4,7 @@ import '../controllers/user_info_edit_controller.dart';
 import '../services/avatar_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_info_provider.dart';
-import 'package:smooth_corner/smooth_corner.dart';
+import '../components/smooth_button.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -54,7 +54,7 @@ class UserRegisterPageState extends ConsumerState<UserRegisterPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       const Text(
-                        'Discアカウントの作成',
+                        'プロフィールの登録',
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -89,7 +89,10 @@ class UserRegisterPageState extends ConsumerState<UserRegisterPage> {
                         validator: _validateUserId,
                       ),
                       const SizedBox(height: 32),
-                      _buildSaveButton(),
+                      SmoothButton(
+                        text: 'プロフィールを登録',
+                        onPressed: _saveProfile,
+                      )
                     ],
                   ),
                 ),
@@ -209,35 +212,6 @@ class UserRegisterPageState extends ConsumerState<UserRegisterPage> {
         _controller.avatarFile = file;
       });
     }
-  }
-
-  Widget _buildSaveButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ClipPath(
-        clipper: ShapeBorderClipper(
-          shape: SmoothRectangleBorder(
-            smoothness: 0.6,
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            textStyle:
-                const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            elevation: 2,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-            ),
-          ),
-          onPressed: _saveProfile,
-          child: const Text('アカウントを作成'),
-        ),
-      ),
-    );
   }
 
   Future<void> _saveProfile() async {
