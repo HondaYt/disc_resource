@@ -9,6 +9,7 @@ import '../providers/music_player_provider.dart' as providers;
 import '../providers/music_control_provider.dart';
 import '../providers/swiper_controller_provider.dart';
 import '../providers/recently_played_provider.dart';
+import '../providers/read_provider.dart';
 
 class RecentlyPlayedList extends ConsumerStatefulWidget {
   const RecentlyPlayedList({super.key});
@@ -25,6 +26,20 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
   void initState() {
     super.initState();
     currentIndex = 0;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(readProvider.notifier).fetchReadSongs();
+      _markCurrentSongAsRead();
+    });
+  }
+
+  void _markCurrentSongAsRead() {
+    final recentlyPlayed = ref.read(recentlyPlayedProvider);
+    if (recentlyPlayed.isNotEmpty) {
+      final currentPost = recentlyPlayed[currentIndex].post;
+      ref
+          .read(readProvider.notifier)
+          .markAsRead(currentPost['id'], swiped: false);
+    }
   }
 
   @override
@@ -62,14 +77,9 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
         horizontal: true,
         vertical: false,
       ),
-      onSwipeEnd: (previousIndex, targetIndex, activity) {
-        _swipeEnd(previousIndex, targetIndex, activity);
-        setState(() {
-          currentIndex = targetIndex;
-        });
-        ref
-            .read(providers.musicPlayerProvider.notifier)
-            .updateCurrentSongIndex(targetIndex);
+      onSwipeEnd:
+          (int previousIndex, int? targetIndex, SwiperActivity activity) {
+        _onSwipe(previousIndex, targetIndex, activity);
       },
       onEnd: _onEnd,
     );
@@ -95,53 +105,56 @@ class RecentlyPlayedListState extends ConsumerState<RecentlyPlayedList> {
     ref.read(likedSongsProvider.notifier).addSong(item.song);
   }
 
-  void _swipeEnd(int previousIndex, int targetIndex, SwiperActivity activity) {
-    if (targetIndex < 0 ||
-        targetIndex >= ref.read(recentlyPlayedProvider).length) {
-      Logger().d('Invalid target index: $targetIndex');
-      return;
+  void _onSwipe(int previousIndex, int? targetIndex, SwiperActivity activity) {
+    if (targetIndex != null &&
+        targetIndex >= 0 &&
+        targetIndex < ref.read(recentlyPlayedProvider).length) {
+      final targetPost = ref.read(recentlyPlayedProvider)[targetIndex].post;
+
+      // 新しいtargetIndexの投稿をreadとしてマーク（swipedはfalse）
+      ref
+          .read(readProvider.notifier)
+          .markAsRead(targetPost['id'], swiped: false);
+
+      setState(() {
+        currentIndex = targetIndex;
+      });
+      ref
+          .read(providers.musicPlayerProvider.notifier)
+          .updateCurrentSongIndex(targetIndex);
     }
 
-    switch (activity) {
-      case Swipe():
-        Logger().d('The card was swiped to the : ${activity.direction}');
-        switch (activity.direction) {
-          case AxisDirection.right:
-            final ref = ProviderScope.containerOf(context);
-            ref
-                .read(likedSongsProvider.notifier)
-                .addSong(ref.read(recentlyPlayedProvider)[previousIndex].song);
-            break;
-          case AxisDirection.left:
-            break;
-          case AxisDirection.up:
-            Logger().d('Swiped up');
-            break;
-          case AxisDirection.down:
-            Logger().d('Swiped down');
-            break;
-        }
-        Logger()
-            .d('previous index: $previousIndex, target index: $targetIndex');
-        ref
-            .read(musicControlProvider.notifier)
-            .playSong(ref.read(recentlyPlayedProvider)[targetIndex].song);
+    if (activity is Swipe) {
+      _handleSwipe(previousIndex, activity);
+    }
+  }
+
+  void _handleSwipe(int previousIndex, Swipe swipe) {
+    final previousItem = ref.read(recentlyPlayedProvider)[previousIndex];
+
+    Logger().d('The card was swiped to the : ${swipe.direction}');
+    switch (swipe.direction) {
+      case AxisDirection.right:
+        ref.read(likedSongsProvider.notifier).addSong(previousItem.song);
         break;
-      case Unswipe():
-        ref
-            .read(musicControlProvider.notifier)
-            .playSong(ref.read(recentlyPlayedProvider)[targetIndex].song);
-        Logger().d('A ${activity.direction.name} swipe was undone.');
-        Logger()
-            .d('previous index: $previousIndex, target index: $targetIndex');
+      case AxisDirection.left:
         break;
-      case CancelSwipe():
-        Logger().d('A swipe was cancelled');
+      case AxisDirection.up:
+        Logger().d('Swiped up');
         break;
-      case DrivenActivity():
-        Logger().d('Driven Activity');
+      case AxisDirection.down:
+        Logger().d('Swiped down');
         break;
     }
+
+    // スワイプされた投稿をswipedとしてマーク
+    ref
+        .read(readProvider.notifier)
+        .markAsRead(previousItem.post['id'], swiped: true);
+
+    ref
+        .read(musicControlProvider.notifier)
+        .playSong(ref.read(recentlyPlayedProvider)[currentIndex].song);
   }
 
   void _onEnd() {

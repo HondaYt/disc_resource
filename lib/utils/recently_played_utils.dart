@@ -61,6 +61,7 @@ class RecentlyPlayedUtils {
 
           recentlyPlayedList.add(RecentlyPlayedItem(
             song: songResponse['details'],
+            post: post, // 投稿データを追加
             userName: userResponse['username'] ?? '不明なユーザー',
             postedAt: DateTime.parse(post['created_at']),
             avatarUrl: userResponse['avatar_url'],
