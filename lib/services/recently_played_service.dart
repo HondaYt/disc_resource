@@ -48,8 +48,6 @@ Future<Map<String, dynamic>?> recentlyPlayedUtilsData(
 
 Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
     String songId, Map<String, dynamic> songData) async {
-  final today = DateTime.now().toUtc().toString().split(' ')[0];
-
   try {
     await supabase.from('songs').upsert({
       'id': songId,
@@ -68,12 +66,14 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
       Logger().d('最近再生した曲のデータをSupabaseに送信しました');
     } else {
       final createdAt = DateTime.parse(existingData[0]['created_at']);
-      Logger().d(createdAt);
-      if (createdAt.toUtc().toString().split(' ')[0] != today) {
+      final now = DateTime.now().toUtc();
+      final difference = now.difference(createdAt);
+
+      if (difference.inHours >= 24) {
         await insertPostData(supabase, userId, songId);
-        Logger().d('新しい日付で最近再生した曲のデータをSupabaseに送信しました');
+        Logger().d('24時間以上経過したため、最近再生した曲のデータをSupabaseに送信しました');
       } else {
-        Logger().d('同じ曲のデータが今日既に存在するため、挿入をスキップしました');
+        Logger().d('同じ曲のデータが24時間以内に存在するため、挿入をスキップしました');
       }
     }
   } catch (e) {
