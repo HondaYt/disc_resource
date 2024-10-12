@@ -64,25 +64,33 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
         .select('post_id, created_at')
         .eq('user_id', userId);
 
-    if (readPosts.isNotEmpty) {
-      final now = DateTime.now().toUtc();
-      bool canPost = true;
+    final now = DateTime.now().toUtc();
 
-      for (var readPost in readPosts) {
-        final readAt = DateTime.parse(readPost['created_at']);
-        final timeSinceRead = now.difference(readAt);
+    Logger().d('読み込まれた既読投稿数: ${readPosts.length}');
 
-        if (timeSinceRead.inHours < 24) {
-          // 既読の投稿に含まれる曲を確認
+    for (var readPost in readPosts) {
+      final readAt = DateTime.parse(readPost['created_at']);
+      final timeSinceRead = now.difference(readAt);
 
-          canPost = false;
-          Logger().d('この曲は24時間以内に既読の投稿に含まれているため、投稿をスキップします');
-          break;
+      if (timeSinceRead.inHours < 24) {
+        // 既読の投稿に含まれる曲を確認
+        final existingReadSong = await supabase
+            .from('posts')
+            .select('song_id')
+            .eq('id', readPost['post_id'])
+            .single();
+
+        final existingReadSongId = existingReadSong['song_id'];
+        final currentSongId = int.parse(songId);
+
+        if (existingReadSongId == currentSongId) {
+          Logger().d('この曲は24時間以内に既読の投稿に含まれているため、投稿をスキップします: $currentSongId');
+          return;
         }
       }
-
-      if (!canPost) return;
     }
+
+    Logger().d('既読チェックを通過しました。投稿処理を開始します。');
 
     // 既存の投稿を確認
     final existingData = await supabase
@@ -96,7 +104,6 @@ Future<void> processAndSaveSongData(SupabaseClient supabase, String userId,
       Logger().d('最近再生した曲のデータをSupabaseに送信しました');
     } else {
       final createdAt = DateTime.parse(existingData[0]['created_at']);
-      final now = DateTime.now().toUtc();
       final difference = now.difference(createdAt);
 
       if (difference.inHours >= 24) {
