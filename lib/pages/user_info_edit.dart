@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:logger/logger.dart';
+import '../controllers/user_info_edit_controller.dart';
+import '../services/avatar_service.dart';
 
 final supabase = Supabase.instance.client;
 
@@ -17,135 +14,15 @@ class UserInfoEditPage extends StatefulWidget {
 
 class UserInfoEditPageState extends State<UserInfoEditPage> {
   final _formKey = GlobalKey<FormState>();
-  late TextEditingController _userNameController;
-  late TextEditingController _userIdController;
-  File? _avatarFile;
-  bool _isUserIdTaken = false;
+  late UserInfoEditController _controller;
+  late AvatarService _avatarService;
 
   @override
   void initState() {
     super.initState();
-    _userNameController = TextEditingController();
-    _userIdController = TextEditingController();
-    _loadUserProfile();
-  }
-
-  Future<void> _loadUserProfile() async {
-    final user = supabase.auth.currentUser;
-    if (user != null) {
-      final response =
-          await supabase.from('profiles').select().eq('id', user.id).single();
-      setState(() {
-        _userNameController.text = response['username'] ?? '';
-        _userIdController.text = response['user_id'] ?? '';
-      });
-    }
-  }
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      final croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-        compressQuality: 80,
-        maxWidth: 1080,
-        maxHeight: 1080,
-        compressFormat: ImageCompressFormat.jpg,
-        uiSettings: [
-          AndroidUiSettings(
-            toolbarTitle: '画像を切り抜く',
-            toolbarColor: Colors.deepOrange,
-            toolbarWidgetColor: Colors.white,
-            initAspectRatio: CropAspectRatioPreset.square,
-            lockAspectRatio: true,
-          ),
-          IOSUiSettings(
-            title: '画像を切り抜く',
-            aspectRatioLockEnabled: true,
-            resetAspectRatioEnabled: false,
-          ),
-        ],
-      );
-
-      if (croppedFile != null) {
-        setState(() {
-          _avatarFile = File(croppedFile.path);
-        });
-      }
-    }
-  }
-
-  Future<void> _uploadAvatar() async {
-    if (_avatarFile == null) return;
-
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-
-    final fileExt = _avatarFile!.path.split('.').last;
-    final fileName = '${user.id}/avatar.$fileExt';
-
-    try {
-      await supabase.storage.from('avatars').upload(
-            fileName,
-            _avatarFile!,
-            fileOptions: const FileOptions(upsert: true),
-          );
-
-      final avatarUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
-
-      await supabase.from('profiles').upsert({
-        'id': user.id,
-        'avatar_url': avatarUrl,
-      });
-    } catch (error) {
-      if (!mounted) return;
-      String errorMessage = 'アバターのアップロードに失敗しました';
-      if (error is StorageException) {
-        errorMessage += ': ${error.message} (ステータスコード: ${error.statusCode})';
-      } else {
-        errorMessage += ': $error';
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
-      rethrow;
-    }
-  }
-
-  Future<void> _updateProfile() async {
-    if (_formKey.currentState!.validate()) {
-      final user = supabase.auth.currentUser;
-      if (user != null) {
-        try {
-          await _uploadAvatar();
-          await supabase.from('profiles').upsert({
-            'id': user.id,
-            'username': _userNameController.text,
-            'user_id': _userIdController.text,
-          });
-          if (!mounted) return;
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('プロフィールが更新されました')),
-          );
-          Navigator.of(context).pop();
-        } catch (error) {
-          if (!mounted) return;
-          Logger().e('プロフィールの更新に失敗しました: $error');
-          if (error is PostgrestException && error.code == '23505') {
-            setState(() {
-              _isUserIdTaken = true;
-            });
-            _formKey.currentState!.validate();
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('プロフィールの更新に失敗しました: $error')),
-            );
-          }
-        }
-      }
-    }
+    _controller = UserInfoEditController();
+    _avatarService = AvatarService();
+    _controller.loadUserProfile();
   }
 
   @override
@@ -160,11 +37,18 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
           children: [
             Center(
               child: GestureDetector(
-                onTap: _pickImage,
+                onTap: () async {
+                  final file = await _avatarService.pickImage();
+                  if (file != null) {
+                    setState(() {
+                      _controller.avatarFile = file;
+                    });
+                  }
+                },
                 child: ClipOval(
-                  child: _avatarFile != null
+                  child: _controller.avatarFile != null
                       ? Image.file(
-                          _avatarFile!,
+                          _controller.avatarFile!,
                           width: 100,
                           height: 100,
                           fit: BoxFit.cover,
@@ -179,7 +63,7 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
               ),
             ),
             TextFormField(
-              controller: _userNameController,
+              controller: _controller.userNameController,
               decoration: const InputDecoration(labelText: 'User Name'),
               validator: (value) {
                 if (value == null || value.isEmpty) {
@@ -189,13 +73,12 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
               },
             ),
             TextFormField(
-              controller: _userIdController,
+              controller: _controller.userIdController,
               decoration: const InputDecoration(labelText: 'Disc ID'),
               onChanged: (value) {
                 setState(() {
-                  _isUserIdTaken = false;
+                  _controller.isUserIdTaken = false;
                 });
-                // フォームの状態をリセット
                 _formKey.currentState?.validate();
               },
               validator: (value) {
@@ -210,7 +93,7 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
                 if (!validCharacters.hasMatch(value)) {
                   return 'ユーザーネームは英数字、アンダースコア、ハイフン、ドットのみ使用できます';
                 }
-                if (_isUserIdTaken) {
+                if (_controller.isUserIdTaken) {
                   return 'このユーザーIDは既に使用されています';
                 }
                 return null;
@@ -218,7 +101,15 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: _updateProfile,
+              onPressed: () async {
+                if (_formKey.currentState!.validate()) {
+                  if (_controller.avatarFile != null) {
+                    await _avatarService.uploadAvatar(
+                        _controller.avatarFile!, context);
+                  }
+                  await _controller.updateProfile(context);
+                }
+              },
               child: const Text('保存して閉じる'),
             ),
           ],
@@ -229,8 +120,7 @@ class UserInfoEditPageState extends State<UserInfoEditPage> {
 
   @override
   void dispose() {
-    _userNameController.dispose();
-    _userIdController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 }
