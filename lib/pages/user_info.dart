@@ -52,7 +52,7 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                     child: ClipOval(
                       child: userInfo['avatar_url'] != null
                           ? Image.network(
-                              userInfo['avatar_url'],
+                              '${userInfo['avatar_url']}?v=${DateTime.now().millisecondsSinceEpoch}',
                               width: 120,
                               height: 120,
                               fit: BoxFit.cover,

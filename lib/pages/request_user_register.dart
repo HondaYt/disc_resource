@@ -4,17 +4,18 @@ import '../controllers/user_info_edit_controller.dart';
 import '../services/avatar_service.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../providers/user_info_provider.dart';
+import 'package:smooth_corner/smooth_corner.dart';
 
 final supabase = Supabase.instance.client;
 
-class UserInfoEditPage extends ConsumerStatefulWidget {
-  const UserInfoEditPage({super.key});
+class UserRegisterPage extends ConsumerStatefulWidget {
+  const UserRegisterPage({super.key});
 
   @override
-  ConsumerState<UserInfoEditPage> createState() => UserInfoEditPageState();
+  ConsumerState<UserRegisterPage> createState() => UserRegisterPageState();
 }
 
-class UserInfoEditPageState extends ConsumerState<UserInfoEditPage> {
+class UserRegisterPageState extends ConsumerState<UserRegisterPage> {
   final _formKey = GlobalKey<FormState>();
   late UserInfoEditController _controller;
   late AvatarService _avatarService;
@@ -31,62 +32,68 @@ class UserInfoEditPageState extends ConsumerState<UserInfoEditPage> {
   Widget build(BuildContext context) {
     ref.watch(userInfoProvider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('プロフィール編集'),
-        elevation: 0,
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(24.0),
-          child: Form(
-            key: _formKey,
-            autovalidateMode: AutovalidateMode.onUserInteraction,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // アバター選択部分
-                _buildAvatarSection(),
-                const SizedBox(height: 32),
-                // ユーザー名入力フィールド
-                _buildTextField(
-                  controller: _controller.userNameController,
-                  labelText: 'ユーザー名',
-                  prefixIcon: Icons.person,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'ユーザー名を入力してください';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 16),
-                // ユーザーID入力フィールド
-                _buildTextField(
-                  controller: _controller.userIdController,
-                  labelText: 'ユーザーID',
-                  prefixIcon: Icons.alternate_email,
-                  onChanged: (value) {
-                    setState(() {
-                      _controller.isUserIdTaken = false;
-                    });
-                    _formKey.currentState?.validate();
-                  },
-                  validator: _validateUserId,
-                ),
-                const SizedBox(height: 32),
-                // 保存ボタン
-                ElevatedButton(
-                  onPressed: _saveProfile,
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        body: Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Colors.black, Colors.grey[900]!],
+            ),
+          ),
+          child: SafeArea(
+            child: Center(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Form(
+                  key: _formKey,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Discアカウントの作成',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      _buildAvatarSection(),
+                      const SizedBox(height: 32),
+                      _buildTextField(
+                        controller: _controller.userNameController,
+                        labelText: 'ユーザー名',
+                        prefixIcon: Icons.person,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'ユーザー名を入力してください';
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 16),
+                      _buildTextField(
+                        controller: _controller.userIdController,
+                        labelText: 'ユーザーID',
+                        prefixIcon: Icons.alternate_email,
+                        onChanged: (value) {
+                          setState(() {
+                            _controller.isUserIdTaken = false;
+                          });
+                          _formKey.currentState?.validate();
+                        },
+                        validator: _validateUserId,
+                      ),
+                      const SizedBox(height: 32),
+                      _buildSaveButton(),
+                    ],
                   ),
-                  child: const Text('保存して閉じる', style: TextStyle(fontSize: 18)),
                 ),
-              ],
+              ),
             ),
           ),
         ),
@@ -143,9 +150,16 @@ class UserInfoEditPageState extends ConsumerState<UserInfoEditPage> {
       controller: controller,
       decoration: InputDecoration(
         labelText: labelText,
-        prefixIcon: Icon(prefixIcon),
-        border: OutlineInputBorder(),
+        prefixIcon: Icon(prefixIcon, color: Colors.white70),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        filled: true,
+        fillColor: Colors.white.withOpacity(0.1),
+        labelStyle: const TextStyle(color: Colors.white70),
       ),
+      style: const TextStyle(color: Colors.white),
       validator: validator,
       onChanged: onChanged,
     );
@@ -195,6 +209,35 @@ class UserInfoEditPageState extends ConsumerState<UserInfoEditPage> {
         _controller.avatarFile = file;
       });
     }
+  }
+
+  Widget _buildSaveButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 56,
+      child: ClipPath(
+        clipper: ShapeBorderClipper(
+          shape: SmoothRectangleBorder(
+            smoothness: 0.6,
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            foregroundColor: Colors.black,
+            textStyle:
+                const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+            elevation: 2,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
+            ),
+          ),
+          onPressed: _saveProfile,
+          child: const Text('アカウントを作成'),
+        ),
+      ),
+    );
   }
 
   Future<void> _saveProfile() async {

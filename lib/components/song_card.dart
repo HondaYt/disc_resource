@@ -67,13 +67,19 @@ class SongCardState extends ConsumerState<SongCard> {
             const SizedBox(width: 8),
             GestureDetector(
               onTap: () {},
-              child: CircleAvatar(
-                radius: 16,
-                backgroundImage: widget.item.avatarUrl != null
-                    ? NetworkImage(widget.item.avatarUrl!)
-                    : const AssetImage('assets/user2_dummy.png')
-                        as ImageProvider,
-                child: Container(),
+              child: ClipOval(
+                child: widget.item.avatarUrl != null
+                    ? FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image: '${widget.item.avatarUrl}',
+                        width: 32,
+                        height: 32,
+                        fit: BoxFit.cover,
+                        fadeInDuration: const Duration(milliseconds: 20),
+                        fadeOutDuration: const Duration(milliseconds: 20),
+                      )
+                    : Image.asset('assets/placeholder.png',
+                        width: 32, height: 32, fit: BoxFit.cover),
               ),
             ),
             const SizedBox(width: 8),
@@ -121,18 +127,18 @@ class SongCardState extends ConsumerState<SongCard> {
                               .replaceAll('{h}', '2'),
                           fit: BoxFit.cover,
                         ),
-                        Image.network(
-                          widget.item.song['attributes']['artwork']['url']
-                              .replaceAll('{w}', '159')
-                              .replaceAll('{h}', '159'),
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          widget.item.song['attributes']['artwork']['url']
-                              .replaceAll('{w}', '318')
-                              .replaceAll('{h}', '318'),
-                          fit: BoxFit.cover,
-                        ),
+                        // Image.network(
+                        //   widget.item.song['attributes']['artwork']['url']
+                        //       .replaceAll('{w}', '159')
+                        //       .replaceAll('{h}', '159'),
+                        //   fit: BoxFit.cover,
+                        // ),
+                        // Image.network(
+                        //   widget.item.song['attributes']['artwork']['url']
+                        //       .replaceAll('{w}', '318')
+                        //       .replaceAll('{h}', '318'),
+                        //   fit: BoxFit.cover,
+                        // ),
                         Image.network(
                           widget.item.song['attributes']['artwork']['url']
                               .replaceAll('{w}', '636')

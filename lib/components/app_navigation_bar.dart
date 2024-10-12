@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/user_info_provider.dart';
 
-class AppNavigationBar extends StatelessWidget {
+class AppNavigationBar extends ConsumerWidget {
   const AppNavigationBar({
     super.key,
     required this.navigationShell,
@@ -17,7 +18,8 @@ class AppNavigationBar extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final userInfo = ref.watch(userInfoProvider);
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -40,23 +42,16 @@ class AppNavigationBar extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: ClipOval(
-                child: FutureBuilder<String?>(
-                  future: _getAvatarUrl(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const CircularProgressIndicator();
-                    }
-                    if (snapshot.hasData && snapshot.data != null) {
-                      return Image.network(
-                        snapshot.data!,
-                        width: 32,
-                        height: 32,
+                child: userInfo?['avatar_url'] != null
+                    ? FadeInImage.assetNetwork(
+                        placeholder: 'assets/placeholder.png',
+                        image:
+                            '${userInfo!['avatar_url']}?v=${DateTime.now().millisecondsSinceEpoch}',
+                        fadeInDuration: const Duration(milliseconds: 20),
+                        fadeOutDuration: const Duration(milliseconds: 20),
                         fit: BoxFit.cover,
-                      );
-                    }
-                    return Image.asset('assets/user_dummy.png');
-                  },
-                ),
+                      )
+                    : Image.asset('assets/placeholder.png'),
               ),
             ),
           ),
@@ -95,18 +90,5 @@ class AppNavigationBar extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  Future<String?> _getAvatarUrl() async {
-    final user = Supabase.instance.client.auth.currentUser;
-    if (user != null) {
-      final data = await Supabase.instance.client
-          .from('profiles')
-          .select('avatar_url')
-          .eq('id', user.id)
-          .single();
-      return data['avatar_url'] as String?;
-    }
-    return null;
   }
 }

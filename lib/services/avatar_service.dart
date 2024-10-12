@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:image_cropper/image_cropper.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../providers/user_info_provider.dart';
 
 class AvatarService {
   final supabase = Supabase.instance.client;
@@ -41,12 +43,28 @@ class AvatarService {
     return null;
   }
 
-  Future<void> uploadAvatar(File avatarFile, BuildContext context) async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
+  Future<void> uploadAvatar(
+      File avatarFile, BuildContext context, WidgetRef ref) async {
+    final userInfo = ref.read(userInfoProvider);
+    String? userId;
+
+    if (userInfo == null) {
+      // ユーザー情報がない場合は、Supabaseから現在のユーザーIDを取得
+      final currentUser = supabase.auth.currentUser;
+      if (currentUser == null) {
+        if (!context.mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('ユーザーが認証されていません')),
+        );
+        return;
+      }
+      userId = currentUser.id;
+    } else {
+      userId = userInfo['id'];
+    }
 
     final fileExt = avatarFile.path.split('.').last;
-    final fileName = '${user.id}/avatar.$fileExt';
+    final fileName = '$userId/avatar.$fileExt';
 
     try {
       await supabase.storage.from('avatars').upload(
@@ -57,10 +75,17 @@ class AvatarService {
 
       final avatarUrl = supabase.storage.from('avatars').getPublicUrl(fileName);
 
-      await supabase.from('profiles').upsert({
-        'id': user.id,
+      await ref.read(userInfoProvider.notifier).updateUserInfo({
         'avatar_url': avatarUrl,
       });
+
+      // ここで fetchUserInfo を呼び出す
+      await ref.read(userInfoProvider.notifier).fetchUserInfo();
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('アバターが正常にアップロードされました')),
+      );
     } catch (error) {
       if (!context.mounted) return;
       String errorMessage = 'アバターのアップロードに失敗しました';

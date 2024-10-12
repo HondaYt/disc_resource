@@ -4,10 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:async';
-import 'router.dart';
 import 'color.dart';
 import 'services/recently_played_sender_service.dart';
 import 'services/background_fetch_service.dart';
+import 'router.dart';
 
 final supabase = Supabase.instance.client;
 Future<void> main() async {
@@ -42,7 +42,7 @@ class MyApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: discTheme,
       title: 'Disc',
-      routerConfig: router,
+      routerConfig: ref.watch(router),
     );
   }
 }
