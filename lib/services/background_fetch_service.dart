@@ -2,6 +2,7 @@ import 'package:background_fetch/background_fetch.dart';
 import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'dart:async';
 
 import 'recently_played_sender_service.dart';
 
@@ -17,9 +18,7 @@ void backgroundFetchHeadlessTask(HeadlessTask task) async {
     return;
   }
 
-  await sendRecentlyPlayed();
-
-  BackgroundFetch.finish(taskId);
+  await BackgroundFetchService.executeBackgroundTask(taskId);
 }
 
 class BackgroundFetchService {
@@ -42,12 +41,20 @@ class BackgroundFetchService {
 
   static void _onBackgroundFetch(String taskId) async {
     Logger().d("[BackgroundFetch] Event received: $taskId");
+    await executeBackgroundTask(taskId);
+  }
 
+  static void _onBackgroundFetchTimeout(String taskId) {
+    Logger().d("[BackgroundFetch] TIMEOUT: $taskId");
+    BackgroundFetch.finish(taskId);
+  }
+
+  static Future<void> executeBackgroundTask(String taskId) async {
     try {
       final session = supabase.auth.currentSession;
-      final permission = await Permission.mediaLibrary.status.isGranted;
-      if (session != null && permission) {
-        await sendRecentlyPlayed();
+      final permission = await Permission.mediaLibrary.status;
+      if (session != null && permission.isGranted) {
+        await _timeoutProtectedTask(() => sendRecentlyPlayed());
       }
     } catch (e) {
       Logger().e("[BackgroundFetch] Error: $e");
@@ -56,8 +63,12 @@ class BackgroundFetchService {
     }
   }
 
-  static void _onBackgroundFetchTimeout(String taskId) {
-    Logger().d("[BackgroundFetch] TIMEOUT: $taskId");
-    BackgroundFetch.finish(taskId);
+  static Future<void> _timeoutProtectedTask(
+      Future<void> Function() task) async {
+    try {
+      await task().timeout(Duration(seconds: 25));
+    } on TimeoutException {
+      Logger().w("[BackgroundFetch] Task timed out after 25 seconds");
+    }
   }
 }
