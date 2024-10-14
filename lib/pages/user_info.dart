@@ -101,7 +101,12 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                         ),
                       ],
                     ),
-                    loading: () => const CircularProgressIndicator(),
+                    loading: () => Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const CircularProgressIndicator(),
+                      ],
+                    ),
                     error: (_, __) => const Text('エラーが発生しました'),
                   ),
                   const SizedBox(height: 16),
