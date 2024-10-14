@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:logger/logger.dart';
 import 'package:go_router/go_router.dart';
-import 'package:smooth_corner/smooth_corner.dart';
 import '../components/smooth_button.dart';
 
 // import '../main.dart';
@@ -104,42 +103,6 @@ class PermissionPageState extends State<PermissionPage> {
                 ),
               ),
             ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildPermissionButton() {
-    return SizedBox(
-      width: double.infinity,
-      height: 56,
-      child: ClipPath(
-        clipper: ShapeBorderClipper(
-          shape: SmoothRectangleBorder(
-            smoothness: 0.6,
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.black,
-            textStyle:
-                const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-            elevation: 2,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.zero,
-            ),
-          ),
-          onPressed: requestPermission,
-          child: const Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(Icons.check_circle_outline, size: 28),
-              SizedBox(width: 10),
-              Text('権限を許可する'),
-            ],
           ),
         ),
       ),

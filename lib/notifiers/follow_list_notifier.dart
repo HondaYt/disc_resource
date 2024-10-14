@@ -43,10 +43,20 @@ class FollowListNotifier extends BaseUserNotifier {
     final profilesResult =
         await supabase.from('profiles').select('*').inFilter('id', userIds);
 
+    // フォロー状態を確認するクエリを追加
+    final followingResult = await supabase
+        .from('follows')
+        .select('followed_id')
+        .eq('follower_id', currentUserId)
+        .inFilter('followed_id', userIds);
+
+    final followingSet = Set<String>.from((followingResult as List<dynamic>)
+        .map((row) => row['followed_id'] as String));
+
     return (profilesResult as List<dynamic>).map((profile) {
       return {
         ...Map<String, dynamic>.from(profile),
-        'is_following': !isFollowers,
+        'is_following': followingSet.contains(profile['id']),
       };
     }).toList();
   }

@@ -59,9 +59,13 @@ class AppNavigationBar extends ConsumerWidget {
       ),
       body: navigationShell,
       bottomNavigationBar: Container(
-        margin: const EdgeInsets.all(10),
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        color: Colors.transparent,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(20),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
           child: BottomAppBar(
             color: Colors.white10,
             height: 49,

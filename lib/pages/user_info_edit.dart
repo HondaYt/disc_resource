@@ -38,53 +38,58 @@ class UserInfoEditPageState extends ConsumerState<UserInfoEditPage> {
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 64),
-            Form(
-              key: _formKey,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  _buildAvatarSection(),
-                  const SizedBox(height: 32),
-                  _buildTextField(
-                    controller: _controller.userNameController,
-                    labelText: 'ユーザー名',
-                    prefixIcon: Icons.person,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'ユーザー名を入力してください';
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 16),
-                  _buildTextField(
-                    controller: _controller.userIdController,
-                    labelText: 'ユーザーID',
-                    prefixIcon: Icons.alternate_email,
-                    onChanged: (value) {
-                      setState(() {
-                        _controller.isUserIdTaken = false;
-                      });
-                      _formKey.currentState?.validate();
-                    },
-                    validator: _validateUserId,
-                  ),
-                  const SizedBox(height: 32),
-                  // _buildSaveButton(),
-                  SmoothButton(
-                    text: '保存して閉じる',
-                    onPressed: _saveProfile,
-                  )
-                ],
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(
+            16.0,
+            16.0,
+            16.0,
+            16.0 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: [
+              Form(
+                key: _formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildAvatarSection(),
+                    const SizedBox(height: 32),
+                    _buildTextField(
+                      controller: _controller.userNameController,
+                      labelText: 'ユーザー名',
+                      prefixIcon: Icons.person,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'ユーザー名を入力してください';
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    _buildTextField(
+                      controller: _controller.userIdController,
+                      labelText: 'ユーザーID',
+                      prefixIcon: Icons.alternate_email,
+                      onChanged: (value) {
+                        setState(() {
+                          _controller.isUserIdTaken = false;
+                        });
+                        _formKey.currentState?.validate();
+                      },
+                      validator: _validateUserId,
+                    ),
+                    const SizedBox(height: 32),
+                    SmoothButton(
+                      text: '保存して閉じる',
+                      onPressed: _saveProfile,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
