@@ -121,20 +121,6 @@ class _UserInfoPageState extends ConsumerState<UserInfoPage> {
                       },
                       isOutlined: true,
                     ),
-                    // child: ElevatedButton.icon(
-                    //   icon: const Icon(Icons.edit),
-                    //   label: const Text('プロフィールを編集'),
-                    //   style: ElevatedButton.styleFrom(
-                    //     padding: const EdgeInsets.symmetric(
-                    //         horizontal: 32, vertical: 12),
-                    //     shape: RoundedRectangleBorder(
-                    //       borderRadius: BorderRadius.circular(30),
-                    //     ),
-                    //   ),
-                    //   onPressed: () {
-                    //     context.push('/user_info/edit');
-                    //   },
-                    // ),
                   ),
                   // const SizedBox(height: 24),
                   Padding(
