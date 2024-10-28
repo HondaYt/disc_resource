@@ -20,8 +20,6 @@ import 'pages/follow_list.dart';
 
 final supabase = Supabase.instance.client;
 
-// リダイレクト状態を管理するための変数
-
 final rootNavigatorKey = GlobalKey<NavigatorState>();
 final nestedNavigationKey = GlobalKey<NavigatorState>();
 
