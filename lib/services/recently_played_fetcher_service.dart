@@ -39,7 +39,7 @@ class RecentlyPlayedFetcherService {
           .from('posts')
           .select('*')
           .inFilter('user_id', followedUserIds)
-          .gte('created_at', twentyFourHoursAgo.toIso8601String())
+          // .gte('created_at', twentyFourHoursAgo.toIso8601String())
           .order('created_at', ascending: false);
 
       if (postsResponse.isNotEmpty) {
